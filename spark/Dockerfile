@@ -8,12 +8,13 @@ ENV PATH "${PATH}:${SPARK_HOME}/bin:${SPARK_HOME}/sbin"
 ENV PYTHONPATH "${PYTHONPATH}:${SPARK_HOME}/python:${SPARK_HOME}/python/lib"
 
 ENV SPARK_NO_DAEMONIZE TRUE
+ENV SPARK_CONF_DIR "/etc/spark"
 
 RUN mkdir -p /usr/share/man/man1 \
-    && apt-get update -q=5 \
-    && apt-get install --no-install-recommends -q=5 \
+    && apt-get update \
+    && apt-get install --no-install-recommends --yes \
        default-jdk \
-    && apt-get remove --purge -q=5 ${builds_deps} \
+    && apt-get remove --purge --yes ${builds_deps} \
     && apt-get clean \
     && rm -rf -- /var/lib/apt/lists/*
 

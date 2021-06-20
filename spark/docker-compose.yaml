@@ -1,5 +1,15 @@
 version: '3.7'
 services:
+    spark:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: start-master.sh
+        ports:
+            - 8000:8080
+        volumes:
+            - ./config:/etc/spark
+
     spark-worker:
         build:
             context: .
@@ -9,14 +19,8 @@ services:
             - spark
         environment:
             - SPARK_MASTER_URL=spark:7077
-
-    spark:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        command: start-master.sh
-        ports:
-            - 8000:8080
+        volumes:
+            - ./config:/etc/spark
 
 networks:
     default:
