@@ -16,7 +16,7 @@
 
 <configuration>
 <property><name>hadoop.proxyuser.hue.hosts</name><value>*</value></property>
-<property><name>fs.defaultFS</name><value>hdfs://hadoop-namenode:9000</value></property>
+<property><name>fs.defaultFS</name><value>hdfs://hadoop:9000</value></property>
 <property><name>hadoop.proxyuser.hue.groups</name><value>*</value></property>
 <property><name>hadoop.http.staticuser.user</name><value>hadoop</value></property>
 </configuration>

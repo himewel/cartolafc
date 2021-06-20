@@ -1,6 +1,6 @@
 version: '3.7'
 services:
-    hadoop-namenode:
+    hadoop:
         build:
             context: .
             dockerfile: Dockerfile
@@ -20,7 +20,7 @@ services:
             context: .
             dockerfile: Dockerfile
         depends_on:
-            - hadoop-namenode
+            - hadoop
         env_file:
             - ./hadoop.env
         restart: always
