@@ -1,0 +1,34 @@
+version: '3.7'
+services:
+    hadoop-namenode:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        environment:
+            CLUSTER_NAME: "TRUE"
+        env_file:
+            - ./hadoop/hadoop.env
+        ports:
+            - 9870:9870
+            - 9000:9000
+        volumes:
+            - ./hadoop/config:/etc/hadoop
+            - ./hadoop/dfs/name:/hadoop/dfs/name
+
+    hadoop-datanode:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        depends_on:
+            - hadoop-namenode
+        env_file:
+            - ./hadoop/hadoop.env
+        restart: always
+        volumes:
+            - ./hadoop/config:/etc/hadoop
+            - ./hadoop/dfs/data:/hadoop/dfs/data
+
+networks:
+    default:
+        external: true
+        name: cartolafc
