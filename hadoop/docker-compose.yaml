@@ -7,13 +7,13 @@ services:
         environment:
             CLUSTER_NAME: "TRUE"
         env_file:
-            - ./hadoop/hadoop.env
+            - ./hadoop.env
         ports:
             - 9870:9870
             - 9000:9000
         volumes:
-            - ./hadoop/config:/etc/hadoop
-            - ./hadoop/dfs/name:/hadoop/dfs/name
+            - ./config:/etc/hadoop
+            - ./dfs/name:/hadoop/dfs/name
 
     hadoop-datanode:
         build:
@@ -22,11 +22,11 @@ services:
         depends_on:
             - hadoop-namenode
         env_file:
-            - ./hadoop/hadoop.env
+            - ./hadoop.env
         restart: always
         volumes:
-            - ./hadoop/config:/etc/hadoop
-            - ./hadoop/dfs/data:/hadoop/dfs/data
+            - ./config:/etc/hadoop
+            - ./dfs/data:/hadoop/dfs/data
 
 networks:
     default:
