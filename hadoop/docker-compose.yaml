@@ -4,13 +4,9 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        environment:
-            CLUSTER_NAME: "TRUE"
-        env_file:
-            - ./hadoop.env
         ports:
             - 9870:9870
-            - 9000:9000
+            - 8020:8020
         volumes:
             - ./config:/etc/hadoop
             - ./dfs/name:/hadoop/dfs/name
@@ -19,11 +15,9 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+        command: hdfs datanode
         depends_on:
             - hadoop
-        env_file:
-            - ./hadoop.env
-        restart: always
         volumes:
             - ./config:/etc/hadoop
             - ./dfs/data:/hadoop/dfs/data
