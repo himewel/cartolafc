@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+    hive:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: hive --service hiveserver2
+        depends_on:
+            - hive-postgresql
+            - hive-metastore
+        ports:
+            - 10000:10000
+        volumes:
+            - ./config:/etc/hive
+
+    hive-metastore:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        command: hive --service metastore
+        depends_on:
+            - hive-postgresql
+        ports:
+            - 9083:9083
+        volumes:
+            - ./config:/etc/hive
+
+    hive-postgresql:
+        image: postgres:13-alpine
+        environment:
+            POSTGRES_USER: hive
+            POSTGRES_PASSWORD: hive
+            POSTGRES_DB: hive
+
+networks:
+    default:
+        external: true
+        name: cartolafc

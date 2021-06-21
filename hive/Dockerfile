@@ -1,0 +1,43 @@
+FROM python:3.8-buster
+
+ENV JAVA_HOME "/usr/lib/jvm/java-11-openjdk-amd64"
+ENV HADOOP_HOME "/opt/hadoop"
+ENV HIVE_HOME "/opt/hive"
+
+ENV HADOOP_CONF_DIR "/etc/hive"
+ENV HIVE_CONF_DIR "/etc/hive"
+
+ENV PATH "${PATH}:${JAVA_HOME}/bin"
+ENV PATH "${PATH}:${HIVE_HOME}/bin"
+ENV PATH "${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin"
+
+RUN mkdir -p /usr/share/man/man1 \
+    && apt-get update -q=5 \
+    && apt-get install --no-install-recommends -q=5 \
+       default-jdk \
+    && apt-get remove --purge -q=5 ${builds_deps} \
+    && apt-get clean \
+    && rm -rf -- /var/lib/apt/lists/*
+
+RUN curl --continue-at - "https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.2.2/hadoop-3.2.2.tar.gz" \
+        -o ./hadoop-3.2.2.tar.gz \
+    && tar -xf hadoop-3.2.2.tar.gz \
+    && rm -rf hadoop-3.2.2.tar.gz \
+    && mv hadoop-3.2.2 ${HADOOP_HOME}
+
+RUN curl --continue-at - "https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz" \
+        -o ./apache-hive-3.1.2-bin.tar.gz \
+    && tar -xf apache-hive-3.1.2-bin.tar.gz \
+    && rm -rf apache-hive-3.1.2-bin.tar.gz \
+    && mv apache-hive-3.1.2-bin ${HIVE_HOME}
+
+RUN rm ${HIVE_HOME}/lib/guava-19.0.jar \
+    && cp ${HADOOP_HOME}/share/hadoop/hdfs/lib/guava-27.0-jre.jar ${HIVE_HOME}/lib/
+
+WORKDIR ${HIVE_HOME}
+
+# COPY ./start-metastore.sh .
+#
+# RUN chmod +x ./start-metastore.sh
+
+ENTRYPOINT [ "bash", "-c" ]
