@@ -1,9 +1,7 @@
 version: '3.7'
 services:
     spark:
-        build:
-            context: .
-            dockerfile: Dockerfile
+        build: .
         command: start-master.sh
         ports:
             - 8000:8080
@@ -11,9 +9,7 @@ services:
             - ./config:/etc/spark
 
     spark-worker:
-        build:
-            context: .
-            dockerfile: Dockerfile
+        build: .
         command: start-slave.sh spark:7077
         depends_on:
             - spark

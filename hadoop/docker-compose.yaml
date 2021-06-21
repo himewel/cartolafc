@@ -1,9 +1,7 @@
 version: '3.7'
 services:
     hadoop:
-        build:
-            context: .
-            dockerfile: Dockerfile
+        build: .
         ports:
             - 9870:9870
             - 8020:8020
@@ -12,9 +10,7 @@ services:
             - ./dfs/name:/hadoop/dfs/name
 
     hadoop-datanode:
-        build:
-            context: .
-            dockerfile: Dockerfile
+        build: .
         command: hdfs datanode
         depends_on:
             - hadoop
