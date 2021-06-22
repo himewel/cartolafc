@@ -1,9 +1,7 @@
 version: '3.7'
 services:
     hive:
-        build:
-            context: .
-            dockerfile: Dockerfile
+        build: .
         command: hive --service hiveserver2
         depends_on:
             - hive-postgresql
@@ -14,10 +12,8 @@ services:
             - ./config:/etc/hive
 
     hive-metastore:
-        build:
-            context: .
-            dockerfile: Dockerfile
-        command: hive --service metastore
+        build: .
+        command: ./start-metastore.sh
         depends_on:
             - hive-postgresql
         ports:

@@ -1,6 +1,6 @@
-FROM python:3.8-buster
+FROM python:3.7-stretch
 
-ENV JAVA_HOME "/usr/lib/jvm/java-11-openjdk-amd64"
+ENV JAVA_HOME "/usr/lib/jvm/java-8-openjdk-amd64"
 ENV HADOOP_HOME "/opt/hadoop"
 ENV HIVE_HOME "/opt/hive"
 
@@ -12,9 +12,9 @@ ENV PATH "${PATH}:${HIVE_HOME}/bin"
 ENV PATH "${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin"
 
 RUN mkdir -p /usr/share/man/man1 \
-    && apt-get update -q=5 \
-    && apt-get install --no-install-recommends -q=5 \
-       default-jdk \
+    && apt-get update \
+    && apt-get install --no-install-recommends --yes \
+       openjdk-8-jdk \
     && apt-get remove --purge -q=5 ${builds_deps} \
     && apt-get clean \
     && rm -rf -- /var/lib/apt/lists/*
@@ -34,10 +34,10 @@ RUN curl --continue-at - "https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apac
 RUN rm ${HIVE_HOME}/lib/guava-19.0.jar \
     && cp ${HADOOP_HOME}/share/hadoop/hdfs/lib/guava-27.0-jre.jar ${HIVE_HOME}/lib/
 
-WORKDIR ${HIVE_HOME}
+WORKDIR ${HIVE_HOME}/bin
 
-# COPY ./start-metastore.sh .
-#
-# RUN chmod +x ./start-metastore.sh
+COPY ./start-metastore.sh .
 
-ENTRYPOINT [ "bash", "-c" ]
+RUN chmod +x ./start-metastore.sh
+
+ENTRYPOINT [ "bash" ]
