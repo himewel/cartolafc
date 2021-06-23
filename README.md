@@ -1,7 +1,8 @@
 # Cartola FC reports
 
 - Hadoop Web UI: http://localhost:9870
-- Spark Web UI: http://localhost:8080
+- Spark Web UI: http://localhost:8000
+- Airflow Web UI: http://localhost:8080
 
 ## How to start
 
