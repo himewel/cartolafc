@@ -1,4 +1,11 @@
-# Cartola FC reports
+# Cartolafc reports
+
+<p>
+<img alt="Docker" src="https://img.shields.io/badge/docker-%230db7ed.svg?&style=for-the-badge&logo=docker&logoColor=white"/>
+<img alt="Apache Airflow" src="https://img.shields.io/badge/apacheairflow-%23017cee.svg?&style=for-the-badge&logo=apache-airflow&logoColor=white"/>
+<img alt="Apache Hive" src="https://img.shields.io/badge/apachehive-%23FDEE21.svg?&style=for-the-badge&logo=apache-hive&logoColor=white"/>
+<img alt="Apache Spark" src="https://img.shields.io/badge/apachespark-%23e25a1c.svg?&style=for-the-badge&logo=apache-spark&logoColor=white"/>
+</p>
 
 - Hadoop Web UI: http://localhost:9870
 - Spark Web UI: http://localhost:8000
