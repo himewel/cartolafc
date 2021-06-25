@@ -16,6 +16,7 @@ services:
             - 8080:8080
         volumes:
             - ./dags:/opt/airflow/dags:rw
+            - ./data:/opt/airflow/data:rw
             - ./include:/opt/airflow/include:rw
 
     airflow-scheduler:
@@ -28,6 +29,7 @@ services:
             - 8793:8793
         volumes:
             - ./dags:/opt/airflow/dags:rw
+            - ./data:/opt/airflow/data:rw
             - ./include:/opt/airflow/include:rw
 
     airflow-postgres:
