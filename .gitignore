@@ -1,3 +1,6 @@
+# python
+!**/__init__.py
+
 # hadoop
 hadoop/dfs/data/*
 hadoop/dfs/name/*
