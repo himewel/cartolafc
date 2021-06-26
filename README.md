@@ -11,6 +11,10 @@
 - Spark Web UI: http://localhost:8000
 - Airflow Web UI: http://localhost:8080
 
+## Data warehouse schema
+
+![Schema](./schema.png)
+
 ## How to start
 
 Each folder has a `docker-compose.yaml` file that orchestrates the containers of your respective service. So, for example, to build and get up the hadoop containers:
