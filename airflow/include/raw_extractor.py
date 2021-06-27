@@ -37,6 +37,7 @@ class RawExtractor:
         response = requests.get(self.base_url)
         blob_list = json.loads(response.text)
 
+        logging.info("Staring extraction...")
         for blob in blob_list:
             if blob["name"].endswith(".csv"):
                 normalized_name = self.normalize_filename(blob["name"])
@@ -44,11 +45,13 @@ class RawExtractor:
                 folder = f"{self.path}/{year}/{normalized_name}"
                 filename = "1.csv"
                 self.save_file(blob["download_url"], folder, filename)
-
+        logging.info("Success..")
+        
     def extract_dynamic_files(self, year):
         response = requests.get(f"{self.base_url}/{year}")
         blob_list = json.loads(response.text)
 
+        logging.info("Staring extraction...")
         for blob in blob_list:
             if blob["name"].endswith(".csv"):
                 normalized_name = self.normalize_filename(blob["name"], year)
@@ -62,6 +65,7 @@ class RawExtractor:
                 folder = f"{self.path}/{year}/{normalized_name}"
                 filename = f"{suffix}.csv"
                 self.save_file(blob["download_url"], folder, filename)
+        logging.info("Success...")
 
 
 if __name__ == '__main__':
@@ -71,5 +75,5 @@ if __name__ == '__main__':
         path=f"./data/raw",
     )
 
-    extractor.extract_static_files("2020")
-    extractor.extract_dynamic_files("2020")
+    extractor.extract_static_files("2014")
+    extractor.extract_dynamic_files("2014")
