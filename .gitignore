@@ -1,5 +1,6 @@
 # python
 !**/__init__.py
+**/.ipynb_checkpoints
 
 # hadoop
 hadoop/dfs/data/*
