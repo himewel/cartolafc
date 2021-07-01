@@ -1,4 +1,4 @@
-FROM python:3.8-buster
+FROM debian:buster-slim
 
 ENV JAVA_HOME "/usr/lib/jvm/java-11-openjdk-amd64"
 ENV HADOOP_HOME "/opt/hadoop"
@@ -11,6 +11,7 @@ RUN mkdir -p /usr/share/man/man1 \
     && apt-get update \
     && apt-get install --no-install-recommends --yes \
        default-jdk \
+       curl \
     && apt-get remove --purge --yes ${builds_deps} \
     && apt-get clean \
     && rm -rf -- /var/lib/apt/lists/*
@@ -23,7 +24,10 @@ RUN curl --continue-at - "https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop
 
 WORKDIR ${HADOOP_HOME}
 
-RUN useradd --create-home --shell /bin/bash hadoop
+RUN useradd --create-home --shell /bin/bash hadoop \
+    && mkdir --parents /hadoop/dfs/data \
+    && mkdir --parents /hadoop/dfs/name \
+    && chown -R hadoop /hadoop
 
 USER hadoop
 
