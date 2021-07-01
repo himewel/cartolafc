@@ -7,7 +7,6 @@ services:
             - 8020:8020
         volumes:
             - ./config:/etc/hadoop
-            - ./dfs/name:/hadoop/dfs/name
 
     hadoop-datanode:
         build: .
@@ -16,7 +15,6 @@ services:
             - hadoop
         volumes:
             - ./config:/etc/hadoop
-            - ./dfs/data:/hadoop/dfs/data
 
 networks:
     default:
