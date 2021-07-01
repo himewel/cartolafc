@@ -1,7 +1,7 @@
 from transformers import AbstractTransformer, Transformer2014
 
 
-class Transformer(AbstractTransformer):
+class TransformFactory(AbstractTransformer):
     def __init__(self, path, schema_path=""):
         self.transformers = {
             "2014": Transformer2014,
