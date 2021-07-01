@@ -1,352 +1,89 @@
-main:
-    atletas:
-        atletaID:
-            description: ID do atleta
-            type: int64
-        apelido:
-            description: Apelido do atleta
-            type: object
-        clubeID:
-            description: ID do clube do atleta
-            type: int64
-        posicaoID:
-            description: ID da posição do atleta
-            type: int64
-    scouts:
-        rodada:
-            description: Rodada em que o scout ocorreu
-            type: int64
-        clubeID:
-            description: ID do clube do atleta
-            type: int64
-        atletaID:
-            description: ID do atleta
-            type: int64
-        participou:
-            description: TRUE se o atleta participou do jogo, FALSE se ficou no banco
-            type: int64
-        pontos:
-            description: Pontuação do atleta nesta rodada
-            type: float64
-        pontosMedia:
-            description: Média de pontos do atleta até está rodada (inclue rodada atual)
-            type: float64
-        preco:
-            description: Preço do atleta nesta rodada
-            type: float64
-        precoVariacao:
-            description: Variação do preço da rodada passada para está
-            type: float64
-        FS:
-            description: Faltas sofridas
-            type: int64
-        PE:
-            description: Passes errados
-            type: int64
-        A:
-            description: Assistências
-            type: int64
-        FT:
-            description: Finalizações na trave
-            type: int64
-        FD:
-            description: Finalizações defendidas
-            type: int64
-        FF:
-            description: Finalizações para fora
-            type: int64
-        G:
-            description: Gols
-            type: int64
-        I:
-            description: Impedimentos
-            type: int64
-        PP:
-            description: Penaltis perdidos
-            type: int64
-        RB:
-            description: Roubadas de bola
-            type: int64
-        FC:
-            description: Faltas cometidas
-            type: int64
-        GC:
-            description: Gols contras
-            type: int64
-        CA:
-            description: Cartões Amarelos
-            type: int64
-        CV:
-            description: Cartões Vermelhos
-            type: int64
-        SG:
-            description: Jogo sem sofrer gols
-            type: int64
-        DD:
-            description: Defesas dificeis
-            type: int64
-        DP:
-            description: Defesa de penaltis
-            type: int64
-        GS:
-            description: Gols sofridos
-            type: int64
-
-"2014":
-    keys:
-        atletas: ID
-        scouts: Atleta
-    atletas:
-        ID: atletaID
-        Apelido: apelido
-        ClubeID: clubeID
-        PosicaoID: posicaoID
-    scouts:
-        Rodada: rodada
-        ClubeID: clubeID
-        ID: atletaID
-        Participou: participou
-        Pontos: pontos
-        PontosMedia: pontosMedia
-        Preco: preco
-        PrecoVariacao: precoVariacao
-        FS: FS
-        PE: PE
-        A: A
-        FT: FT
-        FD: FD
-        FF: FF
-        G: G
-        I: I
-        PP: PP
-        RB: RB
-        FC: FC
-        GC: GC
-        CA: CA
-        CV: CV
-        SG: SG
-        DD: DD
-        DP: DP
-        GS: GS
-
-"2015":
-    keys:
-        atletas: ID
-        scouts: AtletaID
-    atletas:
-        ID: atletaID
-        Apelido: apelido
-        ClubeID: clubeID
-        PosicaoID: posicaoID
-    scouts:
-        Rodada: rodada
-        ClubeID: clubeID
-        ID: atletaID
-        # Participou: participou
-        Pontos: pontos
-        PontosMedia: pontosMedia
-        Preco: preco
-        PrecoVariacao: precoVariacao
-        FS: FS
-        PE: PE
-        A: A
-        FT: FT
-        FD: FD
-        FF: FF
-        G: G
-        I: I
-        PP: PP
-        RB: RB
-        FC: FC
-        GC: GC
-        CA: CA
-        CV: CV
-        SG: SG
-        DD: DD
-        DP: DP
-        GS: GS
-
-"2016":
-    keys:
-        atletas: ID
-        scouts: AtletaID
-    atletas:
-        ID: atletaID
-        Apelido: apelido
-        ClubeID: clubeID
-        PosicaoID: posicaoID
-    scouts:
-        Rodada: rodada
-        ClubeID: clubeID
-        ID: atletaID
-        Participou: participou
-        Pontos: pontos
-        PontosMedia: pontosMedia
-        Preco: preco
-        PrecoVariacao: precoVariacao
-        FS: FS
-        PE: PE
-        A: A
-        FT: FT
-        FD: FD
-        FF: FF
-        G: G
-        I: I
-        PP: PP
-        RB: RB
-        FC: FC
-        GC: GC
-        CA: CA
-        CV: CV
-        SG: SG
-        DD: DD
-        DP: DP
-        GS: GS
-
-"2017":
-    keys:
-        atletas: AtletaID
-        scouts: atletas.atleta_id
-    atletas:
-        AtletaID: atletaID
-        Apelido: apelido
-        ClubeID: clubeID
-        PosicaoID: posicaoID
-    scouts:
-        Rodada: rodada
-        ClubeID: clubeID
-        AtletaID: atletaID
-        # Participou: participou
-        atletas.pontos_num: pontos
-        atletas.media_num: pontosMedia
-        atletas.preco_num: preco
-        atletas.variacao_num: precoVariacao
-        FS: FS
-        PE: PE
-        A: A
-        FT: FT
-        FD: FD
-        FF: FF
-        G: G
-        I: I
-        PP: PP
-        RB: RB
-        FC: FC
-        GC: GC
-        CA: CA
-        CV: CV
-        SG: SG
-        DD: DD
-        DP: DP
-        GS: GS
-
-"2018":
-    keys:
-        atletas: atletas.atleta_id
-        scouts: atletas.atleta_id
-    atletas:
-        atletas.atleta_id: atletaID
-        atletas.apelido: apelido
-        atletas.clube.id.full.name: clubeID # needs transformation
-        atletas.posicao_id: posicaoID # needs transformation
-    scouts:
-        atletas.rodada_id: rodada
-        atletas.clube_id: clubeID # needs transform
-        atletas.atleta_id: atletaID
-        # Participou: participou
-        atletas.pontos_num: pontos
-        atletas.media_num: pontosMedia
-        atletas.preco_num: preco
-        atletas.variacao_num: precoVariacao
-        FS: FS
-        PE: PE
-        A: A
-        FT: FT
-        FD: FD
-        FF: FF
-        G: G
-        I: I
-        PP: PP
-        RB: RB
-        FC: FC
-        GC: GC
-        CA: CA
-        CV: CV
-        SG: SG
-        DD: DD
-        DP: DP
-        GS: GS
-
-"2019":
-    keys:
-        atletas: atletas.atleta_id
-        scouts: atletas.atleta_id
-    atletas:
-        atletas.atleta_id: atletaID
-        atletas.apelido: apelido
-        atletas.clube.id.full.name: clubeID # needs transformation
-        atletas.posicao_id: posicaoID # needs transformation
-    scouts:
-        atletas.rodada_id: rodada
-        atletas.clube_id: clubeID # needs transform
-        atletas.atleta_id: atletaID
-        # Participou: participou
-        atletas.pontos_num: pontos
-        atletas.media_num: pontosMedia
-        atletas.preco_num: preco
-        atletas.variacao_num: precoVariacao
-        FS: FS
-        PE: PE
-        A: A
-        FT: FT
-        FD: FD
-        FF: FF
-        G: G
-        I: I
-        PP: PP
-        RB: RB
-        FC: FC
-        GC: GC
-        CA: CA
-        CV: CV
-        SG: SG
-        DD: DD
-        DP: DP
-        GS: GS
-
-"2020":
-    keys:
-        atletas: atletas.atleta_id
-        scouts: atletas.atleta_id
-    atletas:
-        atletas.atleta_id: atletaID
-        atletas.apelido: apelido
-        atletas.clube.id.full.name: clubeID # needs transformation
-        atletas.posicao_id: posicaoID # needs transformation
-    scouts:
-        atletas.rodada_id: rodada
-        atletas.clube_id: clubeID # needs transform
-        atletas.atleta_id: atletaID
-        # Participou: participou
-        atletas.pontos_num: pontos
-        atletas.media_num: pontosMedia
-        atletas.preco_num: preco
-        atletas.variacao_num: precoVariacao
-        FS: FS
-        # PE: PE
-        A: A
-        FT: FT
-        FD: FD
-        FF: FF
-        G: G
-        I: I
-        PP: PP
-        # RB: RB
-        FC: FC
-        GC: GC
-        CA: CA
-        CV: CV
-        SG: SG
-        DD: DD
-        DP: DP
-        GS: GS
+atletas:
+    atletaID:
+        description: ID do atleta
+        type: int64
+    apelido:
+        description: Apelido do atleta
+        type: object
+    clubeID:
+        description: ID do clube do atleta
+        type: int64
+    posicaoID:
+        description: ID da posição do atleta
+        type: int64
+scouts:
+    rodada:
+        description: Rodada em que o scout ocorreu
+        type: int64
+    clubeID:
+        description: ID do clube do atleta
+        type: int64
+    atletaID:
+        description: ID do atleta
+        type: int64
+    pontos:
+        description: Pontuação do atleta nesta rodada
+        type: float64
+    pontosMedia:
+        description: Média de pontos do atleta até está rodada (inclue rodada atual)
+        type: float64
+    preco:
+        description: Preço do atleta nesta rodada
+        type: float64
+    precoVariacao:
+        description: Variação do preço da rodada passada para está
+        type: float64
+    FS:
+        description: Faltas sofridas
+        type: int64
+    PE:
+        description: Passes errados
+        type: int64
+    A:
+        description: Assistências
+        type: int64
+    FT:
+        description: Finalizações na trave
+        type: int64
+    FD:
+        description: Finalizações defendidas
+        type: int64
+    FF:
+        description: Finalizações para fora
+        type: int64
+    G:
+        description: Gols
+        type: int64
+    I:
+        description: Impedimentos
+        type: int64
+    PP:
+        description: Penaltis perdidos
+        type: int64
+    RB:
+        description: Roubadas de bola
+        type: int64
+    FC:
+        description: Faltas cometidas
+        type: int64
+    GC:
+        description: Gols contras
+        type: int64
+    CA:
+        description: Cartões Amarelos
+        type: int64
+    CV:
+        description: Cartões Vermelhos
+        type: int64
+    SG:
+        description: Jogo sem sofrer gols
+        type: int64
+    DD:
+        description: Defesas dificeis
+        type: int64
+    DP:
+        description: Defesa de penaltis
+        type: int64
+    GS:
+        description: Gols sofridos
+        type: int64
