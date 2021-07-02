@@ -34,10 +34,10 @@ partidas:
     clubeVisitanteID:
         description: ID do clube visitante
         type: object
-    placarMandante:
+    mandantePlacar:
         description: Placar do clube mandante
         type: int64
-    placarVisistante:
+    visitantePlacar:
         description: Placar do clube visitante
         type: int64
     resultado:
@@ -125,13 +125,13 @@ scouts:
         type: float64
     SG:
         description: Jogo sem sofrer gols
-        type: float
+        type: float64
     DD:
         description: Defesas dificeis
-        type: float
+        type: float64
     DP:
         description: Defesa de penaltis
-        type: float
+        type: float64
     GS:
         description: Gols sofridos
-        type: float
+        type: float64
