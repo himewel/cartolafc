@@ -8,7 +8,7 @@ from . import AbstractTransformer
 
 class Transformer2019(AbstractTransformer):
     def get_scouts(self):
-        file_list = glob(f"{self.path}/2019/rodada/*.csv")
+        file_list = glob(f"{self.input_path}/2019/rodada/*.csv")
         scouts_df = pd.DataFrame()
         for file in file_list:
             tmp_df = pd.read_csv(file)
@@ -44,7 +44,7 @@ class Transformer2019(AbstractTransformer):
         return scouts_df
 
     def get_partidas(self):
-        partidas_df = pd.read_csv(f"{self.path}/2019/partidas/1.csv")
+        partidas_df = pd.read_csv(f"{self.input_path}/2019/partidas/1.csv")
         partidas_df.rename(
             columns={
                 "home_team": "clubeMandanteID",
@@ -71,7 +71,7 @@ class Transformer2019(AbstractTransformer):
         return partidas_df
 
     def get_atletas(self):
-        file_list = glob(f"{self.path}/2019/rodada/*.csv")
+        file_list = glob(f"{self.input_path}/2019/rodada/*.csv")
         atletas_df = pd.DataFrame()
         for file in file_list:
             tmp_df = pd.read_csv(file)
@@ -99,7 +99,7 @@ class Transformer2019(AbstractTransformer):
         return atletas_df
 
     def get_clubes(self):
-        clubes_df = pd.read_csv(f"{self.path}/2019/times_ids/1.csv")
+        clubes_df = pd.read_csv(f"{self.input_path}/2019/times_ids/1.csv")
         clubes_df = (
             clubes_df[["id", "nome.cbf", "abreviacao"]]
             .rename(columns={"id": "clubeID", "nome.cbf": "nome"})
@@ -108,7 +108,7 @@ class Transformer2019(AbstractTransformer):
         return clubes_df
 
     def get_posicoes(self):
-        posicoes_df = pd.read_csv(f"{self.path}/2019/posicoes_ids/1.csv")
+        posicoes_df = pd.read_csv(f"{self.input_path}/2019/posicoes_ids/1.csv")
         posicoes_df.rename(
             columns={
                 "Cod": "posicaoID",

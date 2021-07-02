@@ -11,7 +11,8 @@ from transformers import (
 
 
 class TransformFactory(AbstractTransformer):
-    def __init__(self, path, schema_path=""):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.transformers = {
             "2014": Transformer2014,
             "2015": Transformer2015,
@@ -21,10 +22,9 @@ class TransformFactory(AbstractTransformer):
             "2019": Transformer2019,
             "2020": Transformer2020,
         }
-        super().__init__(path, schema_path)
 
     def get_scouts(self, year):
-        transformer = self.transformers[year](path=self.path)
+        transformer = self.transformers[year](self.input_path)
         scouts_df = transformer.get_scouts()
         self.write_parquet(
             df=scouts_df,
@@ -33,7 +33,7 @@ class TransformFactory(AbstractTransformer):
         )
 
     def get_partidas(self, year):
-        transformer = self.transformers[year](path=self.path)
+        transformer = self.transformers[year](self.input_path)
         partidas_df = transformer.get_partidas()
         self.write_parquet(
             df=partidas_df,
@@ -42,7 +42,7 @@ class TransformFactory(AbstractTransformer):
         )
 
     def get_atletas(self, year):
-        transformer = self.transformers[year](path=self.path)
+        transformer = self.transformers[year](self.input_path)
         atletas_df = transformer.get_atletas()
         self.write_parquet(
             df=atletas_df,
@@ -51,26 +51,26 @@ class TransformFactory(AbstractTransformer):
         )
 
     def get_clubes(self, year):
-        transformer = self.transformers[year](path=self.path)
+        transformer = self.transformers[year](self.input_path)
         clubes_df = transformer.get_clubes()
         self.write_parquet(
             df=clubes_df,
             schema="clubes",
-            partition_by=year,
+            partition_by=None,
         )
 
     def get_posicoes(self, year):
-        transformer = self.transformers[year](path=self.path)
+        transformer = self.transformers[year](self.input_path)
         posicoes_df = transformer.get_posicoes()
         self.write_parquet(
             df=posicoes_df,
             schema="posicoes",
-            partition_by=year,
+            partition_by=None,
         )
 
 
 if __name__ == '__main__':
-    transformer = TransformFactory(path="./data/raw")
+    transformer = TransformFactory(input_path="./data/raw")
     transformer.get_scouts("2020")
     transformer.get_partidas("2020")
     transformer.get_atletas("2020")

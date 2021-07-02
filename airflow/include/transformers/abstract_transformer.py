@@ -4,8 +4,9 @@ import yaml
 
 
 class AbstractTransformer(ABC):
-    def __init__(self, path, schema_path=""):
-        self.path = path
+    def __init__(self, input_path, output_path="", schema_path=""):
+        self.input_path = input_path
+        self.output_path = output_path
         self.schema = {}
 
         if schema_path:
@@ -18,7 +19,7 @@ class AbstractTransformer(ABC):
             df[column] = df[column].astype(dtype)
 
         df.to_parquet(
-            path=f"{self.path}/{schema}/{year}.parquet",
+            path=f"{self.output_path}/{schema}/{year}.parquet",
             index=False,
         )
 
