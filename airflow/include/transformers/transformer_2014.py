@@ -103,7 +103,7 @@ class Transformer2014(AbstractTransformer):
         )
         return clubes_df
 
-    def get_posicoes(self, **kwargs):
+    def get_posicoes(self):
         posicoes_df = pd.read_csv(f"{self.path}/2014/posicoes_ids/1.csv")
         posicoes_df.rename(
             columns={
