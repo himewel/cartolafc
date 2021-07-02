@@ -2,19 +2,19 @@ atletas:
     atletaID:
         description: ID do atleta
         type: int64
+    clubeID:
+        description: ID do clube do atleta
+        type: int64
     apelido:
         description: Apelido do atleta
-        type: object
-    clubeID:
-        description: UUID do clube do atleta
         type: object
     posicaoID:
         description: ID da posição do atleta
         type: int64
 clubes:
     clubeID:
-        description: UUID do clube
-        type: object
+        description: ID do clube
+        type: int64
     nome:
         description: Nome do clube
         type: object
@@ -61,11 +61,11 @@ scouts:
         description: ID do atleta
         type: int64
     partidaID:
-        description: ID do atleta
+        description: UUID do atleta
         type: object
     clubeID:
-        description: UUID do clube do atleta
-        type: object
+        description: ID do clube do atleta
+        type: int64
     rodada:
         description: Rodada em que o scout ocorreu
         type: int64
