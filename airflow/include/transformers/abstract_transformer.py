@@ -17,11 +17,14 @@ class AbstractTransformer(ABC):
     def write_parquet(self, df, schema, partition_by):
         partition_by = partition_by or "1"
         for column, properties in self.schema[schema].items():
-            df[column] = df[column].astype(properties['type'])
             if properties['type'] in ["int64", "float64"]:
                 df[column].fillna(0, inplace=True)
-            else:
+
+            df[column] = df[column].astype(properties['type'])
+
+            if properties['type'] in ["str"]:
                 df[column].fillna("INDEFINIDO", inplace=True)
+
         df = df[list(self.schema[schema].keys())]
 
         os.makedirs(f"{self.output_path}/{schema}", exist_ok=True)
