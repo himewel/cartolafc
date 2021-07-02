@@ -46,7 +46,7 @@ class RawExtractor:
                 filename = "1.csv"
                 self.save_file(blob["download_url"], folder, filename)
         logging.info("Success..")
-        
+
     def extract_dynamic_files(self, year):
         response = requests.get(f"{self.base_url}/{year}")
         blob_list = json.loads(response.text)
@@ -66,14 +66,3 @@ class RawExtractor:
                 filename = f"{suffix}.csv"
                 self.save_file(blob["download_url"], folder, filename)
         logging.info("Success...")
-
-
-if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
-    extractor = RawExtractor(
-        base_url="https://api.github.com/repos/henriquepgomide/caRtola/contents/data",
-        path=f"./data/raw",
-    )
-
-    extractor.extract_static_files("2014")
-    extractor.extract_dynamic_files("2014")

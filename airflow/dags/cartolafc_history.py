@@ -29,7 +29,7 @@ with DAG(
     default_args=default_args,
     max_active_runs=1,
 ) as dag:
-    extractor = RawExtractor(base_url=_API_URL, path=_DATA_PATH)
+    extractor = RawExtractor(base_url=_API_URL, path=_RAW_PATH)
     transformer = TransformFactory(
         input_path=_RAW_PATH,
         output_path=_TRUSTED_PATH,
