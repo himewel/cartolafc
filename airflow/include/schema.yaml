@@ -66,9 +66,6 @@ scouts:
     clubeID:
         description: ID do clube do atleta
         type: int64
-    rodada:
-        description: Rodada em que o scout ocorreu
-        type: int64
     pontos:
         description: Pontuação do atleta nesta rodada
         type: float64
