@@ -6,20 +6,68 @@ atletas:
         description: Apelido do atleta
         type: object
     clubeID:
-        description: ID do clube do atleta
-        type: int64
+        description: UUID do clube do atleta
+        type: object
     posicaoID:
         description: ID da posição do atleta
         type: int64
-scouts:
-    rodada:
-        description: Rodada em que o scout ocorreu
-        type: int64
+clubes:
     clubeID:
-        description: ID do clube do atleta
+        description: UUID do clube
+        type: object
+    nome:
+        description: Nome do clube
+        type: object
+    abreviacao:
+        description: Abreviação do clube
+        type: object
+partidas:
+    partidaID:
+        description: UUID da partida
+        type: object
+    rodada:
+        description: Rodada em que a partida ocorreu
         type: int64
+    clubeMandanteID:
+        description: ID do clube mandante
+        type: object
+    clubeVisitanteID:
+        description: ID do clube visitante
+        type: object
+    placarMandante:
+        description: Placar do clube mandante
+        type: int64
+    placarVisistante:
+        description: Placar do clube visitante
+        type: int64
+    resultado:
+        description: Resultado final da partida ["Casa", "Visitante", "Empate"]
+        type: object
+    temporada:
+        description: Temporada da partida
+        type: int64
+posicoes:
+    posicaoID:
+        description: ID da posição
+        type: int64
+    nome:
+        description: Nome da posição
+        type: object
+    abreviacao:
+        description: Abreviação da posição
+        type: object
+scouts:
     atletaID:
         description: ID do atleta
+        type: int64
+    partidaID:
+        description: ID do atleta
+        type: object
+    clubeID:
+        description: UUID do clube do atleta
+        type: object
+    rodada:
+        description: Rodada em que o scout ocorreu
         type: int64
     pontos:
         description: Pontuação do atleta nesta rodada
@@ -35,55 +83,55 @@ scouts:
         type: float64
     FS:
         description: Faltas sofridas
-        type: int64
+        type: float64
     PE:
         description: Passes errados
-        type: int64
+        type: float64
     A:
         description: Assistências
-        type: int64
+        type: float64
     FT:
         description: Finalizações na trave
-        type: int64
+        type: float64
     FD:
         description: Finalizações defendidas
-        type: int64
+        type: float64
     FF:
         description: Finalizações para fora
-        type: int64
+        type: float64
     G:
         description: Gols
-        type: int64
+        type: float64
     I:
         description: Impedimentos
-        type: int64
+        type: float64
     PP:
         description: Penaltis perdidos
-        type: int64
+        type: float64
     RB:
         description: Roubadas de bola
-        type: int64
+        type: float64
     FC:
         description: Faltas cometidas
-        type: int64
+        type: float64
     GC:
         description: Gols contras
-        type: int64
+        type: float64
     CA:
         description: Cartões Amarelos
-        type: int64
+        type: float64
     CV:
         description: Cartões Vermelhos
-        type: int64
+        type: float64
     SG:
         description: Jogo sem sofrer gols
-        type: int64
+        type: float
     DD:
         description: Defesas dificeis
-        type: int64
+        type: float
     DP:
         description: Defesa de penaltis
-        type: int64
+        type: float
     GS:
         description: Gols sofridos
-        type: int64
+        type: float
