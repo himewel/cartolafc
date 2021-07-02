@@ -5,17 +5,11 @@ services:
         ports:
             - 9870:9870
             - 8020:8020
-        volumes:
-            - ./config:/etc/hadoop
-
     hadoop-datanode:
         build: .
         command: hdfs datanode
         depends_on:
             - hadoop
-        volumes:
-            - ./config:/etc/hadoop
-
 networks:
     default:
         external: true
