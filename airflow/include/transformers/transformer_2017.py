@@ -105,7 +105,7 @@ class Transformer2017(AbstractTransformer):
             .drop_duplicates()
         )
 
-        atletas_df = pd.read_csv(f"{self.path}/2016/jogadores/1.csv")
+        atletas_df = pd.read_csv(f"{self.path}/2017/jogadores/1.csv")
         atletas_df = atletas_df.merge(
             right=clubes_df,
             left_on="ClubeID",
@@ -123,7 +123,7 @@ class Transformer2017(AbstractTransformer):
         return atletas_df
 
     def get_clubes(self):
-        clubes_df = pd.read_csv(f"{self.path}/2016/times_ids/1.csv")
+        clubes_df = pd.read_csv(f"{self.path}/2017/times_ids/1.csv")
         clubes_df = (
             clubes_df[["id", "nome.cbf", "abreviacao"]]
             .rename(columns={"id": "clubeID", "nome.cbf": "nome"})
@@ -132,7 +132,7 @@ class Transformer2017(AbstractTransformer):
         return clubes_df
 
     def get_posicoes(self):
-        posicoes_df = pd.read_csv(f"{self.path}/2016/posicoes_ids/1.csv")
+        posicoes_df = pd.read_csv(f"{self.path}/2017/posicoes_ids/1.csv")
         posicoes_df.rename(
             columns={
                 "Cod": "posicaoID",
