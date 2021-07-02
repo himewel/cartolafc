@@ -67,16 +67,3 @@ class TransformFactory(AbstractTransformer):
             schema="posicoes",
             partition_by=None,
         )
-
-
-if __name__ == '__main__':
-    transformer = TransformFactory(
-        input_path="./data/raw",
-        output_path="./data/trusted",
-        schema_path="./include/schema.yaml",
-    )
-    transformer.get_scouts("2018")
-    transformer.get_partidas("2018")
-    transformer.get_atletas("2018")
-    transformer.get_clubes("2018")
-    transformer.get_posicoes("2018")
