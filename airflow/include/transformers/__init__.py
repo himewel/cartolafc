@@ -6,3 +6,4 @@ from .transformer_2016 import Transformer2016
 from .transformer_2017 import Transformer2017
 from .transformer_2018 import Transformer2018
 from .transformer_2019 import Transformer2019
+from .transformer_2020 import Transformer2020
