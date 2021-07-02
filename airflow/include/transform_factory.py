@@ -3,6 +3,7 @@ from transformers import (
     Transformer2014,
     Transformer2015,
     Transformer2016,
+    Transformer2017,
 )
 
 
@@ -12,6 +13,7 @@ class TransformFactory(AbstractTransformer):
             "2014": Transformer2014,
             "2015": Transformer2015,
             "2016": Transformer2016,
+            "2017": Transformer2017,
         }
         super().__init__(path, schema_path)
 
@@ -63,8 +65,8 @@ class TransformFactory(AbstractTransformer):
 
 if __name__ == '__main__':
     transformer = TransformFactory(path="./data/raw")
-    transformer.get_scouts("2016")
-    transformer.get_partidas("2016")
-    transformer.get_atletas("2016")
-    transformer.get_clubes("2016")
-    transformer.get_posicoes("2016")
+    transformer.get_scouts("2017")
+    transformer.get_partidas("2017")
+    transformer.get_atletas("2017")
+    transformer.get_clubes("2017")
+    transformer.get_posicoes("2017")
