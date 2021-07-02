@@ -70,9 +70,13 @@ class TransformFactory(AbstractTransformer):
 
 
 if __name__ == '__main__':
-    transformer = TransformFactory(input_path="./data/raw")
-    transformer.get_scouts("2020")
-    transformer.get_partidas("2020")
-    transformer.get_atletas("2020")
-    transformer.get_clubes("2020")
-    transformer.get_posicoes("2020")
+    transformer = TransformFactory(
+        input_path="./data/raw",
+        output_path="./data/trusted",
+        schema_path="./include/schema.yaml",
+    )
+    transformer.get_scouts("2018")
+    transformer.get_partidas("2018")
+    transformer.get_atletas("2018")
+    transformer.get_clubes("2018")
+    transformer.get_posicoes("2018")
