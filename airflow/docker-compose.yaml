@@ -15,9 +15,9 @@ services:
         ports:
             - 8080:8080
         volumes:
-            - ./dags:/opt/airflow/dags:rw
-            - ./data:/opt/airflow/data:rw
-            - ./include:/opt/airflow/include:rw
+            - ./dags:/opt/airflow/dags
+            - ./data:/opt/airflow/data
+            - ./include:/opt/airflow/include
 
     airflow-scheduler:
         build: .
@@ -28,9 +28,9 @@ services:
         ports:
             - 8793:8793
         volumes:
-            - ./dags:/opt/airflow/dags:rw
-            - ./data:/opt/airflow/data:rw
-            - ./include:/opt/airflow/include:rw
+            - ./dags:/opt/airflow/dags
+            - ./data:/opt/airflow/data
+            - ./include:/opt/airflow/include
 
     airflow-postgres:
         image: postgres:13-alpine
@@ -38,3 +38,8 @@ services:
             POSTGRES_USER: airflow
             POSTGRES_PASSWORD: airflow
             POSTGRES_DB: airflow
+
+networks:
+    default:
+        external: true
+        name: cartolafc
