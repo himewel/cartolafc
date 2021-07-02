@@ -1,9 +1,14 @@
 # python
 !**/__init__.py
 **/.ipynb_checkpoints
+venv/*
 
 # hadoop
 hadoop/dfs/data/*
 hadoop/dfs/name/*
 !hadoop/dfs/data/.gitkeep
 !hadoop/dfs/name/.gitkeep
+
+# data files
+**/*.csv
+**/*.parquet
