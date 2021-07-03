@@ -7,36 +7,24 @@
 <img alt="Apache Spark" src="https://img.shields.io/badge/apachespark-%23e25a1c.svg?&style=for-the-badge&logo=apache-spark&logoColor=white"/>
 </p>
 
-- Hadoop Web UI: http://localhost:9870
-- Spark Web UI: http://localhost:8000
-- Airflow Web UI: http://localhost:8080
+Thi project aims to build and structure a data lake and data warehouse based on the data extracted from Cartola FC (a game about the Brazilian national football championship). The current data warehouse schema and dag diagram are presented next:
 
-## Data warehouse schema
+<p align="center">
+<img alt="Database schema" src="./schema.png"/>
+</p>
 
-![Schema](./schema.png)
+<p align="center">
+<img alt="Airflow DAG" src="./dag.png"/>
+</p>
 
 ## How to start
 
-Each folder has a `docker-compose.yaml` file that orchestrates the containers of your respective service. So, for example, to build and get up the hadoop containers:
+The base of components of the project is orchestrated at the `docker-compose.yaml` in the root level of the project. While some components are still not integrated, they have their own `docker-compose.yaml` located at each component folder. At the root level, hadoop and airflow are integrated. So, to setup the base project run the following:
 
 ```shell
-docker-compose \
-    --file hadoop/docker-compose.yaml \
-    up --detach    
+docker-compose up --detach
 ```
 
-At the same model, to get up the spark containers (hadoop its a dependencie) run:
-
-```shell
-docker-compose \
-    --file spark/docker-compose.yaml \
-    up --detach    
-```
-
-Finally, to get up the hive containers (again, hadoop its a dependencie) run:
-
-```shell
-docker-compose \
-    --file hive/docker-compose.yaml \
-    up --detach    
-```
+Then, the containers of hadoop namenode and datanode, airflow scheduler, webserver and postgres will start. After some moments to start the services, you can check the web interfaces:
+- Hadoop Web UI: http://localhost:9870
+- Airflow Web UI: http://localhost:8080
