@@ -25,7 +25,7 @@ default_args = {
 with DAG(
     dag_id="cartolafc_history",
     schedule_interval="@yearly",
-    start_date=datetime(2015, 1, 1),
+    start_date=datetime(2014, 1, 1),
     default_args=default_args,
     max_active_runs=1,
 ) as dag:
