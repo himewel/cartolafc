@@ -10,7 +10,7 @@ services:
         build: airflow
         command: ./wait-for-it.sh airflow-postgres:5432 -t 60 -- bash ./scripts/start-webserver.sh
         depends_on:
-            - airflow-postgres
+            - airflow_postgres
         environment: *airflow-environment
         ports:
             - 8080:8080
@@ -24,7 +24,7 @@ services:
         build: airflow
         command: ./wait-for-it.sh airflow-webserver:8080 -t 60 -- bash ./scripts/start-scheduler.sh
         depends_on:
-            - airflow-webserver
+            - airflow_webserver
         environment: *airflow-environment
         ports:
             - 8793:8793
