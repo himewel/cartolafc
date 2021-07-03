@@ -13,10 +13,8 @@ _DATA_PATH = f"{_AIRFLOW_HOME}/data"
 _RAW_PATH = f"{_DATA_PATH}/raw"
 _TRUSTED_PATH = f"{_DATA_PATH}/trusted"
 _SCHEMA_PATH = f"{_AIRFLOW_HOME}/include/schema.yaml"
-_SCRIPTS_PATH = f"{_AIRFLOW_HOME}/include/scripts"
 
 _API_URL = "https://api.github.com/repos/henriquepgomide/caRtola/contents/data"
-_TABLES = ["scouts", "partidas", "atletas", "clubes", "posicoes"]
 
 default_args = {
     "depends_on_past": True,
@@ -36,7 +34,7 @@ with DAG(
         schema_path=_SCHEMA_PATH,
     )
 
-    table_schema = {
+    transform_methods = {
         "scouts": transformer.get_scouts,
         "partidas": transformer.get_partidas,
         "atletas": transformer.get_atletas,
@@ -60,8 +58,7 @@ with DAG(
 
     raw_upload_task = BashOperator(
         task_id="raw_upload",
-        bash_command="bash {scripts_path}/hdfs_upload.sh {raw_path}/{year} /raw".format(
-            scripts_path=_SCRIPTS_PATH,
+        bash_command="hdfs dfs -put {raw_path}/{year} /raw".format(
             raw_path=_RAW_PATH,
             year="{{ execution_date.year }}",
         ),
@@ -70,7 +67,7 @@ with DAG(
     extraction_tasks_list >> raw_upload_task
 
     transform_tasks_list = []
-    for table_name, transform_method in table_schema.items():
+    for table_name, transform_method in transform_methods.items():
         transform_task = PythonOperator(
             task_id=f"transform_{table_name}",
             python_callable=transform_method,
@@ -82,10 +79,7 @@ with DAG(
 
     trusted_upload_task = BashOperator(
         task_id="trusted_upload",
-        bash_command="bash {scripts_path}/hdfs_upload.sh {trusted_path} /trusted".format(
-            scripts_path=_SCRIPTS_PATH,
-            trusted_path=_TRUSTED_PATH,
-        ),
+        bash_command=f"hdfs dfs -put {_TRUSTED_PATH} /trusted",
     )
 
     transform_tasks_list >> trusted_upload_task

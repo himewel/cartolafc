@@ -5,6 +5,7 @@ ARG GROUP_ID=1000
 
 ENV JAVA_HOME "/usr/lib/jvm/java-11-openjdk-amd64"
 ENV HADOOP_HOME "/opt/hadoop"
+ENV HADOOP_CONF_DIR "/etc/hadoop"
 ENV PATH "${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin"
 ENV PYTHONPATH "${PYTHONPATH}:${AIRFLOW_HOME}/include"
 
