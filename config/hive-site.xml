@@ -3,7 +3,7 @@
 <configuration>
     <property>
         <name>javax.jdo.option.ConnectionURL</name>
-        <value>jdbc:postgresql://hive-postgresql/hive</value>
+        <value>jdbc:postgresql://hive_postgresql:5432/hive</value>
     </property>
     <property>
         <name>javax.jdo.option.ConnectionDriverName</name>
@@ -19,10 +19,18 @@
     </property>
     <property>
         <name>datanucleus.autoCreateSchema</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>metastore.uris</name>
+        <value>thrift://hive_metastore:9083</value>
+    </property>
+    <property>
+        <name>metastore.schema.verification</name>
         <value>false</value>
     </property>
     <property>
-        <name>hive.metastore.uris</name>
-        <value>thrift://hive-metastore:9083</value>
+        <name>root.logger</name>
+        <value>DEBUG,DRFA</value>
     </property>
 </configuration>

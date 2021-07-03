@@ -56,3 +56,33 @@ services:
             - hadoop
         volumes:
             - ./config:/etc/hadoop
+
+    hive:
+        build: hive
+        command: hive --service hiveserver2
+        depends_on:
+            - hive_postgresql
+            - hive_metastore
+            - hadoop_datanode
+        ports:
+            - 10000:10000
+        volumes:
+            - ./config:/etc/hive
+
+    hive_metastore:
+        build: hive
+        command: ./start-metastore.sh
+        depends_on:
+            - hive_postgresql
+            - hadoop_datanode
+        ports:
+            - 9083:9083
+        volumes:
+            - ./config:/etc/hive
+
+    hive_postgresql:
+        image: postgres:13-alpine
+        environment:
+            POSTGRES_USER: hive
+            POSTGRES_PASSWORD: hive
+            POSTGRES_DB: hive
