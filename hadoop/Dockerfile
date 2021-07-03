@@ -23,8 +23,6 @@ RUN apk add --no-cache \
     && mkdir --parents /hadoop/dfs/name \
     && chown --recursive hadoop /hadoop
 
-COPY config ${HADOOP_CONF_DIR}
-
 WORKDIR ${HADOOP_HOME}
 
 USER hadoop
