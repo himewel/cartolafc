@@ -1,8 +1,10 @@
-FROM python:3.7-stretch
+FROM alpine:3.14
 
-ENV JAVA_HOME "/usr/lib/jvm/java-8-openjdk-amd64"
+ENV JAVA_HOME "/usr/lib/jvm/default-jvm"
 ENV HADOOP_HOME "/opt/hadoop"
 ENV HIVE_HOME "/opt/hive"
+ENV LD_LIBRARY_PATH "${HADOOP_HOME}/lib/native/:${LD_LIBRARY_PATH}"
+ENV HADOOP_OPTS "-Djava.library.path=${HADOOP_HOME}/lib"
 
 ENV HADOOP_CONF_DIR "/etc/hive"
 ENV HIVE_CONF_DIR "/etc/hive"
@@ -11,13 +13,10 @@ ENV PATH "${PATH}:${JAVA_HOME}/bin"
 ENV PATH "${PATH}:${HIVE_HOME}/bin"
 ENV PATH "${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin"
 
-RUN mkdir -p /usr/share/man/man1 \
-    && apt-get update \
-    && apt-get install --no-install-recommends --yes \
-       openjdk-8-jdk \
-    && apt-get remove --purge -q=5 ${builds_deps} \
-    && apt-get clean \
-    && rm -rf -- /var/lib/apt/lists/*
+RUN apk add --no-cache \
+        bash \
+        curl \
+        openjdk8
 
 RUN curl --continue-at - "https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.2.2/hadoop-3.2.2.tar.gz" \
         -o ./hadoop-3.2.2.tar.gz \
@@ -29,9 +28,8 @@ RUN curl --continue-at - "https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apac
         -o ./apache-hive-3.1.2-bin.tar.gz \
     && tar -xf apache-hive-3.1.2-bin.tar.gz \
     && rm -rf apache-hive-3.1.2-bin.tar.gz \
-    && mv apache-hive-3.1.2-bin ${HIVE_HOME}
-
-RUN rm ${HIVE_HOME}/lib/guava-19.0.jar \
+    && mv apache-hive-3.1.2-bin ${HIVE_HOME} \
+    && rm ${HIVE_HOME}/lib/guava-19.0.jar \
     && cp ${HADOOP_HOME}/share/hadoop/hdfs/lib/guava-27.0-jre.jar ${HIVE_HOME}/lib/
 
 WORKDIR ${HIVE_HOME}/bin
