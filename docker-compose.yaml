@@ -3,12 +3,12 @@ version: '3.7'
 x-airflow-environment: &airflow-environment
     - AIRFLOW__CORE__EXECUTOR=LocalExecutor
     - AIRFLOW__CORE__LOAD_EXAMPLES=False
-    - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@airflow-postgres:5432/airflow
+    - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@airflow_postgres:5432/airflow
 
 services:
     airflow_webserver:
         build: airflow
-        command: ./wait-for-it.sh airflow-postgres:5432 -t 60 -- bash ./scripts/start-webserver.sh
+        command: ./wait-for-it.sh airflow_postgres:5432 -t 60 -- bash ./scripts/start-webserver.sh
         depends_on:
             - airflow_postgres
         environment: *airflow-environment
@@ -22,7 +22,7 @@ services:
 
     airflow_scheduler:
         build: airflow
-        command: ./wait-for-it.sh airflow-webserver:8080 -t 60 -- bash ./scripts/start-scheduler.sh
+        command: ./wait-for-it.sh airflow_webserver:8080 -t 60 -- bash ./scripts/start-scheduler.sh
         depends_on:
             - airflow_webserver
         environment: *airflow-environment
