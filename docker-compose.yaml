@@ -1,0 +1,58 @@
+version: '3.7'
+
+x-airflow-environment: &airflow-environment
+    - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+    - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@airflow-postgres:5432/airflow
+
+services:
+    airflow_webserver:
+        build: airflow
+        command: ./wait-for-it.sh airflow-postgres:5432 -t 60 -- bash ./scripts/start-webserver.sh
+        depends_on:
+            - airflow-postgres
+        environment: *airflow-environment
+        ports:
+            - 8080:8080
+        volumes:
+            - ./airflow/dags:/opt/airflow/dags
+            - ./airflow/data:/opt/airflow/data
+            - ./airflow/include:/opt/airflow/include
+            - ./config:/etc/hadoop
+
+    airflow_scheduler:
+        build: airflow
+        command: ./wait-for-it.sh airflow-webserver:8080 -t 60 -- bash ./scripts/start-scheduler.sh
+        depends_on:
+            - airflow-webserver
+        environment: *airflow-environment
+        ports:
+            - 8793:8793
+        volumes:
+            - ./airflow/dags:/opt/airflow/dags
+            - ./airflow/data:/opt/airflow/data
+            - ./airflow/include:/opt/airflow/include
+            - ./config:/etc/hadoop
+
+    airflow_postgres:
+        image: postgres:13-alpine
+        environment:
+            POSTGRES_USER: airflow
+            POSTGRES_PASSWORD: airflow
+            POSTGRES_DB: airflow
+
+    hadoop:
+        build: hadoop
+        ports:
+            - 9870:9870
+            - 8020:8020
+        volumes:
+            - ./config:/etc/hadoop
+
+    hadoop_datanode:
+        build: hadoop
+        command: hdfs datanode
+        depends_on:
+            - hadoop
+        volumes:
+            - ./config:/etc/hadoop
