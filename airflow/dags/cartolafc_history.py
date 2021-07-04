@@ -11,11 +11,16 @@ from include import RawExtractor, TransformFactory
 _AIRFLOW_HOME = os.getenv("AIRFLOW_HOME", ".")
 
 _DATA_PATH = f"{_AIRFLOW_HOME}/data"
+_INCLUDE_PATH = f"{_AIRFLOW_HOME}/include"
+
 _RAW_PATH = f"{_DATA_PATH}/raw"
 _TRUSTED_PATH = f"{_DATA_PATH}/trusted"
-_SCHEMA_PATH = f"{_AIRFLOW_HOME}/include/schema.yaml"
 
 _API_URL = "https://api.github.com/repos/henriquepgomide/caRtola/contents/data"
+
+_SCHEMA_PATH = f"{_INCLUDE_PATH}/schema.yaml"
+_CREATE_EXTERNAL_TABLES = open(f"{_INCLUDE_PATH}/hql/create_external_tables.hql")
+_CREATE_TABLES = open(f"{_INCLUDE_PATH}/hql/create_memory_tables.hql")
 
 default_args = {
     "depends_on_past": True,
@@ -48,6 +53,18 @@ with DAG(
         bash_command="hdfs dfs -mkdir -p /raw /trusted",
     )
 
+    create_external_tables_task = HiveOperator(
+        task_id=f"create_hive_external_tables",
+        hql=_CREATE_EXTERNAL_TABLES.read(),
+    )
+
+    create_tables_task = HiveOperator(
+        task_id=f"create_hive_tables",
+        hql=_CREATE_TABLES.read(),
+    )
+
+    create_folders_task >> create_external_tables_task >> create_tables_task
+
     extract_dynamic_task = PythonOperator(
         task_id="extract_dynamic",
         python_callable=extractor.extract_dynamic_files,
@@ -70,7 +87,7 @@ with DAG(
         ),
     )
 
-    create_folders_task >> extraction_tasks_list >> raw_upload_task
+    create_tables_task >> extraction_tasks_list >> raw_upload_task
 
     transform_tasks_list = []
     upload_tasks_list = []
@@ -93,30 +110,14 @@ with DAG(
         update_table_task = HiveOperator(
             task_id=f"update_hive_{table_name}",
             hql=f"""
+                TRUNCATE TABLE {table_name};
                 INSERT INTO {table_name}
                 SELECT * FROM external_{table_name};
             """,
         )
 
-        transform_task >> trusted_upload_task
+        transform_task >> trusted_upload_task >> update_table_task
 
         transform_tasks_list.append(transform_task)
-        upload_tasks_list.append(trusted_upload_task)
-        update_tasks_list.append(update_table_task)
 
     raw_upload_task >> transform_tasks_list
-
-    create_external_tables_task = HiveOperator(
-        task_id=f"create_hive_external_tables",
-        hql=f"{_AIRFLOW_HOME}/include/hql/create_external_tables.hql ",
-        hive_cli_conn_id="hiveserver2_default",
-    )
-
-    create_tables_task = HiveOperator(
-        task_id=f"create_hive_tables",
-        hql=f"{_AIRFLOW_HOME}/include/hql/create_hive_tables.hql ",
-        hive_cli_conn_id="hiveserver2_default",
-    )
-
-    upload_tasks_list >> create_external_tables_task
-    create_external_tables_task >> create_tables_task >> update_tasks_list
