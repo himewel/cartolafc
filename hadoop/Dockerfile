@@ -11,10 +11,9 @@ ENV PATH "${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin"
 
 RUN apk add --no-cache \
         bash \
-        curl \
+        gcompat \
         openjdk11 \
-    && curl --continue-at - "https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.2.2/hadoop-3.2.2.tar.gz" \
-        -o ./hadoop-3.2.2.tar.gz \
+    && wget -q https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.2.2/hadoop-3.2.2.tar.gz \
     && tar -xf hadoop-3.2.2.tar.gz \
     && rm -rf hadoop-3.2.2.tar.gz \
     && mv hadoop-3.2.2 ${HADOOP_HOME} \
@@ -29,5 +28,5 @@ USER hadoop
 
 COPY start.sh .
 
-ENTRYPOINT [ "/bin/bash" ]
+ENTRYPOINT [ "bash" ]
 CMD ["./start.sh"]
