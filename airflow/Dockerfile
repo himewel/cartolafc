@@ -12,7 +12,10 @@ ENV PYTHONPATH "${PYTHONPATH}:${AIRFLOW_HOME}/include"
 USER root
 
 RUN apt-get update \
-    && apt-get install default-jdk --no-install-recommends --yes \
+    && apt-get install --no-install-recommends --yes \
+        default-jdk \
+        libsasl2-dev \
+        build-essential \
     && apt-get clean \
     && rm -rf -- /var/lib/apt/lists/* \
     && curl --continue-at - "https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.2.2/hadoop-3.2.2.tar.gz" \
@@ -30,5 +33,7 @@ RUN curl -O https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-
     && chown --recursive airflow ${AIRFLOW_HOME}
 
 USER airflow
+
+RUN pip install apache-airflow-providers-apache-hive
 
 ENTRYPOINT [ "/bin/bash" ]
