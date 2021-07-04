@@ -109,11 +109,13 @@ with DAG(
     create_external_tables_task = HiveOperator(
         task_id=f"create_hive_external_tables",
         hql=f"{_AIRFLOW_HOME}/include/hql/create_external_tables.hql ",
+        hive_cli_conn_id="hiveserver2_default",
     )
 
     create_tables_task = HiveOperator(
         task_id=f"create_hive_tables",
         hql=f"{_AIRFLOW_HOME}/include/hql/create_hive_tables.hql ",
+        hive_cli_conn_id="hiveserver2_default",
     )
 
     upload_tasks_list >> create_external_tables_task
