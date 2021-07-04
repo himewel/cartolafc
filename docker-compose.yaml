@@ -40,6 +40,8 @@ services:
 
     airflow_postgres:
         image: postgres:13-alpine
+        healthcheck:
+            test: pg_isready -U postgres
         environment:
             POSTGRES_USER: airflow
             POSTGRES_PASSWORD: airflow
