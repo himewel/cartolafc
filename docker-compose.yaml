@@ -12,6 +12,8 @@ services:
         depends_on:
             - airflow_postgres
         environment: *airflow-environment
+        healthcheck:
+            test: curl -f localhost:8080 || exit 1
         ports:
             - 8080:8080
         volumes:
@@ -26,6 +28,8 @@ services:
         depends_on:
             - airflow_webserver
         environment: *airflow-environment
+        healthcheck:
+            test: curl -f localhost:8793 || exit 1
         ports:
             - 8793:8793
         volumes:
@@ -43,6 +47,8 @@ services:
 
     hadoop:
         build: hadoop
+        healthcheck:
+            test: curl -f localhost:9870 || exit 1
         ports:
             - 9870:9870
             - 8020:8020
@@ -82,6 +88,8 @@ services:
 
     hive_postgresql:
         image: postgres:13-alpine
+        healthcheck:
+            test: pg_isready -U postgres
         environment:
             POSTGRES_USER: hive
             POSTGRES_PASSWORD: hive
