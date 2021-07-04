@@ -6,7 +6,7 @@
 <img alt="Apache Hive" src="https://img.shields.io/badge/apachehive-%23FDEE21.svg?&style=for-the-badge&logo=apache-hive&logoColor=white"/>
 </p>
 
-Thi project aims to build and structure a data lake and data warehouse based on the data extracted from Cartola FC (a game about the Brazilian national football championship). The current data warehouse schema and dag diagram are presented next:
+This project aims to build and structure a data lake and data warehouse based on the data extracted from Cartola FC (a game about the Brazilian national football championship). The current data warehouse schema and dag diagram are presented next:
 
 <p align="center">
 <img alt="Database schema" src="./schema.png"/>
