@@ -51,7 +51,7 @@ class TransformFactory(AbstractTransformer):
         )
 
     def get_clubes(self, year):
-        clubes_df = self.get_clubes(year)
+        clubes_df = super().get_clubes(year)
         self.write_parquet(
             df=clubes_df,
             schema="clubes",
@@ -59,7 +59,7 @@ class TransformFactory(AbstractTransformer):
         )
 
     def get_posicoes(self, year):
-        posicoes_df = self.get_posicoes(year)
+        posicoes_df = super().get_posicoes(year)
         self.write_parquet(
             df=posicoes_df,
             schema="posicoes",
