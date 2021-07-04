@@ -30,10 +30,10 @@ partidas:
         type: int64
     clubeMandanteID:
         description: ID do clube mandante
-        type: object
+        type: int64
     clubeVisitanteID:
         description: ID do clube visitante
-        type: object
+        type: int64
     mandantePlacar:
         description: Placar do clube mandante
         type: int64
