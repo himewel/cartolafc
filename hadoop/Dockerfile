@@ -26,7 +26,7 @@ WORKDIR ${HADOOP_HOME}
 
 USER hadoop
 
-COPY start.sh .
+COPY start-namenode.sh .
 
 ENTRYPOINT [ "bash" ]
-CMD ["./start.sh"]
+CMD ["./start-namenode.sh"]
