@@ -45,10 +45,23 @@ class AbstractTransformer(ABC):
     def get_atletas(self, year):
         pass
 
-    @abstractmethod
     def get_clubes(self, year):
-        pass
+        clubes_df = pd.read_csv(f"{self.input_path}/{year}/times_ids/1.csv")
+        clubes_df = (
+            clubes_df[["id", "nome.cbf", "abreviacao"]]
+            .rename(columns={"id": "clubeID", "nome.cbf": "nome"})
+            .drop_duplicates(subset=["clubeID"], keep="last")
+        )
+        return clubes_df
 
-    @abstractmethod
     def get_posicoes(self, year):
-        pass
+        posicoes_df = pd.read_csv(f"{self.input_path}/{year}/posicoes_ids/1.csv")
+        posicoes_df.rename(
+            columns={
+                "Cod": "posicaoID",
+                "Position": "nome",
+                "abbr": "abreviacao",
+            },
+            inplace=True,
+        )
+        return posicoes_df

@@ -101,24 +101,3 @@ class Transformer2020(AbstractTransformer):
         atletas_df.drop_duplicates(inplace=True)
 
         return atletas_df
-
-    def get_clubes(self):
-        clubes_df = pd.read_csv(f"{self.input_path}/2020/times_ids/1.csv")
-        clubes_df = (
-            clubes_df[["id", "nome.cbf", "abreviacao"]]
-            .rename(columns={"id": "clubeID", "nome.cbf": "nome"})
-            .drop_duplicates(subset=["clubeID"], keep="last")
-        )
-        return clubes_df
-
-    def get_posicoes(self):
-        posicoes_df = pd.read_csv(f"{self.input_path}/2020/posicoes_ids/1.csv")
-        posicoes_df.rename(
-            columns={
-                "Cod": "posicaoID",
-                "Position": "nome",
-                "abbr": "abreviacao",
-            },
-            inplace=True,
-        )
-        return posicoes_df
