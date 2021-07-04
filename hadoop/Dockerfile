@@ -18,6 +18,7 @@ RUN apk add --no-cache \
     && rm -rf hadoop-3.2.2.tar.gz \
     && mv hadoop-3.2.2 ${HADOOP_HOME} \
     && adduser hadoop --disabled-password \
+    && adduser airflow --disabled-password \
     && mkdir --parents /hadoop/dfs/data \
     && mkdir --parents /hadoop/dfs/name \
     && chown --recursive hadoop /hadoop
