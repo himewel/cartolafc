@@ -15,17 +15,15 @@ ENV PATH "${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin"
 
 RUN apk add --no-cache \
         bash \
-        curl \
+        gcompat \
         openjdk8
 
-RUN curl --continue-at - "https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.2.2/hadoop-3.2.2.tar.gz" \
-        -o ./hadoop-3.2.2.tar.gz \
+RUN wget -q https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.2.2/hadoop-3.2.2.tar.gz \
     && tar -xf hadoop-3.2.2.tar.gz \
     && rm -rf hadoop-3.2.2.tar.gz \
     && mv hadoop-3.2.2 ${HADOOP_HOME}
 
-RUN curl --continue-at - "https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz" \
-        -o ./apache-hive-3.1.2-bin.tar.gz \
+RUN wget -q https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz \
     && tar -xf apache-hive-3.1.2-bin.tar.gz \
     && rm -rf apache-hive-3.1.2-bin.tar.gz \
     && mv apache-hive-3.1.2-bin ${HIVE_HOME} \
