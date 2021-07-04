@@ -4,7 +4,7 @@ x-airflow-environment: &airflow-environment
     - AIRFLOW__CORE__EXECUTOR=LocalExecutor
     - AIRFLOW__CORE__LOAD_EXAMPLES=False
     - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@airflow_postgres:5432/airflow
-    - AIRFLOW_CONN_HIVESERVER2_DEFAULT='hiveserver2://:@hive:10000'
+    - AIRFLOW_CONN_HIVE_CLI_DEFAULT='hive-cli://:@hive:10000'
 
 services:
     airflow_webserver:
@@ -15,6 +15,7 @@ services:
         environment: *airflow-environment
         healthcheck:
             test: curl -f localhost:8080 || exit 1
+            timeout: 90s
         ports:
             - 8080:8080
         volumes:
@@ -29,10 +30,6 @@ services:
         depends_on:
             - airflow_webserver
         environment: *airflow-environment
-        healthcheck:
-            test: curl -f localhost:8793 || exit 1
-        ports:
-            - 8793:8793
         volumes:
             - ./airflow/dags:/opt/airflow/dags
             - ./airflow/data:/opt/airflow/data
@@ -51,7 +48,8 @@ services:
     hadoop:
         build: hadoop
         healthcheck:
-            test: curl -f localhost:9870 || exit 1
+            test: wget --spider localhost:9870 || exit 1
+            timeout: 90s
         ports:
             - 9870:9870
             - 8020:8020
@@ -61,6 +59,9 @@ services:
     hadoop_datanode:
         build: hadoop
         command: hdfs datanode
+        healthcheck:
+            test: wget --spider localhost:9864 || exit 1
+            timeout: 90s
         depends_on:
             - hadoop
         volumes:
