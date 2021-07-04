@@ -2,8 +2,9 @@ import os
 from datetime import datetime
 
 from airflow import DAG
-from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
+from airflow.operators.python import PythonOperator
+from airflow.providers.apache.hive.operators.hive import HiveOperator
 
 from include import RawExtractor, TransformFactory
 
@@ -42,6 +43,11 @@ with DAG(
         "posicoes": transformer.get_posicoes,
     }
 
+    create_folders_task = BashOperator(
+        task_id=f"create_hdfs_path",
+        bash_command="hdfs dfs -mkdir -p /raw /trusted",
+    )
+
     extract_dynamic_task = PythonOperator(
         task_id="extract_dynamic",
         python_callable=extractor.extract_dynamic_files,
@@ -58,28 +64,57 @@ with DAG(
 
     raw_upload_task = BashOperator(
         task_id="raw_upload",
-        bash_command="hdfs dfs -put {raw_path}/{year} /raw".format(
+        bash_command="hdfs dfs -copyFromLocal -f {raw_path}/{year} /raw".format(
             raw_path=_RAW_PATH,
             year="{{ execution_date.year }}",
         ),
     )
 
-    extraction_tasks_list >> raw_upload_task
+    create_folders_task >> extraction_tasks_list >> raw_upload_task
 
     transform_tasks_list = []
+    upload_tasks_list = []
+    update_tasks_list = []
     for table_name, transform_method in transform_methods.items():
         transform_task = PythonOperator(
             task_id=f"transform_{table_name}",
             python_callable=transform_method,
             op_kwargs={"year": "{{ execution_date.year }}"},
         )
+
+        trusted_upload_task = BashOperator(
+            task_id=f"upload_{table_name}",
+            bash_command=f"""
+                hdfs dfs -copyFromLocal -f \
+                    {_TRUSTED_PATH}/{table_name} /trusted
+            """,
+        )
+
+        update_table_task = HiveOperator(
+            task_id=f"update_hive_{table_name}",
+            hql=f"""
+                INSERT INTO {table_name}
+                SELECT * FROM external_{table_name};
+            """,
+        )
+
+        transform_task >> trusted_upload_task
+
         transform_tasks_list.append(transform_task)
+        upload_tasks_list.append(trusted_upload_task)
+        update_tasks_list.append(update_table_task)
 
     raw_upload_task >> transform_tasks_list
 
-    trusted_upload_task = BashOperator(
-        task_id="trusted_upload",
-        bash_command=f"hdfs dfs -put {_TRUSTED_PATH} /trusted",
+    create_external_tables_task = HiveOperator(
+        task_id=f"create_hive_external_tables",
+        hql=f"{_AIRFLOW_HOME}/include/hql/create_external_tables.hql ",
     )
 
-    transform_tasks_list >> trusted_upload_task
+    create_tables_task = HiveOperator(
+        task_id=f"create_hive_tables",
+        hql=f"{_AIRFLOW_HOME}/include/hql/create_hive_tables.hql ",
+    )
+
+    upload_tasks_list >> create_external_tables_task
+    create_external_tables_task >> create_tables_task >> update_tasks_list
