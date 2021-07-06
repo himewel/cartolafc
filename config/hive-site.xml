@@ -27,10 +27,10 @@
     </property>
     <property>
         <name>metastore.schema.verification</name>
-        <value>false</value>
+        <value>true</value>
     </property>
     <property>
         <name>root.logger</name>
-        <value>DEBUG,DRFA</value>
+        <value>DEBUG,console</value>
     </property>
 </configuration>
