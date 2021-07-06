@@ -86,7 +86,7 @@ class Transformer2019(AbstractTransformer):
             inplace=True,
         )
 
-        posicoes_df = self.get_posicoes()
+        posicoes_df = self.get_posicoes("2019")
         atletas_df = atletas_df.merge(
             right=posicoes_df,
             left_on="atletas.posicao_id",
