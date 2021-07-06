@@ -7,7 +7,7 @@ atletas:
         type: int64
     apelido:
         description: Apelido do atleta
-        type: object
+        type: string
     posicaoID:
         description: ID da posição do atleta
         type: int64
@@ -17,14 +17,14 @@ clubes:
         type: int64
     nome:
         description: Nome do clube
-        type: object
+        type: string
     abreviacao:
         description: Abreviação do clube
-        type: object
+        type: string
 partidas:
     partidaID:
         description: UUID da partida
-        type: object
+        type: string
     rodada:
         description: Rodada em que a partida ocorreu
         type: int64
@@ -42,7 +42,7 @@ partidas:
         type: int64
     resultado:
         description: Resultado final da partida ["Casa", "Visitante", "Empate"]
-        type: object
+        type: string
     temporada:
         description: Temporada da partida
         type: int64
@@ -52,10 +52,10 @@ posicoes:
         type: int64
     nome:
         description: Nome da posição
-        type: object
+        type: string
     abreviacao:
         description: Abreviação da posição
-        type: object
+        type: string
 scouts:
     atletaID:
         description: ID do atleta
