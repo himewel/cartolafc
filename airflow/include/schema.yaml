@@ -62,7 +62,7 @@ scouts:
         type: int64
     partidaID:
         description: UUID do atleta
-        type: object
+        type: string
     clubeID:
         description: ID do clube do atleta
         type: int64
