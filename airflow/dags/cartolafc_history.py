@@ -21,7 +21,7 @@ _API_URL = "https://api.github.com/repos/henriquepgomide/caRtola/contents/data"
 
 _SCHEMA_PATH = f"{_INCLUDE_PATH}/schema.yaml"
 _CREATE_EXTERNAL_TABLES = open(f"{_INCLUDE_PATH}/hql/create_external_tables.hql")
-_CREATE_TABLES = open(f"{_INCLUDE_PATH}/hql/create_memory_tables.hql")
+_CREATE_TABLES = open(f"{_INCLUDE_PATH}/hql/create_managed_tables.hql")
 
 default_args = {
     "depends_on_past": True,
@@ -52,24 +52,24 @@ with DAG(
 
     with TaskGroup(group_id="environment_setup") as env_tg:
         create_folders_task = BashOperator(
-            task_id=f"create_hdfs_path",
+            task_id="create_hdfs_path",
             bash_command="hdfs dfs -mkdir -p /raw /trusted",
         )
 
         create_external_tables_task = HiveOperator(
-            task_id=f"create_hive_external_tables",
+            task_id="create_hive_external_tables",
             hql=_CREATE_EXTERNAL_TABLES.read(),
         )
 
         create_tables_task = HiveOperator(
-            task_id=f"create_hive_tables",
+            task_id="create_hive_managed_tables",
             hql=_CREATE_TABLES.read(),
         )
 
         hive_creates = [create_external_tables_task, create_tables_task]
         create_folders_task >> hive_creates
 
-    with TaskGroup(group_id="extraction") as ext_tg:
+    with TaskGroup(group_id="extract") as ext_tg:
         extract_dynamic_task = PythonOperator(
             task_id="extract_dynamic",
             python_callable=extractor.extract_dynamic_files,
