@@ -30,6 +30,9 @@ services:
         depends_on:
             - airflow_webserver
         environment: *airflow-environment
+        healthcheck:
+            test: nc -z localhost 8793
+            timeout: 90s
         volumes:
             - ./airflow/dags:/opt/airflow/dags
             - ./airflow/data:/opt/airflow/data
