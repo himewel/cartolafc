@@ -74,6 +74,8 @@ services:
             - hive_postgres
             - hive_metastore
             - hadoop_datanode
+        healthcheck:
+            test: nc -z localhost 10000
         ports:
             - 10000:10000
         volumes:
@@ -85,6 +87,8 @@ services:
         depends_on:
             - hive_postgres
             - hadoop_datanode
+        healthcheck:
+            test: nc -z localhost 9083
         ports:
             - 9083:9083
         volumes:
