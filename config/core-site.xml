@@ -21,4 +21,8 @@
         <name>hive.server2.enable.doAs</name>
         <value>true</value>
     </property>
+    <property>
+        <name>hive.server2.authentication</name>
+        <value>NONE</value>
+    </property>
 </configuration>

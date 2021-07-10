@@ -33,4 +33,44 @@
         <name>root.logger</name>
         <value>DEBUG,console</value>
     </property>
+    <property>
+        <name>server2.authentication</name>
+        <value>NONE</value>
+    </property>
+    <property>
+        <name>auto.convert.join</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>enforce.bucketing</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>optimize.bucketmapjoin</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>exec.parallel</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>vectorized.execution.enabled</name>
+        <value>true</value>
+    </property>
+    <property>
+        <name>mapreduce.map.memory.mb</name>
+        <value>16384</value>
+    </property>
+    <property>
+        <name>mapreduce.reduce.memory.mb</name>
+        <value>20480</value>
+    </property>
+    <property>
+        <name>mapreduce.map.java.opts</name>
+        <value>-Xmx13108m</value>
+    </property>
+    <property>
+        <name>mapreduce.reduce.java.opts</name>
+        <value>-Xmx16384m</value>
+    </property>
 </configuration>
