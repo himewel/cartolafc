@@ -30,7 +30,6 @@ docker-compose up --detach
 
 Then, the containers of hadoop, airflow, hive and superset will startup. After some moments of the startup of the services, you can check the web interfaces:
 - Hadoop Web UI: http://localhost:9870
+- Hive Web UI: http://localhost:10002
 - Airflow Web UI: http://localhost:8080
 - Superset Web UI: http://localhost:8088
-
-At the folder `notebooks` you can see the exploratory analysis of the data separate by each year of the historic data. The code developed there was used to form the classes of transforms implemented with the factoring `airflow/include/transform_factory.py`.
