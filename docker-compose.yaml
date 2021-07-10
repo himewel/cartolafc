@@ -40,13 +40,13 @@ services:
             - ./config:/etc/hadoop
 
     airflow_postgres:
-        image: postgres:13-alpine
-        healthcheck:
-            test: pg_isready -U postgres
         environment:
             POSTGRES_USER: airflow
             POSTGRES_PASSWORD: airflow
             POSTGRES_DB: airflow
+        healthcheck:
+            test: pg_isready -U postgres
+        image: postgres:13-alpine
 
     hadoop:
         build: hadoop
@@ -81,6 +81,7 @@ services:
             test: nc -z localhost 10000
         ports:
             - 10000:10000
+            - 10002:10002
         volumes:
             - ./config:/etc/hive
 
@@ -98,31 +99,33 @@ services:
             - ./config:/etc/hive
 
     hive_postgres:
-        image: postgres:13-alpine
-        healthcheck:
-            test: pg_isready -U postgres
         environment:
             POSTGRES_USER: hive
             POSTGRES_PASSWORD: hive
             POSTGRES_DB: hive
+        healthcheck:
+            test: pg_isready -U postgres
+        image: postgres:13-alpine
 
     superset:
         build: superset
         depends_on:
             - superset_postgres
             - hive
+        environment:
+            - SUPERSET_SQL_ALCHEMY=postgresql+psycopg2://superset:superset@superset_postgres:5432/superset
         healthcheck:
             test: curl --fail http://localhost:8088 || exit 1
         ports:
             - 8088:8088
-        environment:
-            - SUPERSET_SQL_ALCHEMY=postgresql+psycopg2://superset:superset@superset_postgres:5432/superset
+        volumes:
+            - ./config:/etc/hive
 
     superset_postgres:
-        image: postgres:13-alpine
-        healthcheck:
-            test: pg_isready -U postgres
         environment:
             POSTGRES_USER: superset
             POSTGRES_PASSWORD: superset
             POSTGRES_DB: superset
+        healthcheck:
+            test: pg_isready -U postgres
+        image: postgres:13-alpine
