@@ -2,14 +2,11 @@ atletas:
     atletaID:
         description: ID do atleta
         type: int64
-    clubeID:
-        description: ID do clube do atleta
-        type: int64
     apelido:
         description: Apelido do atleta
         type: string
-    posicaoID:
-        description: ID da posição do atleta
+    temporada:
+        description: Temporada de inclusão do registro
         type: int64
 clubes:
     clubeID:
@@ -65,6 +62,9 @@ scouts:
         type: string
     clubeID:
         description: ID do clube do atleta
+        type: int64
+    posicaoID:
+        description: ID da posição do atleta
         type: int64
     pontos:
         description: Pontuação do atleta nesta rodada
@@ -132,3 +132,6 @@ scouts:
     GS:
         description: Gols sofridos
         type: float64
+    temporada:
+        description: Temporada da partida
+        type: int64

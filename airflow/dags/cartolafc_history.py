@@ -22,6 +22,7 @@ _API_URL = "https://api.github.com/repos/henriquepgomide/caRtola/contents/data"
 _SCHEMA_PATH = f"{_INCLUDE_PATH}/schema.yaml"
 _CREATE_EXTERNAL_TABLES = open(f"{_INCLUDE_PATH}/hql/create_external_tables.hql")
 _CREATE_TABLES = open(f"{_INCLUDE_PATH}/hql/create_managed_tables.hql")
+_UPSERT_ATLETAS = open(f"{_INCLUDE_PATH}/hql/upsert_atletas.hql")
 
 default_args = {
     "depends_on_past": True,
@@ -32,8 +33,8 @@ with DAG(
     dag_id="cartolafc_history",
     schedule_interval="@yearly",
     start_date=datetime(2014, 1, 1),
-    default_args=default_args,
     max_active_runs=1,
+    default_args=default_args,
 ) as dag:
     extractor = RawExtractor(base_url=_API_URL, path=_RAW_PATH)
     transformer = TransformFactory(
@@ -112,14 +113,22 @@ with DAG(
                 """,
             )
 
-            update_table_task = HiveOperator(
-                task_id=f"update_hive_{table_name}",
-                hql=f"""
-                    TRUNCATE TABLE {table_name};
-                    INSERT INTO {table_name}
-                    SELECT * FROM external_{table_name};
-                """,
-            )
+            if table_name == "atletas":
+                update_table_task = HiveOperator(
+                    task_id=f"upsert_hive_{table_name}",
+                    hql=_UPSERT_ATLETAS.read(),
+                )
+            else:
+                update_table_task = HiveOperator(
+                    task_id=f"update_hive_{table_name}",
+                    hql=f"""
+                        MSCK REPAIR TABLE trusted.{table_name};
+                        TRUNCATE TABLE refined.{table_name};
+                        INSERT INTO refined.{table_name}
+                        SELECT * FROM trusted.{table_name};
+                        MSCK REPAIR TABLE refined.{table_name};
+                    """,
+                )
 
             transform_task >> trusted_upload_task >> update_table_task
 
