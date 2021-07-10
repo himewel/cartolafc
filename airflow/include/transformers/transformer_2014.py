@@ -5,14 +5,14 @@ from . import AbstractTransformer
 
 class Transformer2014(AbstractTransformer):
     def get_scouts(self):
-        clubes_df = pd.read_csv(f"{self.input_path}/2014/times_ids/1.csv")
+        clubes_df = pd.read_csv(f"{self.input_path}/2014/times_ids/1.csv", dtype=str)
         clubes_df = (
             clubes_df[["id", "cod.2018"]]
             .rename(columns={"cod.2018": "olderID", "id": "clubeID"})
             .drop_duplicates()
         )
 
-        scouts_df = pd.read_csv(f"{self.input_path}/2014/scouts_raw/1.csv")
+        scouts_df = pd.read_csv(f"{self.input_path}/2014/scouts_raw/1.csv", dtype=str)
         scouts_df = scouts_df.merge(
             right=clubes_df,
             left_on="Clube",
@@ -20,6 +20,10 @@ class Transformer2014(AbstractTransformer):
             how="left",
         )
 
+        scouts_df["temporada"] = 2014
+        scouts_df["Participou"] = scouts_df["Participou"].astype(int)
+        scouts_df["Rodada"] = scouts_df["Rodada"].astype(int)
+        scouts_df = scouts_df[scouts_df.Participou > 0]
         scouts_df = scouts_df[scouts_df.Rodada > 0].rename(
             columns={
                 "Atleta": "atletaID",
@@ -28,20 +32,23 @@ class Transformer2014(AbstractTransformer):
                 "PontosMedia": "pontosMedia",
                 "Preco": "preco",
                 "PrecoVariacao": "precoVariacao",
+                "Posicao": "posicaoID",
             },
         )
 
         return scouts_df
 
     def get_partidas(self):
-        clubes_df = pd.read_csv(f"{self.input_path}/2014/times_ids/1.csv")
+        clubes_df = pd.read_csv(f"{self.input_path}/2014/times_ids/1.csv", dtype=str)
         clubes_df = (
             clubes_df[["id", "cod.2018"]]
             .rename(columns={"cod.2018": "olderID", "id": "clubeID"})
             .drop_duplicates()
         )
 
-        partidas_df = pd.read_csv(f"{self.input_path}/2014/partidas_ids/1.csv")
+        partidas_df = pd.read_csv(
+            f"{self.input_path}/2014/partidas_ids/1.csv", dtype=str
+        )
         partidas_df = partidas_df.merge(
             right=clubes_df,
             left_on="Casa",
@@ -71,25 +78,13 @@ class Transformer2014(AbstractTransformer):
         return partidas_df
 
     def get_atletas(self):
-        clubes_df = pd.read_csv(f"{self.input_path}/2014/times_ids/1.csv")
-        clubes_df = (
-            clubes_df[["id", "cod.2018"]]
-            .rename(columns={"cod.2018": "olderID", "id": "clubeID"})
-            .drop_duplicates()
-        )
-
-        atletas_df = pd.read_csv(f"{self.input_path}/2014/jogadores/1.csv")
-        atletas_df = atletas_df.merge(
-            right=clubes_df,
-            left_on="ClubeID",
-            right_on="olderID",
-        )
-
-        atletas_df = atletas_df.drop_duplicates().rename(
+        atletas_df = pd.read_csv(f"{self.input_path}/2014/jogadores/1.csv", dtype=str)
+        atletas_df = atletas_df.drop_duplicates("ID").rename(
             columns={
                 "ID": "atletaID",
                 "Apelido": "apelido",
                 "PosicaoID": "posicaoID",
             }
         )
+        atletas_df["temporada"] = 2014
         return atletas_df

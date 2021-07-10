@@ -16,7 +16,7 @@ class AbstractTransformer(ABC):
                 self.schema = yaml.safe_load(stream)
 
     def write_parquet(self, df, schema, partition_by):
-        partition_by = partition_by or "1"
+        # select and cast columns
         for column, properties in self.schema[schema].items():
             if properties['type'] in ["int64", "float64"]:
                 df[column].fillna(0, inplace=True)
@@ -27,12 +27,21 @@ class AbstractTransformer(ABC):
                 df[column].fillna("INDEFINIDO", inplace=True)
 
         df = df[list(self.schema[schema].keys())]
+        df.columns = df.columns.str.lower()
 
+        # defines output structure
         os.makedirs(f"{self.output_path}/{schema}", exist_ok=True)
-        df.to_parquet(
-            path=f"{self.output_path}/{schema}/{partition_by}.parquet",
-            index=False,
-        )
+        if partition_by is None:
+            df.to_parquet(
+                path=f"{self.output_path}/{schema}/1.parquet",
+                index=False,
+            )
+        else:
+            df.to_parquet(
+                path=f"{self.output_path}/{schema}",
+                partition_cols=partition_by,
+                index=False,
+            )
 
     @abstractmethod
     def get_scouts(self, year):

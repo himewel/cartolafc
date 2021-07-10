@@ -29,7 +29,7 @@ class TransformFactory(AbstractTransformer):
         self.write_parquet(
             df=scouts_df,
             schema="scouts",
-            partition_by=year,
+            partition_by=["temporada"],
         )
 
     def get_partidas(self, year):
@@ -38,7 +38,7 @@ class TransformFactory(AbstractTransformer):
         self.write_parquet(
             df=partidas_df,
             schema="partidas",
-            partition_by=year,
+            partition_by=["temporada"],
         )
 
     def get_atletas(self, year):
@@ -47,7 +47,7 @@ class TransformFactory(AbstractTransformer):
         self.write_parquet(
             df=atletas_df,
             schema="atletas",
-            partition_by=year,
+            partition_by=["temporada"],
         )
 
     def get_clubes(self, year):
