@@ -12,6 +12,16 @@ echo "Migrating meta database..."
 superset db upgrade
 superset init
 
+echo "Creating database..."
+superset set-database-uri \
+    --database_name "Apache Hive" \
+    --uri hive://hive@hive:10000
+
+echo "Importing dashboards..."
+superset import-dashboards \
+    --path ./dashboards/*.json \
+    --username admin
+
 echo "Starting webserver..."
 gunicorn \
     --bind "0.0.0.0:8088" \
@@ -20,7 +30,7 @@ gunicorn \
     --workers 1 \
     --worker-class gthread \
     --threads 20 \
-    --timeout 60 \
+    --timeout 300 \
     --limit-request-line 0 \
     --limit-request-field_size 0 \
     "superset.app:create_app()"
