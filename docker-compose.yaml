@@ -120,6 +120,7 @@ services:
             - 8088:8088
         volumes:
             - ./config:/etc/hive
+            - ./superset/dashboards:/opt/superset/dashboards
 
     superset_postgres:
         environment:

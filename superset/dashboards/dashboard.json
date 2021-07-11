@@ -1,0 +1,326 @@
+{
+    "dashboards": [
+        {
+            "__Dashboard__": {
+                "css": ".dashboard-header {\n  background: #e3672b;\n}\n\n.dashboard-content, .dashboard-component-tabs-content{\n  background-color: #d9d9d9;\n}\n\n.dashboard-component-header {\n  color: #FFFFFF;\n  font-weight: 700 !important;\n  letter-spacing: -1.3px;\n  line-height: 1.3em;\n}\n\n.chart-header {\n  color: #e3672b;\n  font-weight: 700;\n  letter-spacing: -1.3px;\n  line-height: 1.3em;\n}",
+                "dashboard_title": "CartolaFC",
+                "description": null,
+                "json_metadata": "{\"timed_refresh_immune_slices\": [], \"expanded_slices\": {}, \"refresh_frequency\": 0, \"default_filters\": \"{}\", \"color_scheme\": \"d3Category10\", \"label_colors\": {}, \"remote_id\": 1, \"import_time\": 1625960076, \"filter_scopes\": {\"7\": {\"temporada\": {\"scope\": [\"ROOT_ID\"], \"immune\": []}, \"rodada\": {\"scope\": [\"ROOT_ID\"], \"immune\": []}}, \"8\": {\"mandante\": {\"scope\": [\"ROOT_ID\"], \"immune\": []}, \"visitante\": {\"scope\": [\"ROOT_ID\"], \"immune\": []}}}}",
+                "position_json": "{\"CHART-4aO1V-r2Lp\":{\"children\":[],\"id\":\"CHART-4aO1V-r2Lp\",\"meta\":{\"chartId\":4,\"height\":50,\"sliceName\":\"Melhores visitantes\",\"uuid\":\"2b055df6-c1c8-49d0-9d5e-b21d4cf0a315\",\"width\":4},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-VlKoo3jOiw\",\"COLUMN-Pjm-2_eLI1\"],\"type\":\"CHART\"},\"CHART-Qbpu1Gw8yj\":{\"children\":[],\"id\":\"CHART-Qbpu1Gw8yj\",\"meta\":{\"chartId\":9,\"height\":20,\"sliceName\":\"Total de partidas\",\"uuid\":\"452cabc0-d9e8-4beb-99a6-9d99ba0d9993\",\"width\":2},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-N9vDO-nqk1\",\"COLUMN-XPGuayQp5O\"],\"type\":\"CHART\"},\"CHART-_581T_aGqY\":{\"children\":[],\"id\":\"CHART-_581T_aGqY\",\"meta\":{\"chartId\":5,\"height\":20,\"sliceName\":\"Desempenho geral\",\"uuid\":\"259b56dc-0eb6-4bb6-832e-e87ba19914e0\",\"width\":4},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-N9vDO-nqk1\",\"COLUMN-mWYqpMN05f\"],\"type\":\"CHART\"},\"CHART-_udA0EtGrI\":{\"children\":[],\"id\":\"CHART-_udA0EtGrI\",\"meta\":{\"chartId\":8,\"height\":28,\"sliceName\":\"Filtrar por clube\",\"uuid\":\"2c0b3d6d-f137-48c4-bcde-e20f47c52bd4\",\"width\":2},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-2fP1_liOfZ\",\"COLUMN-9XTpZkzHkn\"],\"type\":\"CHART\"},\"CHART-ig3Smjlv4J\":{\"children\":[],\"id\":\"CHART-ig3Smjlv4J\",\"meta\":{\"chartId\":6,\"height\":28,\"sliceName\":\"Total de clubes\",\"uuid\":\"b8bd6665-05ec-4bf9-8432-844f2c7d9ef5\",\"width\":2},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-2fP1_liOfZ\",\"COLUMN-9pWBO_xlxV\"],\"type\":\"CHART\"},\"CHART-k16ja7Km6N\":{\"children\":[],\"id\":\"CHART-k16ja7Km6N\",\"meta\":{\"chartId\":3,\"height\":50,\"sliceName\":\"Melhores mandantes\",\"uuid\":\"fdd83bc8-72bb-4cbf-b54c-8b488c2607ea\",\"width\":4},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-VlKoo3jOiw\",\"COLUMN-SgdvnRl2Eh\"],\"type\":\"CHART\"},\"CHART-q7_UUy-pte\":{\"children\":[],\"id\":\"CHART-q7_UUy-pte\",\"meta\":{\"chartId\":2,\"height\":50,\"sliceName\":\"Campeonato Brasileiro S\\u00e9rie A\",\"uuid\":\"0471d056-1689-4810-89c7-06c0739c1a2c\",\"width\":4},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-jF-7ddAjs5\"],\"type\":\"CHART\"},\"CHART-qP7KlE-TI4\":{\"children\":[],\"id\":\"CHART-qP7KlE-TI4\",\"meta\":{\"chartId\":7,\"height\":28,\"sliceName\":\"Filtrar por partida\",\"uuid\":\"6291bdbd-9c29-40c9-82a8-19cd9ba2858b\",\"width\":2},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-2fP1_liOfZ\",\"COLUMN-7XyX2E8N8N\"],\"type\":\"CHART\"},\"COLUMN-7XyX2E8N8N\":{\"children\":[\"CHART-qP7KlE-TI4\"],\"id\":\"COLUMN-7XyX2E8N8N\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\",\"width\":2},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-2fP1_liOfZ\"],\"type\":\"COLUMN\"},\"COLUMN-9XTpZkzHkn\":{\"children\":[\"CHART-_udA0EtGrI\"],\"id\":\"COLUMN-9XTpZkzHkn\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\",\"width\":2},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-2fP1_liOfZ\"],\"type\":\"COLUMN\"},\"COLUMN-9pWBO_xlxV\":{\"children\":[\"CHART-ig3Smjlv4J\"],\"id\":\"COLUMN-9pWBO_xlxV\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\",\"width\":2},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-2fP1_liOfZ\"],\"type\":\"COLUMN\"},\"COLUMN-El0RFx_HuC\":{\"children\":[\"ROW-2fP1_liOfZ\",\"ROW-N9vDO-nqk1\"],\"id\":\"COLUMN-El0RFx_HuC\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\",\"width\":6},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\"],\"type\":\"COLUMN\"},\"COLUMN-Pjm-2_eLI1\":{\"children\":[\"CHART-4aO1V-r2Lp\"],\"id\":\"COLUMN-Pjm-2_eLI1\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\",\"width\":6},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-VlKoo3jOiw\"],\"type\":\"COLUMN\"},\"COLUMN-SgdvnRl2Eh\":{\"children\":[\"CHART-k16ja7Km6N\"],\"id\":\"COLUMN-SgdvnRl2Eh\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\",\"width\":6},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-VlKoo3jOiw\"],\"type\":\"COLUMN\"},\"COLUMN-XPGuayQp5O\":{\"children\":[\"CHART-Qbpu1Gw8yj\"],\"id\":\"COLUMN-XPGuayQp5O\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\",\"width\":2},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-N9vDO-nqk1\"],\"type\":\"COLUMN\"},\"COLUMN-jF-7ddAjs5\":{\"children\":[\"CHART-q7_UUy-pte\"],\"id\":\"COLUMN-jF-7ddAjs5\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\",\"width\":6},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\"],\"type\":\"COLUMN\"},\"COLUMN-mWYqpMN05f\":{\"children\":[\"CHART-_581T_aGqY\"],\"id\":\"COLUMN-mWYqpMN05f\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\",\"width\":4},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\",\"ROW-N9vDO-nqk1\"],\"type\":\"COLUMN\"},\"DASHBOARD_VERSION_KEY\":\"v2\",\"DIVIDER-nxq62OXLIN\":{\"children\":[],\"id\":\"DIVIDER-nxq62OXLIN\",\"meta\":{},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\"],\"type\":\"DIVIDER\"},\"DIVIDER-qrcYlprYkK\":{\"children\":[],\"id\":\"DIVIDER-qrcYlprYkK\",\"meta\":{},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\"],\"type\":\"DIVIDER\"},\"GRID_ID\":{\"children\":[\"TABS-cAAccWNoXx\"],\"id\":\"GRID_ID\",\"parents\":[\"ROOT_ID\"],\"type\":\"GRID\"},\"HEADER_ID\":{\"id\":\"HEADER_ID\",\"meta\":{\"text\":\"CartolaFC\"},\"type\":\"HEADER\"},\"ROOT_ID\":{\"children\":[\"GRID_ID\"],\"id\":\"ROOT_ID\",\"type\":\"ROOT\"},\"ROW-2fP1_liOfZ\":{\"children\":[\"COLUMN-7XyX2E8N8N\",\"COLUMN-9XTpZkzHkn\",\"COLUMN-9pWBO_xlxV\"],\"id\":\"ROW-2fP1_liOfZ\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\"},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\"],\"type\":\"ROW\"},\"ROW-Auc3zbJtB\":{\"children\":[\"COLUMN-jF-7ddAjs5\",\"COLUMN-El0RFx_HuC\"],\"id\":\"ROW-Auc3zbJtB\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\"},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\"],\"type\":\"ROW\"},\"ROW-N9vDO-nqk1\":{\"children\":[\"COLUMN-mWYqpMN05f\",\"COLUMN-XPGuayQp5O\"],\"id\":\"ROW-N9vDO-nqk1\",\"meta\":{\"background\":\"BACKGROUND_TRANSPARENT\"},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\",\"ROW-Auc3zbJtB\",\"COLUMN-El0RFx_HuC\"],\"type\":\"ROW\"},\"ROW-VlKoo3jOiw\":{\"children\":[\"COLUMN-SgdvnRl2Eh\",\"COLUMN-Pjm-2_eLI1\"],\"id\":\"ROW-VlKoo3jOiw\",\"meta\":{\"0\":\"ROOT_ID\",\"background\":\"BACKGROUND_TRANSPARENT\"},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\",\"TAB-cXbcbkn4-s\"],\"type\":\"ROW\"},\"TAB-cXbcbkn4-s\":{\"children\":[\"DIVIDER-qrcYlprYkK\",\"ROW-Auc3zbJtB\",\"DIVIDER-nxq62OXLIN\",\"ROW-VlKoo3jOiw\"],\"id\":\"TAB-cXbcbkn4-s\",\"meta\":{\"defaultText\":\"Tab title\",\"placeholder\":\"Tab title\",\"text\":\"Clubes\"},\"parents\":[\"ROOT_ID\",\"GRID_ID\",\"TABS-cAAccWNoXx\"],\"type\":\"TAB\"},\"TABS-cAAccWNoXx\":{\"children\":[\"TAB-cXbcbkn4-s\"],\"id\":\"TABS-cAAccWNoXx\",\"meta\":{},\"parents\":[\"ROOT_ID\",\"GRID_ID\"],\"type\":\"TABS\"}}",
+                "slices": [
+                    {
+                        "__Slice__": {
+                            "cache_timeout": null,
+                            "datasource_name": "refined.Partidas joined with clubes",
+                            "datasource_type": "table",
+                            "id": 2,
+                            "params": "{\"adhoc_filters\": [], \"align_pn\": true, \"all_columns\": [\"temporada\", \"rodada\", \"mandante\", \"placar_mandante\", \"placar_visitante\", \"visitante\", \"resultado\"], \"color_pn\": true, \"column_config\": {\"placar_mandante\": {\"horizontalAlign\": \"center\"}, \"placar_visitante\": {\"horizontalAlign\": \"center\"}, \"rodada\": {\"horizontalAlign\": \"center\"}, \"temporada\": {\"horizontalAlign\": \"center\"}}, \"datasource\": \"2__table\", \"extra_form_data\": {}, \"groupby\": [\"mandante\"], \"include_search\": true, \"metrics\": [{\"aggregate\": \"COUNT\", \"column\": {\"column_name\": \"resultado\", \"description\": null, \"expression\": null, \"filterable\": true, \"groupby\": true, \"id\": 9, \"is_dttm\": false, \"python_date_format\": null, \"type\": \"STRING_TYPE\", \"type_generic\": 1, \"verbose_name\": null}, \"expressionType\": \"SIMPLE\", \"hasCustomLabel\": true, \"isNew\": false, \"label\": \"Vit\\u00f3rias como mandante\", \"optionName\": \"metric_9jwq0jqdcjg_4nwibgqo2m7\", \"sqlExpression\": null}], \"order_by_cols\": [\"[\\\"temporada\\\", false]\", \"[\\\"rodada\\\", false]\"], \"order_desc\": true, \"percent_metrics\": [], \"query_mode\": \"raw\", \"row_limit\": null, \"server_page_length\": 10, \"show_cell_bars\": false, \"table_timestamp_format\": \"smart_date\", \"time_grain_sqla\": \"P1D\", \"time_range\": \"No filter\", \"time_range_endpoints\": [\"inclusive\", \"exclusive\"], \"url_params\": {}, \"viz_type\": \"table\", \"remote_id\": 2, \"datasource_name\": \"Partidas joined with clubes\", \"schema\": \"refined\", \"database_name\": \"Apache Hive\", \"import_time\": 1625960076}",
+                            "slice_name": "Campeonato Brasileiro S\u00e9rie A",
+                            "viz_type": "table"
+                        }
+                    },
+                    {
+                        "__Slice__": {
+                            "cache_timeout": null,
+                            "datasource_name": "refined.Partidas joined with clubes",
+                            "datasource_type": "table",
+                            "id": 3,
+                            "params": "{\"adhoc_filters\": [], \"bar_stacked\": true, \"bottom_margin\": \"auto\", \"color_scheme\": \"supersetColors\", \"columns\": [], \"contribution\": false, \"datasource\": \"1__table\", \"extra_form_data\": {}, \"groupby\": [\"mandante\"], \"label_colors\": {}, \"metrics\": [{\"aggregate\": null, \"column\": null, \"expressionType\": \"SQL\", \"hasCustomLabel\": true, \"isNew\": false, \"label\": \"Vit\\u00f3rias\", \"optionName\": \"metric_g0dek9wcu0u_0q8g3ms791cl\", \"sqlExpression\": \"SUM(\\n  CASE \\n    WHEN resultado = 'Casa' THEN 1\\n    ELSE 0\\n  END\\n)\"}, {\"aggregate\": null, \"column\": null, \"expressionType\": \"SQL\", \"hasCustomLabel\": true, \"isNew\": false, \"label\": \"Empates\", \"optionName\": \"metric_by0o62pdct_1sa35lwi98j\", \"sqlExpression\": \"SUM(\\n  CASE \\n    WHEN resultado = 'Empate' THEN 1\\n    ELSE 0\\n  END\\n)\"}, {\"aggregate\": null, \"column\": null, \"expressionType\": \"SQL\", \"hasCustomLabel\": true, \"isNew\": false, \"label\": \"Derrotas\", \"optionName\": \"metric_79e52g4rxkf_ymhawmjkx8i\", \"sqlExpression\": \"SUM(\\n  CASE \\n    WHEN resultado = 'Visitante' THEN 1\\n    ELSE 0\\n  END\\n)\"}], \"order_desc\": true, \"row_limit\": 10000, \"slice_id\": 3, \"time_range\": \"No filter\", \"time_range_endpoints\": [\"inclusive\", \"exclusive\"], \"url_params\": {}, \"viz_type\": \"dist_bar\", \"x_ticks_layout\": \"auto\", \"y_axis_bounds\": [null, null], \"y_axis_format\": \"SMART_NUMBER\", \"remote_id\": 3, \"datasource_name\": \"Partidas joined with clubes\", \"schema\": \"refined\", \"database_name\": \"Apache Hive\"}",
+                            "slice_name": "Melhores mandantes",
+                            "viz_type": "dist_bar"
+                        }
+                    },
+                    {
+                        "__Slice__": {
+                            "cache_timeout": null,
+                            "datasource_name": "refined.Partidas joined with clubes",
+                            "datasource_type": "table",
+                            "id": 4,
+                            "params": "{\"adhoc_filters\": [], \"bar_stacked\": true, \"bottom_margin\": \"auto\", \"color_scheme\": \"supersetColors\", \"columns\": [], \"contribution\": false, \"datasource\": \"1__table\", \"extra_form_data\": {}, \"groupby\": [\"visitante\"], \"label_colors\": {}, \"metrics\": [{\"aggregate\": null, \"column\": null, \"expressionType\": \"SQL\", \"hasCustomLabel\": true, \"isNew\": false, \"label\": \"Vit\\u00f3rias\", \"optionName\": \"metric_g0dek9wcu0u_0q8g3ms791cl\", \"sqlExpression\": \"SUM(\\n  CASE \\n    WHEN resultado = 'Visitante' THEN 1\\n    ELSE 0\\n  END\\n)\"}, {\"aggregate\": null, \"column\": null, \"expressionType\": \"SQL\", \"hasCustomLabel\": true, \"isNew\": false, \"label\": \"Empates\", \"optionName\": \"metric_mhr4u7yfb9_7mlqm5bktmi\", \"sqlExpression\": \"SUM(\\n  CASE \\n    WHEN resultado = 'Empate' THEN 1\\n    ELSE 0\\n  END\\n)\"}, {\"aggregate\": null, \"column\": null, \"expressionType\": \"SQL\", \"hasCustomLabel\": true, \"isNew\": false, \"label\": \"Derrotas\", \"optionName\": \"metric_4op903ud2eb_06in0ivrqhct\", \"sqlExpression\": \"SUM(\\n  CASE \\n    WHEN resultado = 'Casa' THEN 1\\n    ELSE 0\\n  END\\n)\"}], \"order_desc\": true, \"row_limit\": 10000, \"slice_id\": 4, \"time_range\": \"No filter\", \"time_range_endpoints\": [\"inclusive\", \"exclusive\"], \"url_params\": {}, \"viz_type\": \"dist_bar\", \"x_ticks_layout\": \"auto\", \"y_axis_bounds\": [null, null], \"y_axis_format\": \"SMART_NUMBER\", \"remote_id\": 4, \"datasource_name\": \"Partidas joined with clubes\", \"schema\": \"refined\", \"database_name\": \"Apache Hive\"}",
+                            "slice_name": "Melhores visitantes",
+                            "viz_type": "dist_bar"
+                        }
+                    },
+                    {
+                        "__Slice__": {
+                            "cache_timeout": null,
+                            "datasource_name": "refined.Partidas joined with clubes",
+                            "datasource_type": "table",
+                            "id": 5,
+                            "params": "{\"adhoc_filters\": [], \"all_columns\": [], \"color_pn\": true, \"column_config\": {\"total\": {\"d3NumberFormat\": \"~g\", \"d3SmallNumberFormat\": \"~g\"}}, \"datasource\": \"1__table\", \"extra_form_data\": {}, \"groupby\": [\"resultado\"], \"metrics\": [{\"aggregate\": null, \"column\": null, \"expressionType\": \"SQL\", \"hasCustomLabel\": true, \"isNew\": false, \"label\": \"total\", \"optionName\": \"metric_j3r5hqbw56a_ldn61k9kgm\", \"sqlExpression\": \"COUNT(1)\"}], \"order_by_cols\": [], \"order_desc\": true, \"percent_metrics\": [], \"query_mode\": \"aggregate\", \"row_limit\": 10000, \"server_page_length\": 10, \"show_cell_bars\": true, \"table_timestamp_format\": \"smart_date\", \"time_grain_sqla\": \"P1D\", \"time_range\": \"No filter\", \"time_range_endpoints\": [\"inclusive\", \"exclusive\"], \"url_params\": {}, \"viz_type\": \"table\", \"remote_id\": 5, \"datasource_name\": \"Partidas joined with clubes\", \"schema\": \"refined\", \"database_name\": \"Apache Hive\"}",
+                            "slice_name": "Desempenho geral",
+                            "viz_type": "table"
+                        }
+                    },
+                    {
+                        "__Slice__": {
+                            "cache_timeout": null,
+                            "datasource_name": "refined.Partidas joined with clubes",
+                            "datasource_type": "table",
+                            "id": 6,
+                            "params": "{\"adhoc_filters\": [], \"datasource\": \"1__table\", \"extra_form_data\": {}, \"header_font_size\": 0.4, \"metric\": {\"aggregate\": \"COUNT_DISTINCT\", \"column\": {\"column_name\": \"mandante\", \"description\": null, \"expression\": null, \"filterable\": true, \"groupby\": true, \"id\": 3, \"is_dttm\": false, \"python_date_format\": null, \"type\": \"STRING_TYPE\", \"type_generic\": 1, \"verbose_name\": null}, \"expressionType\": \"SIMPLE\", \"hasCustomLabel\": false, \"isNew\": false, \"label\": \"COUNT_DISTINCT(mandante)\", \"optionName\": \"metric_pgka6i0t1bp_gxtl05pftym\", \"sqlExpression\": null}, \"slice_id\": 6, \"subheader\": \"clubes analisados\", \"subheader_font_size\": 0.15, \"time_range\": \"No filter\", \"time_range_endpoints\": [\"inclusive\", \"exclusive\"], \"url_params\": {}, \"viz_type\": \"big_number_total\", \"y_axis_format\": \"SMART_NUMBER\", \"remote_id\": 6, \"datasource_name\": \"Partidas joined with clubes\", \"schema\": \"refined\", \"database_name\": \"Apache Hive\"}",
+                            "slice_name": "Total de clubes",
+                            "viz_type": "big_number_total"
+                        }
+                    },
+                    {
+                        "__Slice__": {
+                            "cache_timeout": null,
+                            "datasource_name": "refined.Partidas joined with clubes",
+                            "datasource_type": "table",
+                            "id": 8,
+                            "params": "{\"adhoc_filters\": [], \"datasource\": \"1__table\", \"date_filter\": false, \"extra_form_data\": {}, \"filter_configs\": [{\"asc\": true, \"clearable\": true, \"column\": \"mandante\", \"key\": \"byA1Gf3fyy\", \"multiple\": true, \"searchAllOptions\": false}, {\"asc\": true, \"clearable\": true, \"column\": \"visitante\", \"key\": \"gdLbwaS7u\", \"multiple\": true, \"searchAllOptions\": false}], \"time_grain_sqla\": \"P1D\", \"time_range\": \"No filter\", \"time_range_endpoints\": [\"inclusive\", \"exclusive\"], \"url_params\": {}, \"viz_type\": \"filter_box\", \"remote_id\": 8, \"datasource_name\": \"Partidas joined with clubes\", \"schema\": \"refined\", \"database_name\": \"Apache Hive\"}",
+                            "slice_name": "Filtrar por clube",
+                            "viz_type": "filter_box"
+                        }
+                    },
+                    {
+                        "__Slice__": {
+                            "cache_timeout": null,
+                            "datasource_name": "refined.Partidas joined with clubes",
+                            "datasource_type": "table",
+                            "id": 7,
+                            "params": "{\"adhoc_filters\": [], \"datasource\": \"1__table\", \"date_filter\": false, \"extra_form_data\": {}, \"filter_configs\": [{\"asc\": true, \"clearable\": true, \"column\": \"temporada\", \"key\": \"ghZSLH21x\", \"multiple\": true, \"searchAllOptions\": true}, {\"asc\": true, \"clearable\": true, \"column\": \"rodada\", \"key\": \"lQVgeWttU\", \"multiple\": true, \"searchAllOptions\": false}], \"time_grain_sqla\": \"P1D\", \"time_range\": \"No filter\", \"time_range_endpoints\": [\"inclusive\", \"exclusive\"], \"url_params\": {}, \"viz_type\": \"filter_box\", \"remote_id\": 7, \"datasource_name\": \"Partidas joined with clubes\", \"schema\": \"refined\", \"database_name\": \"Apache Hive\"}",
+                            "slice_name": "Filtrar por partida",
+                            "viz_type": "filter_box"
+                        }
+                    },
+                    {
+                        "__Slice__": {
+                            "cache_timeout": null,
+                            "datasource_name": "refined.Partidas joined with clubes",
+                            "datasource_type": "table",
+                            "id": 9,
+                            "params": "{\"adhoc_filters\": [], \"datasource\": \"1__table\", \"extra_form_data\": {}, \"header_font_size\": 0.4, \"metric\": {\"aggregate\": null, \"column\": null, \"expressionType\": \"SQL\", \"hasCustomLabel\": false, \"isNew\": false, \"label\": \"COUNT(1)\", \"optionName\": \"metric_3s7rvm4p85g_ngue5mwaql\", \"sqlExpression\": \"COUNT(1)\"}, \"subheader\": \"partidas analisadas\", \"subheader_font_size\": 0.15, \"time_range\": \"No filter\", \"time_range_endpoints\": [\"inclusive\", \"exclusive\"], \"url_params\": {}, \"viz_type\": \"big_number_total\", \"y_axis_format\": \"~g\", \"remote_id\": 9, \"datasource_name\": \"Partidas joined with clubes\", \"schema\": \"refined\", \"database_name\": \"Apache Hive\"}",
+                            "slice_name": "Total de partidas",
+                            "viz_type": "big_number_total"
+                        }
+                    }
+                ],
+                "slug": null
+            }
+        }
+    ],
+    "datasources": [
+        {
+            "__SqlaTable__": {
+                "cache_timeout": null,
+                "columns": [
+                    {
+                        "__TableColumn__": {
+                            "changed_by_fk": 1,
+                            "changed_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "column_name": "temporada",
+                            "created_by_fk": 1,
+                            "created_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "description": null,
+                            "expression": null,
+                            "filterable": true,
+                            "groupby": true,
+                            "id": 1,
+                            "is_active": true,
+                            "is_dttm": false,
+                            "python_date_format": null,
+                            "table_id": 1,
+                            "type": "INT_TYPE",
+                            "uuid": "3aeba00b-0758-4f1b-8f17-04ddc3cb4529",
+                            "verbose_name": null
+                        }
+                    },
+                    {
+                        "__TableColumn__": {
+                            "changed_by_fk": 1,
+                            "changed_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "column_name": "rodada",
+                            "created_by_fk": 1,
+                            "created_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "description": null,
+                            "expression": null,
+                            "filterable": true,
+                            "groupby": true,
+                            "id": 2,
+                            "is_active": true,
+                            "is_dttm": false,
+                            "python_date_format": null,
+                            "table_id": 1,
+                            "type": "INT_TYPE",
+                            "uuid": "ef68971e-893f-42a1-9b9f-c49b2049bbaf",
+                            "verbose_name": null
+                        }
+                    },
+                    {
+                        "__TableColumn__": {
+                            "changed_by_fk": 1,
+                            "changed_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "column_name": "mandante",
+                            "created_by_fk": 1,
+                            "created_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "description": null,
+                            "expression": null,
+                            "filterable": true,
+                            "groupby": true,
+                            "id": 3,
+                            "is_active": true,
+                            "is_dttm": false,
+                            "python_date_format": null,
+                            "table_id": 1,
+                            "type": "STRING_TYPE",
+                            "uuid": "b8b119e6-b3b3-473e-89d9-fe530f38539e",
+                            "verbose_name": null
+                        }
+                    },
+                    {
+                        "__TableColumn__": {
+                            "changed_by_fk": 1,
+                            "changed_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "column_name": "placar_mandante",
+                            "created_by_fk": 1,
+                            "created_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "description": null,
+                            "expression": null,
+                            "filterable": true,
+                            "groupby": true,
+                            "id": 4,
+                            "is_active": true,
+                            "is_dttm": false,
+                            "python_date_format": null,
+                            "table_id": 1,
+                            "type": "INT_TYPE",
+                            "uuid": "167773e7-e42f-44d4-b9c2-61daf305e698",
+                            "verbose_name": null
+                        }
+                    },
+                    {
+                        "__TableColumn__": {
+                            "changed_by_fk": 1,
+                            "changed_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "column_name": "placar_visitante",
+                            "created_by_fk": 1,
+                            "created_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "description": null,
+                            "expression": null,
+                            "filterable": true,
+                            "groupby": true,
+                            "id": 5,
+                            "is_active": true,
+                            "is_dttm": false,
+                            "python_date_format": null,
+                            "table_id": 1,
+                            "type": "INT_TYPE",
+                            "uuid": "14a71069-2e7e-4ef8-946c-b80c58155852",
+                            "verbose_name": null
+                        }
+                    },
+                    {
+                        "__TableColumn__": {
+                            "changed_by_fk": 1,
+                            "changed_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "column_name": "visitante",
+                            "created_by_fk": 1,
+                            "created_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "description": null,
+                            "expression": null,
+                            "filterable": true,
+                            "groupby": true,
+                            "id": 6,
+                            "is_active": true,
+                            "is_dttm": false,
+                            "python_date_format": null,
+                            "table_id": 1,
+                            "type": "STRING_TYPE",
+                            "uuid": "db6589eb-ab1d-4e91-92a5-131d2d9aaf59",
+                            "verbose_name": null
+                        }
+                    },
+                    {
+                        "__TableColumn__": {
+                            "changed_by_fk": 1,
+                            "changed_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "column_name": "resultado",
+                            "created_by_fk": 1,
+                            "created_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "description": null,
+                            "expression": null,
+                            "filterable": true,
+                            "groupby": true,
+                            "id": 7,
+                            "is_active": true,
+                            "is_dttm": false,
+                            "python_date_format": null,
+                            "table_id": 1,
+                            "type": "STRING_TYPE",
+                            "uuid": "cbbddc6d-eae7-49f2-9582-de724c24802a",
+                            "verbose_name": null
+                        }
+                    }
+                ],
+                "database_id": 1,
+                "default_endpoint": null,
+                "description": null,
+                "extra": null,
+                "fetch_values_predicate": null,
+                "filter_select_enabled": false,
+                "main_dttm_col": null,
+                "metrics": [
+                    {
+                        "__SqlMetric__": {
+                            "changed_by_fk": 1,
+                            "changed_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "created_by_fk": 1,
+                            "created_on": {
+                                "__datetime__": "2021-07-10T23:34:36"
+                            },
+                            "d3format": null,
+                            "description": null,
+                            "expression": "count(*)",
+                            "extra": "{\"warning_markdown\":\"\"}",
+                            "id": 1,
+                            "metric_name": "count",
+                            "metric_type": null,
+                            "table_id": 1,
+                            "uuid": "11b27c88-4151-49fd-b17f-26397cda3b56",
+                            "verbose_name": null,
+                            "warning_text": null
+                        }
+                    }
+                ],
+                "offset": 0,
+                "params": "{\"remote_id\": 1, \"database_name\": \"Apache Hive\", \"import_time\": 1625960076}",
+                "schema": "refined",
+                "sql": "SELECT\n  partidas.temporada AS temporada,\n  partidas.rodada AS rodada,\n  clubemandante.nome AS mandante,\n  partidas.mandanteplacar AS placar_mandante,\n  partidas.visitanteplacar AS placar_visitante,\n  clubevisitante.nome AS visitante,\n  partidas.resultado AS resultado\nFROM refined.partidas AS partidas\nLEFT JOIN refined.clubes AS clubemandante\n  ON partidas.clubemandanteid = clubemandante.clubeid\nLEFT JOIN refined.clubes AS clubevisitante\n  ON partidas.clubevisitanteid = clubevisitante.clubeid",
+                "table_name": "Partidas joined with clubes",
+                "template_params": null
+            }
+        }
+    ]
+}
