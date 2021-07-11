@@ -7,17 +7,25 @@
 </p>
 
 <p align="center">
-<img alt="Architecture" src="./architecture.jpg"/>
+<img alt="Architecture" src="./docs/architecture.jpg"/>
 </p>
 
-This project aims to build and structure a data lake and data warehouse based on the data extracted from Cartola FC (a game about the Brazilian national football championship). The current data warehouse schema used on Hive and the Airflow DAG diagram are presented next:
+This project aims to build and structure a data lake and data warehouse based on the data extracted from Cartola FC (a game about the Brazilian national football championship). The current data warehouse schema used on Hive is presented next:
 
 <p align="center">
-<img alt="Database schema" src="./schema.png"/>
+<img alt="Database schema" src="./docs/schema.png"/>
 </p>
 
+The Airflow DAG includes tasks of environemtn setup in hive and hdfs, extraction from github API na d a transform to each table to be exported in the hive schema. The DAG diagram are presented next:
+
 <p align="center">
-<img alt="Airflow DAG" src="./dag.png"/>
+<img alt="Airflow DAG" src="./docs/dag.png"/>
+</p>
+
+As the final artefact, the dashboard about clubes is presented next:
+
+<p align="center">
+<img alt="Airflow DAG" src="./docs/dashboard.png"/>
 </p>
 
 ## How to start
