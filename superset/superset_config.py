@@ -3,6 +3,11 @@ import os
 # Superset specific config
 ROW_LIMIT = 100000
 
+SQLLAB_TIMEOUT = 300
+SUPERSET_TIMEOUT = 300
+SQLLAB_ASYNC_TIME_LIMIT_SEC = 300
+SUPERSET_WEBSERVER_TIMEOUT = 1000
+
 SUPERSET_WEBSERVER_PORT = 8088
 
 # The SQLAlchemy connection string to your database backend
