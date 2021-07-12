@@ -50,6 +50,11 @@ class Transformer2015(AbstractTransformer):
         atletas_df = self.get_atletas()
         scouts_df = scouts_df.merge(right=atletas_df, on="atletaID")
         scouts_df["temporada"] = 2015
+        scouts_df.drop_duplicates(
+            subset=["partidaID", "atletaID", "clubeID"],
+            keep="first",
+            inplace=True,
+        )
 
         return scouts_df
 
@@ -95,7 +100,7 @@ class Transformer2015(AbstractTransformer):
 
     def get_atletas(self):
         atletas_df = pd.read_csv(f"{self.input_path}/2015/jogadores/1.csv", dtype=str)
-        atletas_df = atletas_df.drop_duplicates("ID").rename(
+        atletas_df = atletas_df.drop_duplicates("ID", keep="first").rename(
             columns={
                 "ID": "atletaID",
                 "Apelido": "apelido",

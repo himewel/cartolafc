@@ -35,6 +35,11 @@ class Transformer2014(AbstractTransformer):
                 "Posicao": "posicaoID",
             },
         )
+        scouts_df.drop_duplicates(
+            subset=["partidaID", "atletaID", "clubeID"],
+            keep="first",
+            inplace=True,
+        )
 
         return scouts_df
 
@@ -79,7 +84,7 @@ class Transformer2014(AbstractTransformer):
 
     def get_atletas(self):
         atletas_df = pd.read_csv(f"{self.input_path}/2014/jogadores/1.csv", dtype=str)
-        atletas_df = atletas_df.drop_duplicates("ID").rename(
+        atletas_df = atletas_df.drop_duplicates("ID", keep="first").rename(
             columns={
                 "ID": "atletaID",
                 "Apelido": "apelido",

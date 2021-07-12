@@ -11,6 +11,10 @@ class Transformer2017(AbstractTransformer):
         )
 
         scouts_df = pd.read_csv(f"{self.input_path}/2017/scouts_raw/1.csv", dtype=str)
+
+        null_status = ["Nulo", "Contundido", "Suspenso"]
+        scouts_df = scouts_df[~scouts_df["atletas.status_id"].isin(null_status)]
+
         scouts_df = scouts_df.merge(
             right=clubes_df,
             left_on="atletas.clube.id.full.name",
@@ -55,6 +59,11 @@ class Transformer2017(AbstractTransformer):
             right_on="abreviacao",
         )
         scouts_df["temporada"] = 2017
+        scouts_df.drop_duplicates(
+            subset=["partidaID", "atletaID", "clubeID"],
+            keep="first",
+            inplace=True,
+        )
 
         return scouts_df
 
@@ -117,7 +126,8 @@ class Transformer2017(AbstractTransformer):
 
     def get_atletas(self):
         atletas_df = pd.read_csv(f"{self.input_path}/2017/jogadores/1.csv", dtype=str)
-        atletas_df = atletas_df.drop_duplicates("AtletaID").rename(
+        atletas_df = atletas_df.drop_duplicates("AtletaID", keep="first")
+        atletas_df = atletas_df.rename(
             columns={
                 "AtletaID": "atletaID",
                 "Apelido": "apelido",

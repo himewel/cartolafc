@@ -10,8 +10,14 @@ class Transformer2019(AbstractTransformer):
         file_list = glob(f"{self.input_path}/2019/rodada/*.csv")
         scouts_df = pd.DataFrame()
         for file in file_list:
-            tmp_df = pd.read_csv(file, dtype=str)
+            tmp_df = pd.read_csv(file, dtype=str).drop_duplicates(
+                subset=["atletas.clube_id", "atletas.atleta_id", "atletas.rodada_id"],
+                keep="first",
+            )
             scouts_df = pd.concat([scouts_df, tmp_df], sort=True)
+
+        null_status = ["Nulo", "Contundido", "Suspenso"]
+        scouts_df = scouts_df[~scouts_df["atletas.status_id"].isin(null_status)]
 
         scouts_df.rename(
             columns={
@@ -52,6 +58,11 @@ class Transformer2019(AbstractTransformer):
             right_on="abreviacao",
         )
         scouts_df["temporada"] = 2019
+        scouts_df.drop_duplicates(
+            subset=["partidaID", "atletaID", "clubeID"],
+            keep="first",
+            inplace=True,
+        )
 
         return scouts_df
 
@@ -105,6 +116,6 @@ class Transformer2019(AbstractTransformer):
         )
 
         atletas_df = atletas_df[["atletaID", "apelido"]]
-        atletas_df.drop_duplicates("atletaID", inplace=True)
+        atletas_df.drop_duplicates("atletaID", keep="first", inplace=True)
         atletas_df["temporada"] = 2019
         return atletas_df
