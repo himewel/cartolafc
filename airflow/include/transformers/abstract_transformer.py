@@ -62,6 +62,12 @@ class AbstractTransformer(ABC):
             .rename(columns={"id": "clubeID", "nome.cbf": "nome"})
             .drop_duplicates(subset=["clubeID"], keep="last")
         )
+        bragantino = {
+            "clubeID": 280,
+            "nome": "Bragantino - SP",
+            "abreviacao": "BGT",
+        }
+        clubes_df = clubes_df.append(bragantino, ignore_index=True)
         return clubes_df
 
     def get_posicoes(self, year):
