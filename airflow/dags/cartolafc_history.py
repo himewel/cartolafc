@@ -7,7 +7,7 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.apache.hive.operators.hive import HiveOperator
 from airflow.utils.task_group import TaskGroup
 
-from include import RawExtractor, TransformFactory
+from include import GithubExtractor, TransformFactory
 
 _AIRFLOW_HOME = os.getenv("AIRFLOW_HOME", ".")
 
@@ -36,7 +36,7 @@ with DAG(
     max_active_runs=1,
     default_args=default_args,
 ) as dag:
-    extractor = RawExtractor(base_url=_API_URL, path=_RAW_PATH)
+    extractor = GithubExtractor(base_url=_API_URL, path=_RAW_PATH)
     transformer = TransformFactory(
         input_path=_RAW_PATH,
         output_path=_TRUSTED_PATH,

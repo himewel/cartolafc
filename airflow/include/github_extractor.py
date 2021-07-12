@@ -5,7 +5,7 @@ import os
 import requests
 
 
-class RawExtractor:
+class GithubExtractor:
     def __init__(self, base_url, path):
         self.base_url = base_url
         self.path = path
@@ -30,7 +30,7 @@ class RawExtractor:
 
         # create file if does not exist and append if exists
         logging.debug(f"Downloading file {filename}...")
-        with open(file=filename, mode="w+") as stream:
+        with open(file=filename, mode="w") as stream:
             stream.write(csv_text)
 
     def extract_static_files(self, year):
