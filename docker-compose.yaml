@@ -93,8 +93,6 @@ services:
             - hadoop_datanode
         healthcheck:
             test: nc -z localhost 9083
-        ports:
-            - 9083:9083
         volumes:
             - ./config:/etc/hive
 
