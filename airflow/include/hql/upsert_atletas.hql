@@ -2,7 +2,11 @@ MSCK REPAIR TABLE trusted.atletas;
 
 TRUNCATE TABLE refined.atletas;
 
-INSERT INTO refined.atletas
+INSERT INTO refined.atletas (
+    atletaID,
+    apelido,
+    temporada
+)
 SELECT
     atletaID,
     apelido,
