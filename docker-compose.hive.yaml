@@ -1,0 +1,63 @@
+networks:
+    default:
+        name: cartolafc_network
+
+services:
+    hadoop:
+        build: hadoop
+        healthcheck:
+            test: wget --spider localhost:9870 || exit 1
+            timeout: 90s
+        ports:
+            - 9870:9870
+            - 8020:8020
+        volumes:
+            - ./config:/etc/hadoop
+
+    hadoop_datanode:
+        build: hadoop
+        command: hdfs datanode
+        healthcheck:
+            test: wget --spider localhost:9864 || exit 1
+            timeout: 90s
+        depends_on:
+            - hadoop
+        volumes:
+            - ./config:/etc/hadoop
+
+    hive:
+        build: hive
+        command: hive --service hiveserver2
+        depends_on:
+            - hive_postgres
+            - hive_metastore
+            - hadoop_datanode
+        healthcheck:
+            test: nc -z localhost 10000
+        ports:
+            - 10000:10000
+            - 10002:10002
+        volumes:
+            - ./config:/etc/hive
+
+    hive_metastore:
+        build: hive
+        command: ./start-metastore.sh
+        depends_on:
+            - hive_postgres
+            - hadoop_datanode
+        healthcheck:
+            test: nc -z localhost 9083
+        volumes:
+            - ./config:/etc/hive
+
+    hive_postgres:
+        environment:
+            POSTGRES_USER: hive
+            POSTGRES_PASSWORD: hive
+            POSTGRES_DB: hive
+        healthcheck:
+            test: pg_isready -U postgres
+        image: postgres:13-alpine
+
+version: '3.8'

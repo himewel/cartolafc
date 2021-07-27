@@ -1,0 +1,53 @@
+networks:
+    default:
+        name: cartolafc_network
+
+x-airflow-environment: &airflow-environment
+    - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@airflow_postgres:5432/airflow
+    - AIRFLOW_CONN_HIVE_CLI_DEFAULT=hive-cli://:@hive:10000
+    - AIRFLOW_CONN_DATAHUB_KAFKA_DEFAULT=datahub-kafka://broker:9092
+    - AIRFLOW_CONN_DATAHUB_REST_DEFAULT=datahub-rest://http%3A%2F%2Fdatahub-gms%3A8080
+
+services:
+    airflow_webserver:
+        build: airflow
+        command: ./wait-for-it.sh airflow_postgres:5432 -t 60 -- bash ./scripts/start-webserver.sh
+        depends_on:
+            - airflow_postgres
+        environment: *airflow-environment
+        healthcheck:
+            test: curl -f localhost:8080 || exit 1
+            timeout: 90s
+        ports:
+            - 8080:8080
+        volumes:
+            - ./airflow/dags:/opt/airflow/dags
+            - ./airflow/data:/opt/airflow/data
+            - ./airflow/include:/opt/airflow/include
+            - ./config:/etc/hadoop
+
+    airflow_scheduler:
+        build: airflow
+        command: ./wait-for-it.sh airflow_webserver:8080 -t 60 -- bash ./scripts/start-scheduler.sh
+        depends_on:
+            - airflow_webserver
+        environment: *airflow-environment
+        healthcheck:
+            test: nc -z localhost 8793
+            timeout: 90s
+        volumes:
+            - ./airflow/dags:/opt/airflow/dags
+            - ./airflow/data:/opt/airflow/data
+            - ./airflow/include:/opt/airflow/include
+            - ./config:/etc/hadoop
+
+    airflow_postgres:
+        environment:
+            POSTGRES_USER: airflow
+            POSTGRES_PASSWORD: airflow
+            POSTGRES_DB: airflow
+        healthcheck:
+            test: pg_isready -U postgres
+        image: postgres:13-alpine
+
+version: '3.8'

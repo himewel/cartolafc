@@ -1,0 +1,29 @@
+networks:
+    default:
+        name: cartolafc_network
+
+services:
+    superset:
+        build: superset
+        depends_on:
+            - superset_postgres
+        environment:
+            - SUPERSET_SQL_ALCHEMY=postgresql+psycopg2://superset:superset@superset_postgres:5432/superset
+        healthcheck:
+            test: curl --fail http://localhost:8088 || exit 1
+        ports:
+            - 8088:8088
+        volumes:
+            - ./config:/etc/hive
+            - ./superset/dashboards:/opt/superset/dashboards
+
+    superset_postgres:
+        environment:
+            POSTGRES_USER: superset
+            POSTGRES_PASSWORD: superset
+            POSTGRES_DB: superset
+        healthcheck:
+            test: pg_isready -U postgres
+        image: postgres:13-alpine
+
+version: '3.8'
