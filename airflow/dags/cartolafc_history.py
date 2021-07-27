@@ -7,7 +7,9 @@ from airflow.operators.python import PythonOperator
 from airflow.providers.apache.hive.operators.hive import HiveOperator
 from airflow.utils.task_group import TaskGroup
 
-from include import GithubExtractor, TransformFactory
+from datahub_provider.entities import Dataset
+
+from include import GithubExtractor, TransformFactory, datahub_update
 
 _AIRFLOW_HOME = os.getenv("AIRFLOW_HOME", ".")
 
@@ -20,6 +22,7 @@ _TRUSTED_PATH = f"{_DATA_PATH}/trusted"
 _API_URL = "https://api.github.com/repos/henriquepgomide/caRtola/contents/data"
 
 _SCHEMA_PATH = f"{_INCLUDE_PATH}/schema.yaml"
+
 _CREATE_EXTERNAL_TABLES = open(f"{_INCLUDE_PATH}/hql/create_external_tables.hql")
 _CREATE_TABLES = open(f"{_INCLUDE_PATH}/hql/create_managed_tables.hql")
 _UPSERT_ATLETAS = open(f"{_INCLUDE_PATH}/hql/upsert_atletas.hql")
@@ -27,10 +30,12 @@ _UPSERT_ATLETAS = open(f"{_INCLUDE_PATH}/hql/upsert_atletas.hql")
 default_args = {
     "depends_on_past": True,
     "wait_for_downstream": True,
+    "retries": 5,
 }
 
 with DAG(
     dag_id="cartolafc_history",
+    description="Run automated data ingestion from CartolaFC to HDFS and Hive",
     schedule_interval="@yearly",
     start_date=datetime(2014, 1, 1),
     max_active_runs=1,
@@ -67,20 +72,35 @@ with DAG(
             hql=_CREATE_TABLES.read(),
         )
 
+        datahub_create = PythonOperator(
+            task_id="update_datahub_schema",
+            python_callable=datahub_update,
+        )
+
         hive_creates = [create_external_tables_task, create_tables_task]
-        create_folders_task >> hive_creates
+        create_folders_task >> hive_creates >> datahub_create
 
     with TaskGroup(group_id="extract") as ext_tg:
         extract_dynamic_task = PythonOperator(
             task_id="extract_dynamic",
             python_callable=extractor.extract_dynamic_files,
             op_kwargs={"year": "{{ execution_date.year }}"},
+            inlets={
+                "datasets": [
+                    Dataset("http", _API_URL.replace("https://", "").replace("/", "."))
+                ]
+            },
         )
 
         extract_static_task = PythonOperator(
             task_id="extract_static",
             python_callable=extractor.extract_static_files,
             op_kwargs={"year": "{{ execution_date.year }}"},
+            inlets={
+                "datasets": [
+                    Dataset("http", _API_URL.replace("https://", "").replace("/", "."))
+                ]
+            },
         )
 
         extraction_tasks_list = [extract_dynamic_task, extract_static_task]
@@ -91,6 +111,7 @@ with DAG(
                 raw_path=_RAW_PATH,
                 year="{{ execution_date.year }}",
             ),
+            outlets={"datasets": [Dataset("hdfs", "raw.{{ execution_date.year }}")]},
         )
 
         extraction_tasks_list >> raw_upload_task
@@ -103,6 +124,7 @@ with DAG(
                 task_id=f"transform_{table_name}",
                 python_callable=transform_method,
                 op_kwargs={"year": "{{ execution_date.year }}"},
+                inlets={"datasets": [Dataset("hdfs", "raw.{{ execution_date.year }}")]},
             )
 
             trusted_upload_task = BashOperator(
@@ -111,12 +133,20 @@ with DAG(
                     hdfs dfs -copyFromLocal -f \
                         {_TRUSTED_PATH}/{table_name} /trusted
                 """,
+                outlets={
+                    "datasets": [
+                        Dataset("hdfs", f"trusted.{table_name}"),
+                        Dataset("hive", f"trusted.{table_name}"),
+                    ]
+                },
             )
 
             if table_name == "atletas":
                 update_table_task = HiveOperator(
                     task_id=f"upsert_hive_{table_name}",
                     hql=_UPSERT_ATLETAS.read(),
+                    inlets={"datasets": [Dataset("hive", f"trusted.{table_name}")]},
+                    outlets={"datasets": [Dataset("hive", f"refined.{table_name}")]},
                 )
             else:
                 update_table_task = HiveOperator(
@@ -128,6 +158,8 @@ with DAG(
                         SELECT * FROM trusted.{table_name};
                         MSCK REPAIR TABLE refined.{table_name};
                     """,
+                    inlets={"datasets": [Dataset("hive", f"trusted.{table_name}")]},
+                    outlets={"datasets": [Dataset("hive", f"refined.{table_name}")]},
                 )
 
             transform_task >> trusted_upload_task >> update_table_task
