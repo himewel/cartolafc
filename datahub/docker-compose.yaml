@@ -71,8 +71,6 @@ services:
                 - curl -sS --fail 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=0s' || exit 1
         image: elasticsearch:7.9.3
         mem_limit: 1g
-        volumes:
-            - esdata:/usr/share/elasticsearch/data
 
     elasticsearch-setup:
         depends_on:
@@ -102,7 +100,6 @@ services:
         image: mysql:5.7
         volumes:
             - ./mysql/init.sql:/docker-entrypoint-initdb.d/init.sql
-            - mysqldata:/var/lib/mysql
 
     mysql-setup:
         depends_on:
@@ -129,11 +126,5 @@ services:
             - ZOOKEEPER_CLIENT_PORT=2181
             - ZOOKEEPER_TICK_TIME=2000
         image: confluentinc/cp-zookeeper:5.4.0
-        volumes:
-            - zkdata:/var/opt/zookeeper
 
 version: '3.8'
-volumes:
-    mysqldata: null
-    zkdata: null
-    esdata: null
