@@ -13,6 +13,7 @@ USER root
 
 COPY start-superset.sh .
 COPY superset_config.py .
+COPY lineage_update.py .
 
 RUN chown -R superset ${SUPERSET_HOME} \
     && chmod +x ${SUPERSET_HOME}/start-superset.sh
@@ -22,7 +23,8 @@ USER superset
 RUN pip install \
     --quiet \
     --no-cache-dir \
-    pyhive[hive]==0.6.4
+        pyhive[hive]==0.6.4 \
+        acryl-datahub[superset]
 
 ENTRYPOINT [ "/bin/bash", "-c" ]
 CMD [ "${SUPERSET_HOME}/start-superset.sh" ]
