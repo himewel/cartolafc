@@ -10,32 +10,46 @@
 <img alt="Architecture" src="./docs/architecture.jpg"/>
 </p>
 
-This project aims to build and structure a data lake and data warehouse based on the data extracted from Cartola FC (a game about the Brazilian national football championship).
+This project aims to build and structure a data lake and data warehouse based on the data extracted from Cartola FC (a game about the Brazilian national football championship). To do it, a few services are used:
+
+- Airflow: scheduler and task orchestrator;
+- DataHub: data lineage backend and data catalog;
+- Hadoop: data repository;
+- Hive: database over hadoop;
+- Superset: visualization tool.
 
 ## How to start
 
-The base of components are orchestrated at the `docker-compose.yaml` in the root level of the project. Services like hadoop datanode and namenode, hive server and metastore, airflow webserver and scheduler, and superset server can be found there. So, to setup all the project containers at the same time run the following command:
+The base of components are orchestrated with docker containers in the compose files at the root level of the project. Services like hadoop datanode and namenode, hive server and metastore, airflow webserver and scheduler, and superset server can be found there. So, to create all the project components at the same time, run the following command:
 
 ```shell
 docker-compose up --detach
 ```
 
-To setup only the operational group of containers (airflow, hive and hadoop) run the following:
+To setup only the operational group of containers you will need airflow, hive, hadoop and datahub containers. So, run the following:
 
 ```shell
-docker-compose up --detach airflow_scheduler hive
+docker-compose \
+    --file docker-compose.airflow.yaml \
+    --file docker-compose.hive.yaml \
+    --file docker-compose.datahub.yaml \
+    up --detach
 ```
 
 To setup only the querying group of containers (superset, hive and hadoop) run the following:
 
 ```shell
-docker-compose up --detach superset hive
+docker-compose \
+    --file docker-compose.superset.yaml \
+    --file docker-compose.hive.yaml \
+    up --detach
 ```
 
-So, the containers of hadoop, airflow, hive and superset will startup. After some moments of the services startup and healthchecks ok, you can check the UIs:
+After a few moments of the start and healthcheck of services, the web interfaces will be found in:
+- Airflow Web UI: http://localhost:8080
+- DataHub Web UI: http://localhost:9002
 - Hadoop Web UI: http://localhost:9870
 - Hive Web UI: http://localhost:10002
-- Airflow Web UI: http://localhost:8080
 - Superset Web UI: http://localhost:8088
 
 ## Miscellaneous
