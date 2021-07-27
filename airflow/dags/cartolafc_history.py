@@ -24,22 +24,24 @@ _API_URL = "https://api.github.com/repos/henriquepgomide/caRtola/contents/data"
 _SCHEMA_PATH = f"{_INCLUDE_PATH}/schema.yaml"
 
 _CREATE_EXTERNAL_TABLES = open(f"{_INCLUDE_PATH}/hql/create_external_tables.hql")
-_CREATE_TABLES = open(f"{_INCLUDE_PATH}/hql/create_managed_tables.hql")
+_CREATE_MANAGED_TABLES = open(f"{_INCLUDE_PATH}/hql/create_managed_tables.hql")
+_CREATE_VIEW_TABLES = open(f"{_INCLUDE_PATH}/hql/create_view_tables.hql")
 _UPSERT_ATLETAS = open(f"{_INCLUDE_PATH}/hql/upsert_atletas.hql")
 
 default_args = {
     "depends_on_past": True,
-    "wait_for_downstream": True,
     "retries": 5,
+    "wait_for_downstream": True,
 }
 
 with DAG(
     dag_id="cartolafc_history",
+    default_args=default_args,
     description="Run automated data ingestion from CartolaFC to HDFS and Hive",
+    max_active_runs=1,
     schedule_interval="@yearly",
     start_date=datetime(2014, 1, 1),
-    max_active_runs=1,
-    default_args=default_args,
+    tags=["Hive", "HDFS", "DataHub"],
 ) as dag:
     extractor = GithubExtractor(base_url=_API_URL, path=_RAW_PATH)
     transformer = TransformFactory(
@@ -67,18 +69,18 @@ with DAG(
             hql=_CREATE_EXTERNAL_TABLES.read(),
         )
 
-        create_tables_task = HiveOperator(
+        create_managed_tables_task = HiveOperator(
             task_id="create_hive_managed_tables",
-            hql=_CREATE_TABLES.read(),
+            hql=_CREATE_MANAGED_TABLES.read(),
         )
 
-        datahub_create = PythonOperator(
-            task_id="update_datahub_schema",
-            python_callable=datahub_update,
+        create_view_tables_task = HiveOperator(
+            task_id="create_hive_view_tables",
+            hql=_CREATE_VIEW_TABLES.read(),
         )
 
-        hive_creates = [create_external_tables_task, create_tables_task]
-        create_folders_task >> hive_creates >> datahub_create
+        hive_creates = [create_external_tables_task, create_managed_tables_task]
+        create_folders_task >> hive_creates >> create_view_tables_task
 
     with TaskGroup(group_id="extract") as ext_tg:
         extract_dynamic_task = PythonOperator(
@@ -118,6 +120,7 @@ with DAG(
 
     env_tg >> ext_tg
 
+    transform_groups = []
     for table_name, transform_method in transform_methods.items():
         with TaskGroup(group_id=f"transform_{table_name}") as transf_tg:
             transform_task = PythonOperator(
@@ -164,4 +167,11 @@ with DAG(
 
             transform_task >> trusted_upload_task >> update_table_task
 
+        transform_groups.append(transf_tg)
         ext_tg >> transf_tg
+
+    datahub_update = PythonOperator(
+        task_id="update_datahub_schema",
+        python_callable=datahub_update,
+    )
+    transform_groups >> datahub_update
