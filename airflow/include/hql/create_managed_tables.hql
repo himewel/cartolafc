@@ -1,9 +1,11 @@
-CREATE SCHEMA IF NOT EXISTS refined;
+CREATE SCHEMA IF NOT EXISTS refined
+COMMENT 'Armazena tabelas da camada refined do data lake';
 
 CREATE TABLE IF NOT EXISTS refined.atletas (
     atletaID    INT     COMMENT 'ID do atleta',
     apelido     STRING  COMMENT 'Apelido do atleta'
 )
+COMMENT 'Tabela espelhando camada refined do data lake com dados de atletas'
 PARTITIONED BY (
     temporada   INT     COMMENT 'Temporada de inclusão'
 );
@@ -12,7 +14,8 @@ CREATE TABLE IF NOT EXISTS refined.clubes (
     clubeID     INT     COMMENT 'ID do clube',
     nome        STRING  COMMENT 'Nome do clube',
     abreviacao  STRING  COMMENT 'Abreviação do clube'
-);
+)
+COMMENT 'Tabela espelhando camada refined do data lake com dados de clubes';
 
 CREATE TABLE IF NOT EXISTS refined.partidas (
     partidaID           STRING  COMMENT 'UUID da partida',
@@ -23,6 +26,7 @@ CREATE TABLE IF NOT EXISTS refined.partidas (
     visitantePlacar     INT     COMMENT 'Placar do clube visitante',
     resultado           STRING  COMMENT 'Resultado final da partida ["Casa", "Visitante", "Empate"]'
 )
+COMMENT 'Tabela espelhando camada refined do data lake com dados de partidas'
 PARTITIONED BY (
     temporada           INT     COMMENT 'Temporada da partida'
 );
@@ -31,7 +35,8 @@ CREATE TABLE IF NOT EXISTS refined.posicoes (
     posicaoID   INT     COMMENT 'ID da posição',
     nome        STRING  COMMENT 'Nome da posição',
     abreviacao  STRING  COMMENT 'Abreviação da posição'
-);
+)
+COMMENT 'Tabela espelhando camada refined do data lake com dados de posicoes';
 
 CREATE TABLE IF NOT EXISTS refined.scouts (
     partidaID       STRING  COMMENT 'UUID da partida',
@@ -61,6 +66,7 @@ CREATE TABLE IF NOT EXISTS refined.scouts (
     DP              DOUBLE  COMMENT 'Defesa de penaltis',
     GS              DOUBLE  COMMENT 'Gols sofridos'
 )
+COMMENT 'Tabela espelhando camada refined do data lake com dados de scouts'
 PARTITIONED BY (
     temporada       INT     COMMENT 'Temporada da partida'
 );
