@@ -50,6 +50,8 @@ RUN curl -O https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-
 
 USER airflow
 
-RUN pip install apache-airflow-providers-apache-hive
+COPY ./airflow.cfg ./airflow.cfg
+COPY ./requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir --user --requirement ./requirements.txt
 
 ENTRYPOINT [ "/bin/bash" ]

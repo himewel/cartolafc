@@ -1,0 +1,4 @@
+apache-airflow-providers-apache-hive==2.0.0
+acryl-datahub[hive]==0.8.6.3
+confluent-kafka==1.7.0
+fastavro==1.4.4
