@@ -22,9 +22,6 @@ superset import-dashboards \
     --path ./dashboards/*.json \
     --username admin
 
-echo "Adding lineage at DataHub..."
-python3 ./lineage_update.py
-
 echo "Starting webserver..."
 gunicorn \
     --bind "0.0.0.0:8088" \
