@@ -20,6 +20,10 @@ case "$mode" in
             up --detach
         ;;
 
+    help)
+        echo "Choose a group of services to start [airflow|superset]..."
+        echo "An empty param will start Airflow, Superset, Datahub, Hive and Hadoop"
+        ;;
     *)
         echo "Starting all services..."
         docker-compose \
