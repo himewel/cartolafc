@@ -23,7 +23,15 @@ This project aims to build and structure a data lake and data warehouse based on
 The base of components are orchestrated with docker containers in the compose files at the root level of the project. Services like hadoop datanode and namenode, hive server and metastore, airflow webserver and scheduler, and superset server can be found there. So, to create all the project components at the same time, run the following command:
 
 ```shell
-docker-compose up --detach
+docker-compose up \
+    --file docker-compose.airflow.yaml \
+    --file docker-compose.hive.yaml \
+    --file docker-compose.datahub.yaml \
+    --file docker-compose.superset.yaml \
+    up --detach
+
+# or just quickstart
+./quisckstart.sh
 ```
 
 To setup only the operational group of containers you will need airflow, hive, hadoop and datahub containers. So, run the following:
@@ -34,6 +42,9 @@ docker-compose \
     --file docker-compose.hive.yaml \
     --file docker-compose.datahub.yaml \
     up --detach
+
+# or just quickstart
+./quisckstart.sh airflow
 ```
 
 To setup only the querying group of containers (superset, hive and hadoop) run the following:
@@ -43,6 +54,9 @@ docker-compose \
     --file docker-compose.superset.yaml \
     --file docker-compose.hive.yaml \
     up --detach
+
+# or just quickstart
+./quisckstart.sh superset
 ```
 
 After a few moments of the start and healthcheck of services, the web interfaces will be found in:
