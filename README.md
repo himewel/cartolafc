@@ -90,6 +90,16 @@ Two dashboards are built into Superset, the first with an emphasis on teams and 
 <img alt="Players dashboard" src="./docs/dashboard-atletas.png"/>
 </p>
 
+Also, DataHub is configured to gather metadata from Superset, Hive and Airflow. The following images represent the metadata extracted from Airflow and the data catalog built from the Hive tables:
+
+<p align="center">
+<img alt="Airflow metadata" src="./docs/task-catalog.png"/>
+</p>
+
+<p align="center">
+<img alt="Data catalog" src="./docs/data-catalog.png"/>
+</p>
+
 ## Query examples
 
 Some sample queries are stored in `docs/sql`. As an example, the best lineup of players based on scouts in all data since 2014:
