@@ -22,10 +22,6 @@ _TRUSTED_PATH = f"{_DATA_PATH}/trusted"
 _API_URL = "https://api.github.com/repos/henriquepgomide/caRtola/contents/data"
 
 _SCHEMA_PATH = f"{_INCLUDE_PATH}/schema.yaml"
-
-_CREATE_EXTERNAL_TABLES = open(f"{_INCLUDE_PATH}/hql/create_external_tables.hql")
-_CREATE_MANAGED_TABLES = open(f"{_INCLUDE_PATH}/hql/create_managed_tables.hql")
-_CREATE_VIEW_TABLES = open(f"{_INCLUDE_PATH}/hql/create_view_tables.hql")
 _UPSERT_ATLETAS = open(f"{_INCLUDE_PATH}/hql/upsert_atletas.hql")
 
 default_args = {
@@ -63,24 +59,6 @@ with DAG(
             task_id="create_hdfs_path",
             bash_command="hdfs dfs -mkdir -p /raw /trusted",
         )
-
-        create_external_tables_task = HiveOperator(
-            task_id="create_hive_external_tables",
-            hql=_CREATE_EXTERNAL_TABLES.read(),
-        )
-
-        create_managed_tables_task = HiveOperator(
-            task_id="create_hive_managed_tables",
-            hql=_CREATE_MANAGED_TABLES.read(),
-        )
-
-        create_view_tables_task = HiveOperator(
-            task_id="create_hive_view_tables",
-            hql=_CREATE_VIEW_TABLES.read(),
-        )
-
-        hive_creates = [create_external_tables_task, create_managed_tables_task]
-        create_folders_task >> hive_creates >> create_view_tables_task
 
     with TaskGroup(group_id="extract") as ext_tg:
         extract_dynamic_task = PythonOperator(

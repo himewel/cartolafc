@@ -60,4 +60,12 @@ services:
             test: pg_isready -U postgres
         image: postgres:13-alpine
 
+    hive_setup:
+        build: hive
+        command: ./start-tables.sh
+        depends_on:
+            - hive
+        volumes:
+            - ./config:/etc/hive
+
 version: '3.8'

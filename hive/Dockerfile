@@ -37,8 +37,10 @@ RUN wget -q https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apache-hive-3.1.2-
 
 WORKDIR ${HIVE_HOME}/bin
 
+COPY ./scripts ./scripts
 COPY ./start-metastore.sh .
+COPY ./start-tables.sh .
 
-RUN chmod +x ./start-metastore.sh
+RUN chmod +x ./*.sh
 
 ENTRYPOINT [ "bash" ]
