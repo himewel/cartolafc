@@ -11,12 +11,16 @@ WORKDIR ${SUPERSET_HOME}
 
 USER root
 
+RUN apt-get update \
+    && apt-get install netcat --yes
+
 COPY start-superset.sh .
+COPY create-dashboards.sh .
 COPY superset_config.py .
 COPY lineage_update.py .
 
 RUN chown -R superset ${SUPERSET_HOME} \
-    && chmod +x ${SUPERSET_HOME}/start-superset.sh
+    && chmod +x ${SUPERSET_HOME}/*.sh
 
 USER superset
 

@@ -12,16 +12,6 @@ echo "Migrating meta database..."
 superset db upgrade
 superset init
 
-echo "Creating database..."
-superset set-database-uri \
-    --database_name "hive" \
-    --uri hive://hive:10000
-
-echo "Importing dashboards..."
-superset import-dashboards \
-    --path ./dashboards/*.json \
-    --username admin
-
 echo "Starting webserver..."
 gunicorn \
     --bind "0.0.0.0:8088" \

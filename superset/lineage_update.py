@@ -9,7 +9,7 @@ def superset_update():
                 "username": "admin",
                 "password": "admin",
                 "provider": "db",
-                "connect_uri": "http://localhost:8088",
+                "connect_uri": "http://superset:8088",
             },
         },
         "sink": {

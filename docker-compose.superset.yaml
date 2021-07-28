@@ -15,7 +15,6 @@ services:
             - 8088:8088
         volumes:
             - ./config:/etc/hive
-            - ./superset/dashboards:/opt/superset/dashboards
 
     superset_postgres:
         environment:
@@ -25,5 +24,15 @@ services:
         healthcheck:
             test: pg_isready -U postgres
         image: postgres:13-alpine
+
+    superset_setup:
+        build: superset
+        command: ./create-dashboards.sh
+        depends_on:
+            - superset
+        environment:
+            - SUPERSET_SQL_ALCHEMY=postgresql+psycopg2://superset:superset@superset_postgres:5432/superset
+        volumes:
+            - ./superset/dashboards:/opt/superset/dashboards
 
 version: '3.8'
