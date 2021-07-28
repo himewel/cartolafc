@@ -54,13 +54,13 @@ After a few moments of the start and healthcheck of services, the web interfaces
 
 ## Miscellaneous
 
-The current data warehouse schema used on Hive is presented next. It mirror the trusted layer build on hadoop with external tables (this is the `trusted` schema) to make some ELT to construct the managed tables in the `refined` schema.
+The current data warehouse schema used on Hive is presented next. It mirrors the trusted layer build on hadoop with external tables (this is the `trusted` schema) to make some ELT to construct the managed tables in the `refined` schema.
 
 <p align="center">
 <img alt="Database schema" src="./docs/schema.png"/>
 </p>
 
-The Airflow DAG includes tasks of environment setup in hive and hdfs, file extraction from github API and a transform/load groups for each table of the hive schema. The DAG diagram is presented next:
+The Airflow DAG includes file extraction from github API and transform/load groups for each table of the data warehouse schema. The DAG diagram is presented next:
 
 <p align="center">
 <img alt="Airflow DAG" src="./docs/dag.png"/>
