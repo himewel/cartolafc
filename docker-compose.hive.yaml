@@ -25,6 +25,14 @@ services:
         volumes:
             - ./config:/etc/hadoop
 
+    hadoop_startup:
+        build: hadoop
+        command: ./start-folders.sh
+        depends_on:
+            - hadoop_datanode
+        volumes:
+            - ./config:/etc/hadoop
+
     hive:
         build: hive
         command: hive --service hiveserver2

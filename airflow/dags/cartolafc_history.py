@@ -54,12 +54,6 @@ with DAG(
         "posicoes": transformer.get_posicoes,
     }
 
-    with TaskGroup(group_id="environment_setup") as env_tg:
-        create_folders_task = BashOperator(
-            task_id="create_hdfs_path",
-            bash_command="hdfs dfs -mkdir -p /raw /trusted",
-        )
-
     with TaskGroup(group_id="extract") as ext_tg:
         extract_dynamic_task = PythonOperator(
             task_id="extract_dynamic",
@@ -95,8 +89,6 @@ with DAG(
         )
 
         extraction_tasks_list >> raw_upload_task
-
-    env_tg >> ext_tg
 
     transform_groups = []
     for table_name, transform_method in transform_methods.items():
@@ -152,4 +144,5 @@ with DAG(
         task_id="update_datahub_schema",
         python_callable=datahub_update,
     )
+
     transform_groups >> datahub_update
