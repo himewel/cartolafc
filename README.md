@@ -15,12 +15,12 @@ This project aims to build and structure a data lake and data warehouse based on
 - Airflow: scheduler and task orchestrator;
 - DataHub: data lineage backend and data catalog;
 - Hadoop: data repository;
-- Hive: database over hadoop;
+- Hive: database over Hadoop;
 - Superset: visualization tool.
 
 ## How to start
 
-The base of components are orchestrated with docker containers in the compose files at the root level of the project. Services like hadoop datanode and namenode, hive server and metastore, airflow webserver and scheduler, and superset server can be found there. So, to create all the project components at the same time, run the following command:
+The base of components are orchestrated with docker containers in the compose files at the root level of the project. Services like Hadoop datanode and namenode, Hive server and metastore, Airflow webserver and scheduler, and Superset server can be found there. So, to create all the project components at the same time, run the following command:
 
 ```shell
 docker-compose up \
@@ -34,7 +34,7 @@ docker-compose up \
 ./quisckstart.sh
 ```
 
-To setup only the operational group of containers you will need airflow, hive, hadoop and datahub containers. So, run the following:
+To setup only the operational group of containers you will need Airflow, Hive, Hadoop and DataHub containers. So, run the following:
 
 ```shell
 docker-compose \
@@ -47,7 +47,7 @@ docker-compose \
 ./quisckstart.sh airflow
 ```
 
-To setup only the querying group of containers (superset, hive and hadoop) run the following:
+To setup only the querying group of containers (Superset, Hive and Hadoop) run the following:
 
 ```shell
 docker-compose \
@@ -68,7 +68,7 @@ After a few moments of the start and healthcheck of services, the web interfaces
 
 ## Miscellaneous
 
-The current data warehouse schema used on Hive is presented next. It mirrors the trusted layer build on hadoop with external tables (this is the `trusted` schema) to make some ELT to construct the managed tables in the `refined` schema.
+The current data warehouse schema used on Hive is presented next. It mirrors the trusted layer build on Hadoop with external tables (this is the `trusted` schema) to make some ELT to construct the managed tables in the `refined` schema.
 
 <p align="center">
 <img alt="Database schema" src="./docs/schema.png"/>
@@ -80,7 +80,7 @@ The Airflow DAG includes file extraction from github API and transform/load grou
 <img alt="Airflow DAG" src="./docs/dag.png"/>
 </p>
 
-Two dashboards are built into superset, the first with an emphasis on teams and the second on player perfomance:
+Two dashboards are built into Superset, the first with an emphasis on teams and the second on players perfomance:
 
 <p align="center">
 <img alt="Teams dashboard" src="./docs/dashboard-clubes.png"/>
@@ -146,4 +146,49 @@ WHERE
 -- 2017      9      Flamengo - RJ      Paolo Guerrero       32.1   7.48  ata
 -- 2020      31     Internacional - RS Yuri Alberto         31.5   5.85  ata
 -- 2017      15     Sport - PE         Vanderlei Luxemburgo 10.92  5.34  tec
+```
+
+Best scouts by season since 2014:
+
+```sql
+WITH ranked_scouts AS (
+    SELECT
+        scouts.temporada,
+        partidas.rodada,
+        clubes.nome AS clube,
+        atletas.apelido AS jogador,
+        scouts.pontos,
+        scouts.pontosmedia AS media,
+        RANK() OVER (
+            PARTITION BY scouts.temporada
+            ORDER BY scouts.pontos DESC
+        ) AS scoutrank
+    FROM refined.scouts AS scouts
+    JOIN refined.clubes AS clubes
+        ON clubes.clubeid  = scouts.clubeid
+    JOIN refined.partidas AS partidas
+        ON partidas.partidaid = scouts.partidaid
+    JOIN refined.atletas AS atletas
+        ON atletas.atletaid = scouts.atletaid
+)
+SELECT
+    temporada,
+    rodada,
+    clube,
+    jogador,
+    pontos,
+    media
+FROM ranked_scouts
+WHERE ranked_scouts.scoutrank = 1
+ORDER BY ranked_scouts.pontos DESC
+
+-- Output:
+-- temporada rodada clube              jogador           pontos media
+-- 2019      10     Flamengo - RJ      Arrascaeta        37.7   12.62
+-- 2017      12     Avaí - SC          Douglas Friedrich 33.0   21.83
+-- 2015      23     Cruzeiro - MG      Willian           32.7   4.34
+-- 2014      4      Botafogo - RJ      Daniel            31.9   12.93
+-- 2020      31     Internacional - RS Yuri Alberto      31.5   5.85
+-- 2018      9      Santos - SP        Rodrygo           31.1   6.31
+-- 2016      8      Botafogo - RJ      Sassá             28.2   6.67
 ```
