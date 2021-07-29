@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+echo "Waiting postgres to launch on airflow_postgres:5432..."
+while ! nc -z airflow_postgres 5432; do
+    sleep 1
+done
+
 echo "Setting up meta database..."
 airflow db upgrade
 

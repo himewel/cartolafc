@@ -42,11 +42,10 @@ RUN curl -O https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apache-hive-3.1.2-
 
 COPY scripts ./scripts
 
-RUN curl -O https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh \
-    && chmod +x ./wait-for-it.sh \
-    && usermod --uid ${USER_ID} airflow \
+RUN usermod --uid ${USER_ID} airflow \
     && groupmod --gid ${GROUP_ID} airflow \
-    && chown --recursive airflow ${AIRFLOW_HOME}
+    && chown --recursive airflow ${AIRFLOW_HOME} \
+    && chmod +x ./scripts/*.sh
 
 USER airflow
 

@@ -4,14 +4,15 @@ networks:
 
 x-airflow-environment: &airflow-environment
     - AIRFLOW__CORE__SQL_ALCHEMY_CONN=postgresql+psycopg2://airflow:airflow@airflow_postgres:5432/airflow
-    - AIRFLOW_CONN_HIVE_CLI_DEFAULT=hive-cli://:@hive:10000
+    - AIRFLOW_CONN_HDFS_DEFAULT=hdfs://hadoop:8020
+    - AIRFLOW_CONN_HIVE_CLI_DEFAULT=hive-cli://hive:10000
     - AIRFLOW_CONN_DATAHUB_KAFKA_DEFAULT=datahub-kafka://broker:9092
     - AIRFLOW_CONN_DATAHUB_REST_DEFAULT=datahub-rest://http%3A%2F%2Fdatahub-gms%3A8080
 
 services:
     airflow_webserver:
         build: airflow
-        command: ./wait-for-it.sh airflow_postgres:5432 -t 60 -- bash ./scripts/start-webserver.sh
+        command: ./scripts/start-webserver.sh
         depends_on:
             - airflow_postgres
         environment: *airflow-environment
@@ -28,7 +29,7 @@ services:
 
     airflow_scheduler:
         build: airflow
-        command: ./wait-for-it.sh airflow_webserver:8080 -t 60 -- bash ./scripts/start-scheduler.sh
+        command: ./scripts/start-scheduler.sh
         depends_on:
             - airflow_webserver
         environment: *airflow-environment
