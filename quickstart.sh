@@ -22,7 +22,7 @@ case "$mode" in
 
     help)
         echo "Choose a group of services to start [airflow|superset]..."
-        echo "An empty param will start Airflow, Superset, Datahub, Hive and Hadoop"
+        echo "An empty param will start Airflow, Superset, Datahub, Hive and Hadoop together"
         ;;
     *)
         echo "Starting all services..."
