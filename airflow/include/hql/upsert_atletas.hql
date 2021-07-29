@@ -1,8 +1,8 @@
-MSCK REPAIR TABLE trusted.atletas;
+MSCK REPAIR TABLE curated.atletas;
 
-TRUNCATE TABLE refined.atletas;
+TRUNCATE TABLE trusted.atletas;
 
-INSERT INTO refined.atletas (
+INSERT INTO trusted.atletas (
     atletaID,
     apelido,
     temporada
@@ -20,8 +20,8 @@ FROM (
             PARTITION BY atletaid
             ORDER BY temporada DESC
         ) as rownumber
-    FROM trusted.atletas
+    FROM curated.atletas
 ) trusted_row_numbers
 WHERE rownumber = 1;
 
-MSCK REPAIR TABLE refined.atletas;
+MSCK REPAIR TABLE trusted.atletas;

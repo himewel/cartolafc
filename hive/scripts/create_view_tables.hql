@@ -10,7 +10,7 @@ CREATE OR REPLACE VIEW superset.partidas_full (
     visitante           COMMENT 'Nome do clube visitante',
     resultado           COMMENT 'Resultado final da partida ["Casa", "Visitante", "Empate"]'
 )
-COMMENT 'View relacionando nomes de clubes e partidas do schema refined'
+COMMENT 'View relacionando nomes de clubes e partidas do schema trusted'
 AS SELECT
     partidas.temporada AS temporada,
     partidas.rodada AS rodada,
@@ -19,10 +19,10 @@ AS SELECT
     partidas.visitanteplacar AS placarVisitante,
     clubevisitante.nome AS visitante,
     partidas.resultado AS resultado
-FROM refined.partidas AS partidas
-LEFT JOIN refined.clubes AS clubemandante
+FROM trusted.partidas AS partidas
+LEFT JOIN trusted.clubes AS clubemandante
     ON partidas.clubemandanteid = clubemandante.clubeid
-LEFT JOIN refined.clubes AS clubevisitante
+LEFT JOIN trusted.clubes AS clubevisitante
     ON partidas.clubevisitanteid = clubevisitante.clubeid;
 
 CREATE OR REPLACE VIEW superset.scouts_full (
@@ -54,7 +54,7 @@ CREATE OR REPLACE VIEW superset.scouts_full (
     DP              COMMENT 'Defesa de penaltis',
     GS              COMMENT 'Gols sofridos'
 )
-COMMENT 'View relacionando atletas, clubes e scouts do schema refined'
+COMMENT 'View relacionando atletas, clubes e scouts do schema trusted'
 AS SELECT
     partidas.temporada AS temporada,
     partidas.rodada AS rodada,
@@ -83,12 +83,12 @@ AS SELECT
     scouts.DD AS DD,
     scouts.DP AS DP,
     scouts.GS AS GS
-FROM refined.scouts AS scouts
-LEFT JOIN refined.partidas AS partidas
+FROM trusted.scouts AS scouts
+LEFT JOIN trusted.partidas AS partidas
     ON scouts.partidaid = partidas.partidaid
-LEFT JOIN refined.clubes AS clubes
+LEFT JOIN trusted.clubes AS clubes
     ON scouts.clubeid = clubes.clubeid
-LEFT JOIN refined.atletas AS atletas
+LEFT JOIN trusted.atletas AS atletas
     ON scouts.atletaid = atletas.atletaid
-LEFT JOIN refined.posicoes AS posicoes
+LEFT JOIN trusted.posicoes AS posicoes
     ON scouts.posicaoid = posicoes.posicaoid;

@@ -36,8 +36,8 @@ def add_superset_lineage(datahub_conn):
 
     lineage_mce = builder.make_lineage_mce(
         [
-            builder.make_dataset_urn("hive", "refined.clubes"),
-            builder.make_dataset_urn("hive", "refined.partidas"),
+            builder.make_dataset_urn("hive", "trusted.clubes"),
+            builder.make_dataset_urn("hive", "trusted.partidas"),
         ],
         builder.make_dataset_urn("hive", "superset.partidas_full"),
         "VIEW",
@@ -46,10 +46,10 @@ def add_superset_lineage(datahub_conn):
 
     lineage_mce = builder.make_lineage_mce(
         [
-            builder.make_dataset_urn("hive", "refined.clubes"),
-            builder.make_dataset_urn("hive", "refined.partidas"),
-            builder.make_dataset_urn("hive", "refined.atletas"),
-            builder.make_dataset_urn("hive", "refined.scouts"),
+            builder.make_dataset_urn("hive", "trusted.clubes"),
+            builder.make_dataset_urn("hive", "trusted.partidas"),
+            builder.make_dataset_urn("hive", "trusted.atletas"),
+            builder.make_dataset_urn("hive", "trusted.scouts"),
         ],
         builder.make_dataset_urn("hive", "superset.scouts_full"),
         "VIEW",

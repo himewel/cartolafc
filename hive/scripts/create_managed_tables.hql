@@ -1,24 +1,24 @@
-CREATE SCHEMA IF NOT EXISTS refined
-COMMENT 'Armazena tabelas da camada refined do data lake'
-LOCATION 'hdfs:/refined';
+CREATE SCHEMA IF NOT EXISTS trusted
+COMMENT 'Armazena tabelas da camada trusted do data lake'
+LOCATION 'hdfs:/trusted';
 
-CREATE TABLE IF NOT EXISTS refined.atletas (
+CREATE TABLE IF NOT EXISTS trusted.atletas (
     atletaID    INT     COMMENT 'ID do atleta',
     apelido     STRING  COMMENT 'Apelido do atleta'
 )
-COMMENT 'Tabela espelhando camada refined do data lake com dados de atletas'
+COMMENT 'Tabela espelhando camada trusted do data lake com dados de atletas'
 PARTITIONED BY (
     temporada   INT     COMMENT 'Temporada de inclusão'
 );
 
-CREATE TABLE IF NOT EXISTS refined.clubes (
+CREATE TABLE IF NOT EXISTS trusted.clubes (
     clubeID     INT     COMMENT 'ID do clube',
     nome        STRING  COMMENT 'Nome do clube',
     abreviacao  STRING  COMMENT 'Abreviação do clube'
 )
-COMMENT 'Tabela espelhando camada refined do data lake com dados de clubes';
+COMMENT 'Tabela espelhando camada trusted do data lake com dados de clubes';
 
-CREATE TABLE IF NOT EXISTS refined.partidas (
+CREATE TABLE IF NOT EXISTS trusted.partidas (
     partidaID           STRING  COMMENT 'UUID da partida',
     rodada              INT     COMMENT 'Rodada em que a partida ocorreu',
     clubeMandanteID     INT     COMMENT 'ID do clube mandante',
@@ -27,19 +27,19 @@ CREATE TABLE IF NOT EXISTS refined.partidas (
     visitantePlacar     INT     COMMENT 'Placar do clube visitante',
     resultado           STRING  COMMENT 'Resultado final da partida ["Casa", "Visitante", "Empate"]'
 )
-COMMENT 'Tabela espelhando camada refined do data lake com dados de partidas'
+COMMENT 'Tabela espelhando camada trusted do data lake com dados de partidas'
 PARTITIONED BY (
     temporada           INT     COMMENT 'Temporada da partida'
 );
 
-CREATE TABLE IF NOT EXISTS refined.posicoes (
+CREATE TABLE IF NOT EXISTS trusted.posicoes (
     posicaoID   INT     COMMENT 'ID da posição',
     nome        STRING  COMMENT 'Nome da posição',
     abreviacao  STRING  COMMENT 'Abreviação da posição'
 )
-COMMENT 'Tabela espelhando camada refined do data lake com dados de posicoes';
+COMMENT 'Tabela espelhando camada trusted do data lake com dados de posicoes';
 
-CREATE TABLE IF NOT EXISTS refined.scouts (
+CREATE TABLE IF NOT EXISTS trusted.scouts (
     partidaID       STRING  COMMENT 'UUID da partida',
     atletaID        INT     COMMENT 'ID do atleta',
     clubeID         INT     COMMENT 'ID do clube do atleta',
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS refined.scouts (
     DP              DOUBLE  COMMENT 'Defesa de penaltis',
     GS              DOUBLE  COMMENT 'Gols sofridos'
 )
-COMMENT 'Tabela espelhando camada refined do data lake com dados de scouts'
+COMMENT 'Tabela espelhando camada trusted do data lake com dados de scouts'
 PARTITIONED BY (
     temporada       INT     COMMENT 'Temporada da partida'
 );

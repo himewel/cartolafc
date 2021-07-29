@@ -38,12 +38,12 @@ class AbstractTransformer(ABC):
         hdfs = self.get_conn()
         if partition_by is None:
             df.to_parquet(
-                path=f"{hdfs}/trusted/{schema}/1.parquet",
+                path=f"{hdfs}/curated/{schema}/1.parquet",
                 index=False,
             )
         else:
             df.to_parquet(
-                path=f"{hdfs}/trusted/{schema}",
+                path=f"{hdfs}/curated/{schema}",
                 partition_cols=partition_by,
                 index=False,
             )

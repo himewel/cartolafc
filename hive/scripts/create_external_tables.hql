@@ -1,27 +1,27 @@
-CREATE SCHEMA IF NOT EXISTS trusted
-COMMENT 'Expoe tabelas da camada trusted do data lake';
+CREATE SCHEMA IF NOT EXISTS curated
+COMMENT 'Expoe tabelas da camada curated do data lake';
 
-CREATE EXTERNAL TABLE IF NOT EXISTS trusted.atletas (
+CREATE EXTERNAL TABLE IF NOT EXISTS curated.atletas (
     atletaID    INT     COMMENT 'ID do atleta',
     apelido     STRING  COMMENT 'Apelido do atleta'
 )
-COMMENT 'Tabela espelhando camada trusted do data lake com dados de atletas'
+COMMENT 'Tabela espelhando camada curated do data lake com dados de atletas'
 PARTITIONED BY (
     temporada   INT     COMMENT 'Temporada de inclusão'
 )
 STORED AS PARQUET
-LOCATION 'hdfs:/trusted/atletas';
+LOCATION 'hdfs:/curated/atletas';
 
-CREATE EXTERNAL TABLE IF NOT EXISTS trusted.clubes (
+CREATE EXTERNAL TABLE IF NOT EXISTS curated.clubes (
     clubeID     INT     COMMENT 'ID do clube',
     nome        STRING  COMMENT 'Nome do clube',
     abreviacao  STRING  COMMENT 'Abreviação do clube'
 )
-COMMENT 'Tabela espelhando camada trusted do data lake com dados de clubes'
+COMMENT 'Tabela espelhando camada curated do data lake com dados de clubes'
 STORED AS PARQUET
-LOCATION 'hdfs:/trusted/clubes';
+LOCATION 'hdfs:/curated/clubes';
 
-CREATE EXTERNAL TABLE IF NOT EXISTS trusted.partidas (
+CREATE EXTERNAL TABLE IF NOT EXISTS curated.partidas (
     partidaID           STRING  COMMENT 'UUID da partida',
     rodada              INT     COMMENT 'Rodada em que a partida ocorreu',
     clubeMandanteID     INT     COMMENT 'ID do clube mandante',
@@ -30,23 +30,23 @@ CREATE EXTERNAL TABLE IF NOT EXISTS trusted.partidas (
     visitantePlacar     INT     COMMENT 'Placar do clube visitante',
     resultado           STRING  COMMENT 'Resultado final da partida ["Casa", "Visitante", "Empate"]'
 )
-COMMENT 'Tabela espelhando camada trusted do data lake com dados de partidas'
+COMMENT 'Tabela espelhando camada curated do data lake com dados de partidas'
 PARTITIONED BY (
     temporada           INT     COMMENT 'Temporada da partida'
 )
 STORED AS PARQUET
-LOCATION 'hdfs:/trusted/partidas';
+LOCATION 'hdfs:/curated/partidas';
 
-CREATE EXTERNAL TABLE IF NOT EXISTS trusted.posicoes (
+CREATE EXTERNAL TABLE IF NOT EXISTS curated.posicoes (
     posicaoID   INT     COMMENT 'ID da posição',
     nome        STRING  COMMENT 'Nome da posição',
     abreviacao  STRING  COMMENT 'Abreviação da posição'
 )
-COMMENT 'Tabela espelhando camada trusted do data lake com dados de posicoes'
+COMMENT 'Tabela espelhando camada curated do data lake com dados de posicoes'
 STORED AS PARQUET
-LOCATION 'hdfs:/trusted/posicoes';
+LOCATION 'hdfs:/curated/posicoes';
 
-CREATE EXTERNAL TABLE IF NOT EXISTS trusted.scouts (
+CREATE EXTERNAL TABLE IF NOT EXISTS curated.scouts (
     partidaID       STRING  COMMENT 'UUID da partida',
     atletaID        INT     COMMENT 'ID do atleta',
     clubeID         INT     COMMENT 'ID do clube do atleta',
@@ -74,9 +74,9 @@ CREATE EXTERNAL TABLE IF NOT EXISTS trusted.scouts (
     DP              DOUBLE  COMMENT 'Defesa de penaltis',
     GS              DOUBLE  COMMENT 'Gols sofridos'
 )
-COMMENT 'Tabela espelhando camada trusted do data lake com dados de scouts'
+COMMENT 'Tabela espelhando camada curated do data lake com dados de scouts'
 PARTITIONED BY (
     temporada       INT     COMMENT 'Temporada da partida'
 )
 STORED AS PARQUET
-LOCATION 'hdfs:/trusted/scouts';
+LOCATION 'hdfs:/curated/scouts';

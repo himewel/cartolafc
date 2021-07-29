@@ -17,7 +17,7 @@ _DATA_PATH = f"{_AIRFLOW_HOME}/data"
 _INCLUDE_PATH = f"{_AIRFLOW_HOME}/include"
 
 _RAW_PATH = f"{_DATA_PATH}/raw"
-_TRUSTED_PATH = f"{_DATA_PATH}/trusted"
+_CURATED_PATH = f"{_DATA_PATH}/curated"
 
 _API_URL = "https://api.github.com/repos/henriquepgomide/caRtola/contents/data"
 
@@ -42,7 +42,7 @@ with DAG(
     extractor = GithubExtractor(base_url=_API_URL, path=_RAW_PATH)
     transformer = TransformFactory(
         input_path=_RAW_PATH,
-        output_path=_TRUSTED_PATH,
+        output_path=_CURATED_PATH,
         schema_path=_SCHEMA_PATH,
     )
 
@@ -84,8 +84,8 @@ with DAG(
                 inlets={"datasets": [Dataset("hdfs", "raw")]},
                 outlets={
                     "datasets": [
-                        Dataset("hdfs", f"trusted.{table_name}"),
-                        Dataset("hive", f"trusted.{table_name}"),
+                        Dataset("hdfs", f"curated.{table_name}"),
+                        Dataset("hive", f"curated.{table_name}"),
                     ]
                 },
             )
@@ -96,29 +96,29 @@ with DAG(
                     hql=_UPSERT_ATLETAS.read(),
                     inlets={
                         "datasets": [
-                            Dataset("hdfs", f"trusted.{table_name}"),
-                            Dataset("hive", f"trusted.{table_name}"),
+                            Dataset("hdfs", f"curated.{table_name}"),
+                            Dataset("hive", f"curated.{table_name}"),
                         ]
                     },
-                    outlets={"datasets": [Dataset("hive", f"refined.{table_name}")]},
+                    outlets={"datasets": [Dataset("hive", f"trusted.{table_name}")]},
                 )
             else:
                 update_table_task = HiveOperator(
                     task_id=f"update_hive_{table_name}",
                     hql=f"""
+                        MSCK REPAIR TABLE curated.{table_name};
+                        TRUNCATE TABLE trusted.{table_name};
+                        INSERT INTO trusted.{table_name}
+                        SELECT * FROM curated.{table_name};
                         MSCK REPAIR TABLE trusted.{table_name};
-                        TRUNCATE TABLE refined.{table_name};
-                        INSERT INTO refined.{table_name}
-                        SELECT * FROM trusted.{table_name};
-                        MSCK REPAIR TABLE refined.{table_name};
                     """,
                     inlets={
                         "datasets": [
-                            Dataset("hdfs", f"trusted.{table_name}"),
-                            Dataset("hive", f"trusted.{table_name}"),
+                            Dataset("hdfs", f"curated.{table_name}"),
+                            Dataset("hive", f"curated.{table_name}"),
                         ]
                     },
-                    outlets={"datasets": [Dataset("hive", f"refined.{table_name}")]},
+                    outlets={"datasets": [Dataset("hive", f"trusted.{table_name}")]},
                 )
 
             transform_task >> update_table_task

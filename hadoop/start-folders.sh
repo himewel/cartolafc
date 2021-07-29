@@ -11,5 +11,5 @@ while ! nc -z hadoop_datanode 9864; do
 done
 
 echo "Creating folders..."
-hdfs dfs -mkdir -p /raw /trusted
+hdfs dfs -mkdir -p /raw /trusted /curated
 hdfs dfs -ls /
