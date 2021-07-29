@@ -1,4 +1,7 @@
-CREATE OR REPLACE VIEW refined.partidas_full (
+CREATE SCHEMA IF NOT EXISTS superset
+COMMENT 'Armazena queries utilizadas no superset';
+
+CREATE OR REPLACE VIEW superset.partidas_full (
     temporada           COMMENT 'Temporada da partida',
     rodada              COMMENT 'Rodada em que a partida ocorreu',
     mandante            COMMENT 'Nome do clube mandante',
@@ -22,7 +25,7 @@ LEFT JOIN refined.clubes AS clubemandante
 LEFT JOIN refined.clubes AS clubevisitante
     ON partidas.clubevisitanteid = clubevisitante.clubeid;
 
-CREATE OR REPLACE VIEW refined.scouts_full (
+CREATE OR REPLACE VIEW superset.scouts_full (
     temporada       COMMENT 'Temporada da partida',
     rodada          COMMENT 'Rodada em que a partida ocorreu',
     clube           COMMENT 'Nome do clube',
