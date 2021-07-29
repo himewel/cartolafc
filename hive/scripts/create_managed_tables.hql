@@ -1,5 +1,6 @@
 CREATE SCHEMA IF NOT EXISTS refined
-COMMENT 'Armazena tabelas da camada refined do data lake';
+COMMENT 'Armazena tabelas da camada refined do data lake'
+LOCATION 'hdfs:/refined';
 
 CREATE TABLE IF NOT EXISTS refined.atletas (
     atletaID    INT     COMMENT 'ID do atleta',
