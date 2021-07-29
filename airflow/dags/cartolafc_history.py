@@ -2,7 +2,7 @@ import os
 from datetime import datetime
 
 from airflow import DAG
-from airflow.operators.bash import BashOperator
+
 from airflow.operators.python import PythonOperator
 from airflow.providers.apache.hive.operators.hive import HiveOperator
 from airflow.utils.task_group import TaskGroup
@@ -55,40 +55,24 @@ with DAG(
     }
 
     with TaskGroup(group_id="extract") as ext_tg:
+        clean_url = _API_URL.replace("https://", "").replace("/", ".")
         extract_dynamic_task = PythonOperator(
             task_id="extract_dynamic",
             python_callable=extractor.extract_dynamic_files,
             op_kwargs={"year": "{{ execution_date.year }}"},
-            inlets={
-                "datasets": [
-                    Dataset("http", _API_URL.replace("https://", "").replace("/", "."))
-                ]
-            },
+            inlets={"datasets": [Dataset("http", clean_url)]},
+            outlets={"datasets": [Dataset("hdfs", "raw")]},
         )
 
         extract_static_task = PythonOperator(
             task_id="extract_static",
             python_callable=extractor.extract_static_files,
             op_kwargs={"year": "{{ execution_date.year }}"},
-            inlets={
-                "datasets": [
-                    Dataset("http", _API_URL.replace("https://", "").replace("/", "."))
-                ]
-            },
+            inlets={"datasets": [Dataset("http", clean_url)]},
+            outlets={"datasets": [Dataset("hdfs", "raw")]},
         )
 
         extraction_tasks_list = [extract_dynamic_task, extract_static_task]
-
-        raw_upload_task = BashOperator(
-            task_id="raw_upload",
-            bash_command="hdfs dfs -copyFromLocal -f {raw_path}/{year} /raw".format(
-                raw_path=_RAW_PATH,
-                year="{{ execution_date.year }}",
-            ),
-            outlets={"datasets": [Dataset("hdfs", "raw.{{ execution_date.year }}")]},
-        )
-
-        extraction_tasks_list >> raw_upload_task
 
     transform_groups = []
     for table_name, transform_method in transform_methods.items():
@@ -97,15 +81,7 @@ with DAG(
                 task_id=f"transform_{table_name}",
                 python_callable=transform_method,
                 op_kwargs={"year": "{{ execution_date.year }}"},
-                inlets={"datasets": [Dataset("hdfs", "raw.{{ execution_date.year }}")]},
-            )
-
-            trusted_upload_task = BashOperator(
-                task_id=f"upload_{table_name}",
-                bash_command=f"""
-                    hdfs dfs -copyFromLocal -f \
-                        {_TRUSTED_PATH}/{table_name} /trusted
-                """,
+                inlets={"datasets": [Dataset("hdfs", "raw")]},
                 outlets={
                     "datasets": [
                         Dataset("hdfs", f"trusted.{table_name}"),
@@ -118,7 +94,12 @@ with DAG(
                 update_table_task = HiveOperator(
                     task_id=f"upsert_hive_{table_name}",
                     hql=_UPSERT_ATLETAS.read(),
-                    inlets={"datasets": [Dataset("hive", f"trusted.{table_name}")]},
+                    inlets={
+                        "datasets": [
+                            Dataset("hdfs", f"trusted.{table_name}"),
+                            Dataset("hive", f"trusted.{table_name}"),
+                        ]
+                    },
                     outlets={"datasets": [Dataset("hive", f"refined.{table_name}")]},
                 )
             else:
@@ -131,11 +112,16 @@ with DAG(
                         SELECT * FROM trusted.{table_name};
                         MSCK REPAIR TABLE refined.{table_name};
                     """,
-                    inlets={"datasets": [Dataset("hive", f"trusted.{table_name}")]},
+                    inlets={
+                        "datasets": [
+                            Dataset("hdfs", f"trusted.{table_name}"),
+                            Dataset("hive", f"trusted.{table_name}"),
+                        ]
+                    },
                     outlets={"datasets": [Dataset("hive", f"refined.{table_name}")]},
                 )
 
-            transform_task >> trusted_upload_task >> update_table_task
+            transform_task >> update_table_task
 
         transform_groups.append(transf_tg)
         ext_tg >> transf_tg

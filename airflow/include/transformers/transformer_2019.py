@@ -1,5 +1,4 @@
-from glob import glob
-
+import fsspec
 import pandas as pd
 
 from . import AbstractTransformer
@@ -7,14 +6,16 @@ from . import AbstractTransformer
 
 class Transformer2019(AbstractTransformer):
     def get_scouts(self):
-        file_list = glob(f"{self.input_path}/2019/rodada/*.csv")
+        hdfs = self.get_conn()
         scouts_df = pd.DataFrame()
-        for file in file_list:
-            tmp_df = pd.read_csv(file, dtype=str).drop_duplicates(
-                subset=["atletas.clube_id", "atletas.atleta_id", "atletas.rodada_id"],
-                keep="first",
-            )
-            scouts_df = pd.concat([scouts_df, tmp_df], sort=True)
+        with fsspec.open_files(f"{hdfs}/raw/2019/rodada/*.csv") as file_list:
+            drop_subset = ["atletas.clube_id", "atletas.atleta_id", "atletas.rodada_id"]
+            for file in file_list:
+                tmp_df = pd.read_csv(file, dtype=str).drop_duplicates(
+                    subset=drop_subset,
+                    keep="first",
+                )
+                scouts_df = pd.concat([scouts_df, tmp_df], sort=True)
 
         null_status = ["Nulo", "Contundido", "Suspenso"]
         scouts_df = scouts_df[~scouts_df["atletas.status_id"].isin(null_status)]
@@ -67,7 +68,8 @@ class Transformer2019(AbstractTransformer):
         return scouts_df
 
     def get_partidas(self):
-        partidas_df = pd.read_csv(f"{self.input_path}/2019/partidas/1.csv", dtype=str)
+        hdfs = self.get_conn()
+        partidas_df = pd.read_csv(f"{hdfs}/raw/2019/partidas/1.csv", dtype=str)
         partidas_df.rename(
             columns={
                 "home_team": "clubeMandanteID",
@@ -101,11 +103,12 @@ class Transformer2019(AbstractTransformer):
         return partidas_df
 
     def get_atletas(self):
-        file_list = glob(f"{self.input_path}/2019/rodada/*.csv")
+        hdfs = self.get_conn()
         atletas_df = pd.DataFrame()
-        for file in file_list:
-            tmp_df = pd.read_csv(file, dtype=str)
-            atletas_df = pd.concat([atletas_df, tmp_df], sort=True)
+        with fsspec.open_files(f"{hdfs}/raw/2019/rodada/*.csv") as file_list:
+            for file in file_list:
+                tmp_df = pd.read_csv(file, dtype=str)
+                atletas_df = pd.concat([atletas_df, tmp_df], sort=True)
 
         atletas_df.rename(
             columns={

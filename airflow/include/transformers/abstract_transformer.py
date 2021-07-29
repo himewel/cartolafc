@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 
 import pandas as pd
 import yaml
+from airflow.providers.apache.hdfs.hooks.hdfs import HDFSHook
 
 
 class AbstractTransformer(ABC):
@@ -14,6 +15,10 @@ class AbstractTransformer(ABC):
         if schema_path:
             with open(schema_path) as stream:
                 self.schema = yaml.safe_load(stream)
+
+    def get_conn(self):
+        conn_string = HDFSHook.get_connection("hdfs_default").get_uri()
+        return conn_string
 
     def write_parquet(self, df, schema, partition_by):
         # select and cast columns
@@ -30,15 +35,15 @@ class AbstractTransformer(ABC):
         df.columns = df.columns.str.lower()
 
         # defines output structure
-        os.makedirs(f"{self.output_path}/{schema}", exist_ok=True)
+        hdfs = self.get_conn()
         if partition_by is None:
             df.to_parquet(
-                path=f"{self.output_path}/{schema}/1.parquet",
+                path=f"{hdfs}/trusted/{schema}/1.parquet",
                 index=False,
             )
         else:
             df.to_parquet(
-                path=f"{self.output_path}/{schema}",
+                path=f"{hdfs}/trusted/{schema}",
                 partition_cols=partition_by,
                 index=False,
             )
@@ -56,7 +61,8 @@ class AbstractTransformer(ABC):
         pass
 
     def get_clubes(self, year):
-        clubes_df = pd.read_csv(f"{self.input_path}/{year}/times_ids/1.csv")
+        hdfs = self.get_conn()
+        clubes_df = pd.read_csv(f"{hdfs}/raw/{year}/times_ids/1.csv")
         clubes_df = (
             clubes_df[["id", "nome.cbf", "abreviacao"]]
             .rename(columns={"id": "clubeID", "nome.cbf": "nome"})
@@ -71,7 +77,8 @@ class AbstractTransformer(ABC):
         return clubes_df
 
     def get_posicoes(self, year):
-        posicoes_df = pd.read_csv(f"{self.input_path}/{year}/posicoes_ids/1.csv")
+        hdfs = self.get_conn()
+        posicoes_df = pd.read_csv(f"{hdfs}/raw/{year}/posicoes_ids/1.csv")
         posicoes_df.rename(
             columns={
                 "Cod": "posicaoID",
