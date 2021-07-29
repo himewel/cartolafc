@@ -23,7 +23,6 @@ services:
             - 8080:8080
         volumes:
             - ./airflow/dags:/opt/airflow/dags
-            - ./airflow/data:/opt/airflow/data
             - ./airflow/include:/opt/airflow/include
             - ./config:/etc/hadoop
 
@@ -38,7 +37,6 @@ services:
             timeout: 90s
         volumes:
             - ./airflow/dags:/opt/airflow/dags
-            - ./airflow/data:/opt/airflow/data
             - ./airflow/include:/opt/airflow/include
             - ./config:/etc/hadoop
 
