@@ -1,3 +1,3 @@
 SELECT COUNT(1)
-FROM refined.partidas
+FROM trusted.partidas
 WHERE resultado = 'Empate'

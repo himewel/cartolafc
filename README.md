@@ -68,7 +68,7 @@ After a few moments of the start and healthcheck of services, the web interfaces
 
 ## Miscellaneous
 
-The current data warehouse schema used on Hive is presented next. It mirrors the trusted layer build on Hadoop with external tables (this is the `trusted` schema) to make some ELT to construct the managed tables in the `refined` schema.
+The current data warehouse schema used on Hive is presented next. It mirrors the trusted layer build on Hadoop with external tables (this is the `curated` schema) to make some ELT to construct the managed tables in the `trusted` schema.
 
 <p align="center">
 <img alt="Database schema" src="./docs/schema.png"/>
@@ -80,7 +80,7 @@ The Airflow DAG includes file extraction from github API and transform/load grou
 <img alt="Airflow DAG" src="./docs/dag.png"/>
 </p>
 
-Two dashboards are built into Superset, the first with an emphasis on teams and the second on players perfomance:
+Two dashboards are built into Superset consuming data from views, the first with an emphasis on teams and the second on players perfomance:
 
 <p align="center">
 <img alt="Teams dashboard" src="./docs/dashboard-clubes.png"/>
@@ -118,14 +118,14 @@ WITH ranked_players AS (
             PARTITION BY scouts.posicaoid
             ORDER BY scouts.pontos DESC
         ) AS scoutsrank
-    FROM refined.scouts
-    JOIN refined.clubes
+    FROM trusted.scouts
+    JOIN trusted.clubes
         ON scouts.clubeid = clubes.clubeid
-    JOIN refined.partidas
+    JOIN trusted.partidas
         ON scouts.partidaid = partidas.partidaid
-    JOIN refined.atletas
+    JOIN trusted.atletas
         ON scouts.atletaid = atletas.atletaid
-    JOIN refined.posicoes
+    JOIN trusted.posicoes
         ON scouts.posicaoid = posicoes.posicaoid
 )
 SELECT
@@ -173,12 +173,12 @@ WITH ranked_scouts AS (
             PARTITION BY scouts.temporada
             ORDER BY scouts.pontos DESC
         ) AS scoutrank
-    FROM refined.scouts AS scouts
-    JOIN refined.clubes AS clubes
+    FROM trusted.scouts AS scouts
+    JOIN trusted.clubes AS clubes
         ON clubes.clubeid  = scouts.clubeid
-    JOIN refined.partidas AS partidas
+    JOIN trusted.partidas AS partidas
         ON partidas.partidaid = scouts.partidaid
-    JOIN refined.atletas AS atletas
+    JOIN trusted.atletas AS atletas
         ON atletas.atletaid = scouts.atletaid
 )
 SELECT

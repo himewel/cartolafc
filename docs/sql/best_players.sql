@@ -17,12 +17,12 @@ FROM (
             PARTITION BY scouts.temporada
             ORDER BY scouts.pontos DESC
         ) AS scoutrank
-    FROM refined.scouts AS scouts
-    JOIN refined.clubes AS clubes
+    FROM trusted.scouts AS scouts
+    JOIN trusted.clubes AS clubes
         ON clubes.clubeid  = scouts.clubeid
-    JOIN refined.partidas AS partidas
+    JOIN trusted.partidas AS partidas
         ON partidas.partidaid = scouts.partidaid
-    JOIN refined.atletas AS atletas
+    JOIN trusted.atletas AS atletas
         ON atletas.atletaid = scouts.atletaid
 ) ranked_scouts
 WHERE ranked_scouts.scoutrank = 1

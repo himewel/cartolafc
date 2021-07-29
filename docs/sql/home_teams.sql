@@ -1,2 +1,2 @@
 SELECT COUNT(DISTINCT(clubemandanteid))
-FROM refined.partidas
+FROM trusted.partidas

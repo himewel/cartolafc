@@ -19,14 +19,14 @@ FROM (
             PARTITION BY scouts.posicaoid
             ORDER BY scouts.pontos DESC
         ) AS scoutsrank
-    FROM refined.scouts
-    JOIN refined.clubes
+    FROM trusted.scouts
+    JOIN trusted.clubes
         ON scouts.clubeid = clubes.clubeid
-    JOIN refined.partidas
+    JOIN trusted.partidas
         ON scouts.partidaid = partidas.partidaid
-    JOIN refined.atletas
+    JOIN trusted.atletas
         ON scouts.atletaid = atletas.atletaid
-    JOIN refined.posicoes
+    JOIN trusted.posicoes
         ON scouts.posicaoid = posicoes.posicaoid
 ) ranked_players
 WHERE
