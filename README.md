@@ -13,7 +13,7 @@
 This project aims to build and structure a data lake and data warehouse based on the data extracted from Cartola FC (a game about the Brazilian national football championship). To do it, a few services are used:
 
 - Airflow: scheduler and task orchestrator;
-- DataHub: data lineage backend and data catalog;
+- DataHub: metadata lineage and data catalog;
 - Hadoop: data repository;
 - Hive: database over Hadoop;
 - Superset: visualization tool.
@@ -31,7 +31,7 @@ docker-compose up \
     up --detach
 
 # or just quickstart
-./quisckstart.sh
+bash quickstart.sh
 ```
 
 To setup only the operational group of containers you will need Airflow, Hive, Hadoop and DataHub containers. So, run the following:
@@ -44,7 +44,7 @@ docker-compose \
     up --detach
 
 # or just quickstart
-./quisckstart.sh airflow
+bash quickstart.sh airflow
 ```
 
 To setup only the querying group of containers (Superset, Hive and Hadoop) run the following:
@@ -56,7 +56,7 @@ docker-compose \
     up --detach
 
 # or just quickstart
-./quisckstart.sh superset
+bash quickstart.sh superset
 ```
 
 After a few moments of the start and healthcheck of services, the web interfaces will be found in:
@@ -90,7 +90,7 @@ Two dashboards are built into Superset consuming data from views, the first with
 <img alt="Players dashboard" src="./docs/dashboard-atletas.png"/>
 </p>
 
-Also, DataHub is configured to gather metadata from Superset, Hive and Airflow. The following images represent the metadata extracted from Airflow and the data catalog built from the Hive tables:
+Also, DataHub is configured to gather metadata from Superset, Hive and Airflow. The following images present the metadata extracted from Airflow and the data catalog built from Hive schemas:
 
 <p align="center">
 <img alt="Airflow metadata" src="./docs/task-catalog.png"/>
