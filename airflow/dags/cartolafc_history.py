@@ -9,18 +9,15 @@ from airflow.utils.task_group import TaskGroup
 
 from datahub_provider.entities import Dataset
 
-from include import GithubExtractor, TransformFactory, datahub_update
+from include import TransformFactory, datahub_update
+from include.extractors import GithubExtractor
 
 _AIRFLOW_HOME = os.getenv("AIRFLOW_HOME", ".")
 
-_DATA_PATH = f"{_AIRFLOW_HOME}/data"
+_RAW_PATH = "raw/history"
+_CURATED_PATH = "curated"
+
 _INCLUDE_PATH = f"{_AIRFLOW_HOME}/include"
-
-_RAW_PATH = f"{_DATA_PATH}/raw"
-_CURATED_PATH = f"{_DATA_PATH}/curated"
-
-_API_URL = "https://api.github.com/repos/henriquepgomide/caRtola/contents/data"
-
 _SCHEMA_PATH = f"{_INCLUDE_PATH}/schema.yaml"
 _UPSERT_ATLETAS = open(f"{_INCLUDE_PATH}/hql/upsert_atletas.hql")
 
@@ -33,13 +30,14 @@ default_args = {
 with DAG(
     dag_id="cartolafc_history",
     default_args=default_args,
-    description="Run automated data ingestion from CartolaFC to HDFS and Hive",
+    description="Run automated data ingestion of CartolaFC to HDFS and Hive from 2014 to 2020 seasons",
     max_active_runs=1,
     schedule_interval="@yearly",
     start_date=datetime(2014, 1, 1),
+    end_date=datetime(2020, 1, 1),
     tags=["Hive", "HDFS", "DataHub"],
 ) as dag:
-    extractor = GithubExtractor(base_url=_API_URL, path=_RAW_PATH)
+    extractor = GithubExtractor(path=_RAW_PATH)
     transformer = TransformFactory(
         input_path=_RAW_PATH,
         output_path=_CURATED_PATH,
@@ -55,21 +53,21 @@ with DAG(
     }
 
     with TaskGroup(group_id="extract") as ext_tg:
-        clean_url = _API_URL.replace("https://", "").replace("/", ".")
+        clean_url = extractor.base_url.replace("https://", "").replace("/", ".")
         extract_dynamic_task = PythonOperator(
             task_id="extract_dynamic",
-            python_callable=extractor.extract_dynamic_files,
-            op_kwargs={"year": "{{ execution_date.year }}"},
+            python_callable=extractor.extract,
+            op_kwargs={"mode": "static"},
             inlets={"datasets": [Dataset("http", clean_url)]},
-            outlets={"datasets": [Dataset("hdfs", "raw")]},
+            outlets={"datasets": [Dataset("hdfs", _RAW_PATH.replace("/", "."))]},
         )
 
         extract_static_task = PythonOperator(
             task_id="extract_static",
-            python_callable=extractor.extract_static_files,
-            op_kwargs={"year": "{{ execution_date.year }}"},
+            python_callable=extractor.extract,
+            op_kwargs={"mode": "dynamic"},
             inlets={"datasets": [Dataset("http", clean_url)]},
-            outlets={"datasets": [Dataset("hdfs", "raw")]},
+            outlets={"datasets": [Dataset("hdfs", _RAW_PATH.replace("/", "."))]},
         )
 
         extraction_tasks_list = [extract_dynamic_task, extract_static_task]
@@ -80,8 +78,7 @@ with DAG(
             transform_task = PythonOperator(
                 task_id=f"transform_{table_name}",
                 python_callable=transform_method,
-                op_kwargs={"year": "{{ execution_date.year }}"},
-                inlets={"datasets": [Dataset("hdfs", "raw")]},
+                inlets={"datasets": [Dataset("hdfs", _RAW_PATH.replace("/", "."))]},
                 outlets={
                     "datasets": [
                         Dataset("hdfs", f"curated.{table_name}"),
