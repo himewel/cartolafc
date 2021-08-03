@@ -5,13 +5,12 @@ from . import AbstractTransformer
 
 class Transformer2017(AbstractTransformer):
     def get_scouts(self):
-        hdfs = self.get_conn()
-        clubes_df = pd.read_csv(f"{hdfs}/raw/2017/times_ids/1.csv", dtype=str)
+        clubes_df = pd.read_csv(f"{self.remote_path}/times_ids/1.csv", dtype=str)
         clubes_df = clubes_df[["id", "cod.2017", "nome.cartola"]].rename(
             columns={"cod.2017": "olderID", "id": "clubeID", "nome.cartola": "nome"}
         )
 
-        scouts_df = pd.read_csv(f"{hdfs}/raw/2017/scouts_raw/1.csv", dtype=str)
+        scouts_df = pd.read_csv(f"{self.remote_path}/scouts_raw/1.csv", dtype=str)
 
         null_status = ["Nulo", "Contundido", "Suspenso"]
         scouts_df = scouts_df[~scouts_df["atletas.status_id"].isin(null_status)]
@@ -53,7 +52,7 @@ class Transformer2017(AbstractTransformer):
             on=["rodada", "clubeID"],
         )
 
-        posicoes_df = self.get_posicoes("2017")
+        posicoes_df = self.get_posicoes()
         scouts_df = scouts_df.merge(
             right=posicoes_df,
             left_on="atletas.posicao_id",
@@ -69,13 +68,12 @@ class Transformer2017(AbstractTransformer):
         return scouts_df
 
     def get_partidas(self):
-        hdfs = self.get_conn()
-        clubes_df = pd.read_csv(f"{hdfs}/raw/2017/times_ids/1.csv", dtype=str)
+        clubes_df = pd.read_csv(f"{self.remote_path}/times_ids/1.csv", dtype=str)
         clubes_df = clubes_df[["id", "cod.2017", "nome.cbf"]].rename(
             columns={"cod.2017": "olderID", "id": "clubeID", "nome.cbf": "nome"}
         )
 
-        partidas_df = pd.read_csv(f"{hdfs}/raw/2017/partidas/1.csv", dtype=str)
+        partidas_df = pd.read_csv(f"{self.remote_path}/partidas/1.csv", dtype=str)
         partidas_df = partidas_df.merge(
             right=clubes_df,
             left_on="home_team",
@@ -127,8 +125,7 @@ class Transformer2017(AbstractTransformer):
         return partidas_df
 
     def get_atletas(self):
-        hdfs = self.get_conn()
-        atletas_df = pd.read_csv(f"{hdfs}/raw/2017/jogadores/1.csv", dtype=str)
+        atletas_df = pd.read_csv(f"{self.remote_path}/jogadores/1.csv", dtype=str)
         atletas_df = atletas_df.drop_duplicates("AtletaID", keep="first")
         atletas_df = atletas_df.rename(
             columns={

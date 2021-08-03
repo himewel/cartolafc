@@ -23,8 +23,16 @@ class TransformFactory(AbstractTransformer):
             "2020": Transformer2020,
         }
 
-    def get_scouts(self, year):
-        transformer = self.transformers[year](self.input_path)
+    def get_transformer(self, execution_date):
+        year = str(execution_date.year)
+        transformer = self.transformers[year](
+            input_path=self.input_path,
+            execution_date=execution_date,
+        )
+        return transformer
+
+    def get_scouts(self, execution_date):
+        transformer = self.get_transformer(execution_date)
         scouts_df = transformer.get_scouts()
         self.write_parquet(
             df=scouts_df,
@@ -32,8 +40,8 @@ class TransformFactory(AbstractTransformer):
             partition_by=["temporada"],
         )
 
-    def get_partidas(self, year):
-        transformer = self.transformers[year](self.input_path)
+    def get_partidas(self, execution_date):
+        transformer = self.get_transformer(execution_date)
         partidas_df = transformer.get_partidas()
         self.write_parquet(
             df=partidas_df,
@@ -41,8 +49,8 @@ class TransformFactory(AbstractTransformer):
             partition_by=["temporada"],
         )
 
-    def get_atletas(self, year):
-        transformer = self.transformers[year](self.input_path)
+    def get_atletas(self, execution_date):
+        transformer = self.get_transformer(execution_date)
         atletas_df = transformer.get_atletas()
         self.write_parquet(
             df=atletas_df,
@@ -50,16 +58,18 @@ class TransformFactory(AbstractTransformer):
             partition_by=["temporada"],
         )
 
-    def get_clubes(self, year):
-        clubes_df = super().get_clubes(year)
+    def get_clubes(self, execution_date):
+        transformer = self.get_transformer(execution_date)
+        clubes_df = transformer.get_clubes()
         self.write_parquet(
             df=clubes_df,
             schema="clubes",
             partition_by=None,
         )
 
-    def get_posicoes(self, year):
-        posicoes_df = super().get_posicoes(year)
+    def get_posicoes(self, execution_date):
+        transformer = self.get_transformer(execution_date)
+        posicoes_df = transformer.get_posicoes()
         self.write_parquet(
             df=posicoes_df,
             schema="posicoes",

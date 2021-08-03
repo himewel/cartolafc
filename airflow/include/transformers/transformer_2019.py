@@ -6,9 +6,8 @@ from . import AbstractTransformer
 
 class Transformer2019(AbstractTransformer):
     def get_scouts(self):
-        hdfs = self.get_conn()
         scouts_df = pd.DataFrame()
-        with fsspec.open_files(f"{hdfs}/raw/2019/rodada/*.csv") as file_list:
+        with fsspec.open_files(f"{self.remote_path}/rodada/*.csv") as file_list:
             drop_subset = ["atletas.clube_id", "atletas.atleta_id", "atletas.rodada_id"]
             for file in file_list:
                 tmp_df = pd.read_csv(file, dtype=str).drop_duplicates(
@@ -52,7 +51,7 @@ class Transformer2019(AbstractTransformer):
             on=["rodada", "clubeID"],
         )
 
-        posicoes_df = self.get_posicoes("2019")
+        posicoes_df = self.get_posicoes()
         scouts_df = scouts_df.merge(
             right=posicoes_df,
             left_on="atletas.posicao_id",
@@ -68,8 +67,7 @@ class Transformer2019(AbstractTransformer):
         return scouts_df
 
     def get_partidas(self):
-        hdfs = self.get_conn()
-        partidas_df = pd.read_csv(f"{hdfs}/raw/2019/partidas/1.csv", dtype=str)
+        partidas_df = pd.read_csv(f"{self.remote_path}/partidas/1.csv", dtype=str)
         partidas_df.rename(
             columns={
                 "home_team": "clubeMandanteID",
@@ -103,9 +101,8 @@ class Transformer2019(AbstractTransformer):
         return partidas_df
 
     def get_atletas(self):
-        hdfs = self.get_conn()
         atletas_df = pd.DataFrame()
-        with fsspec.open_files(f"{hdfs}/raw/2019/rodada/*.csv") as file_list:
+        with fsspec.open_files(f"{self.remote_path}/rodada/*.csv") as file_list:
             for file in file_list:
                 tmp_df = pd.read_csv(file, dtype=str)
                 atletas_df = pd.concat([atletas_df, tmp_df], sort=True)

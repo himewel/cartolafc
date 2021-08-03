@@ -6,8 +6,7 @@ from . import AbstractTransformer
 
 class Transformer2018(AbstractTransformer):
     def get_scouts(self):
-        hdfs = self.get_conn()
-        clubes_df = pd.read_csv(f"{hdfs}/raw/2018/times_ids/1.csv", dtype=str)
+        clubes_df = pd.read_csv(f"{self.remote_path}/times_ids/1.csv", dtype=str)
         clubes_df = (
             clubes_df[["id", "cod.2018", "nome.cartola"]]
             .drop_duplicates()
@@ -21,7 +20,7 @@ class Transformer2018(AbstractTransformer):
         )
 
         scouts_df = pd.DataFrame()
-        with fsspec.open_files(f"{hdfs}/raw/2018/rodada/*.csv") as file_list:
+        with fsspec.open_files(f"{self.remote_path}/rodada/*.csv") as file_list:
             drop_subset = ["atletas.clube_id", "atletas.atleta_id", "atletas.rodada_id"]
             for file in file_list:
                 tmp_df = pd.read_csv(file, dtype=str).drop_duplicates(
@@ -66,7 +65,7 @@ class Transformer2018(AbstractTransformer):
 
         scouts_df = scouts_df.merge(right=club_by_rounds, on=["rodada", "clubeID"])
 
-        posicoes_df = self.get_posicoes("2018")
+        posicoes_df = self.get_posicoes()
         scouts_df = scouts_df.merge(
             right=posicoes_df,
             left_on="atletas.posicao_id",
@@ -82,13 +81,12 @@ class Transformer2018(AbstractTransformer):
         return scouts_df
 
     def get_partidas(self):
-        hdfs = self.get_conn()
-        clubes_df = pd.read_csv(f"{hdfs}/raw/2018/times_ids/1.csv", dtype=str)
+        clubes_df = pd.read_csv(f"{self.remote_path}/times_ids/1.csv", dtype=str)
         clubes_df = clubes_df[["id", "cod.2018", "nome.cbf"]].rename(
             columns={"cod.2018": "olderID", "id": "clubeID", "nome.cbf": "nome"},
         )
 
-        partidas_df = pd.read_csv(f"{hdfs}/raw/2018/partidas/1.csv", dtype=str)
+        partidas_df = pd.read_csv(f"{self.remote_path}/partidas/1.csv", dtype=str)
         partidas_df = partidas_df.merge(
             right=clubes_df,
             left_on="home_team",
@@ -144,8 +142,7 @@ class Transformer2018(AbstractTransformer):
         return partidas_df
 
     def get_atletas(self):
-        hdfs = self.get_conn()
-        atletas_df = pd.read_csv(f"{hdfs}/raw/2018/jogadores/1.csv", dtype=str)
+        atletas_df = pd.read_csv(f"{self.remote_path}/jogadores/1.csv", dtype=str)
         atletas_df = atletas_df.drop_duplicates("atletas.atleta_id", keep="first")
         atletas_df = atletas_df.rename(
             columns={

@@ -7,14 +7,22 @@ from airflow.providers.apache.hdfs.hooks.hdfs import HDFSHook
 
 
 class AbstractTransformer(ABC):
-    def __init__(self, input_path, output_path="", schema_path=""):
+    def __init__(self, input_path, output_path="", schema_path="", execution_date=None):
         self.input_path = input_path
         self.output_path = output_path
+        self.execution_date = execution_date
         self.schema = {}
 
         if schema_path:
             with open(schema_path) as stream:
                 self.schema = yaml.safe_load(stream)
+        if execution_date:
+            self.remote_path = self.get_remote_path()
+
+    def get_remote_path(self):
+        hdfs = self.get_conn()
+        date = self.execution_date.date()
+        return f"{hdfs}/{self.input_path}/{date}"
 
     def get_conn(self):
         conn_string = HDFSHook.get_connection("hdfs_default").get_uri()
@@ -38,12 +46,12 @@ class AbstractTransformer(ABC):
         hdfs = self.get_conn()
         if partition_by is None:
             df.to_parquet(
-                path=f"{hdfs}/curated/{schema}/1.parquet",
+                path=f"{hdfs}/{self.output_path}/{schema}/1.parquet",
                 index=False,
             )
         else:
             df.to_parquet(
-                path=f"{hdfs}/curated/{schema}",
+                path=f"{hdfs}/{self.output_path}/{schema}",
                 partition_cols=partition_by,
                 index=False,
             )
@@ -60,9 +68,8 @@ class AbstractTransformer(ABC):
     def get_atletas(self, year):
         pass
 
-    def get_clubes(self, year):
-        hdfs = self.get_conn()
-        clubes_df = pd.read_csv(f"{hdfs}/raw/{year}/times_ids/1.csv")
+    def get_clubes(self):
+        clubes_df = pd.read_csv(f"{self.remote_path}/times_ids/1.csv")
         clubes_df = (
             clubes_df[["id", "nome.cbf", "abreviacao"]]
             .rename(columns={"id": "clubeID", "nome.cbf": "nome"})
@@ -76,9 +83,8 @@ class AbstractTransformer(ABC):
         clubes_df = clubes_df.append(bragantino, ignore_index=True)
         return clubes_df
 
-    def get_posicoes(self, year):
-        hdfs = self.get_conn()
-        posicoes_df = pd.read_csv(f"{hdfs}/raw/{year}/posicoes_ids/1.csv")
+    def get_posicoes(self):
+        posicoes_df = pd.read_csv(f"{self.remote_path}/posicoes_ids/1.csv")
         posicoes_df.rename(
             columns={
                 "Cod": "posicaoID",
