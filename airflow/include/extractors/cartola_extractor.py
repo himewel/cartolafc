@@ -16,6 +16,7 @@ class CartolaExtractor(AbstractExtractor):
         max_rounds = 38
 
         for endpoint in endpoint_list:
+            logging.info(f"Extracting data from {self.base_url}/{endpoint}...")
             normalized_name = endpoint.replace("/", "_")
             folder = f"{self.path}/{execution_date.date()}/{normalized_name}"
 
@@ -28,4 +29,10 @@ class CartolaExtractor(AbstractExtractor):
                 logging.error(e)
                 logging.info(f"Latest round of the season: {round-1}...")
                 break
+
+        logging.info("Extracting season status...")
+        download_url = f"{self.base_url}/mercado/status"
+        folder = f"{self.path}/{execution_date.date()}/mercado_status"
+        self.save_file(download_url, folder, "1.json")
+
         logging.info("Finishing...")
