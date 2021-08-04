@@ -1,4 +1,5 @@
 import os
+import logging
 from abc import ABC, abstractmethod
 
 import pandas as pd
@@ -10,19 +11,40 @@ class AbstractTransformer(ABC):
     def __init__(self, input_path, output_path="", schema_path="", execution_date=None):
         self.input_path = input_path
         self.output_path = output_path
+        self.schema_path = schema_path
         self.execution_date = execution_date
         self.schema = {}
+        self.dict_methods = {
+            "scouts": self.get_scouts,
+            "partidas": self.get_partidas,
+            "atletas": self.get_atletas,
+            "clubes": self.get_clubes,
+            "posicoes": self.get_posicoes,
+        }
 
         if schema_path:
-            with open(schema_path) as stream:
-                self.schema = yaml.safe_load(stream)
+            self.schema = self.get_schema()
         if execution_date:
             self.remote_path = self.get_remote_path()
+
+    def get_schema(self):
+        logging.info(f"Reading schema file from {self.schema_path}")
+        with open(self.schema_path) as stream:
+            schema = yaml.safe_load(stream)
+        return schema
 
     def get_remote_path(self):
         hdfs = self.get_conn()
         date = self.execution_date.date()
         return f"{hdfs}/{self.input_path}/{date}"
+
+    def get_resultado(self, row):
+        if row["mandantePlacar"] > row["visitantePlacar"]:
+            return "Casa"
+        elif row["mandantePlacar"] < row["visitantePlacar"]:
+            return "Visitante"
+        else:
+            return "Empate"
 
     def get_conn(self):
         conn_string = HDFSHook.get_connection("hdfs_default").get_uri()
