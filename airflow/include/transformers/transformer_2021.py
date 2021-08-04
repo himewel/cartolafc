@@ -8,7 +8,7 @@ from . import AbstractTransformer
 
 
 class Transformer2021(AbstractTransformer):
-    def get_scouts(self, execution_date, next_execution_date):
+    def get_scouts(self, next_execution_date):
         scouts_df = pd.DataFrame()
         str_search = f"{self.remote_path}/atletas_pontuados/*.json"
         logging.info(f"Searching for files in {str_search}...")
@@ -56,7 +56,7 @@ class Transformer2021(AbstractTransformer):
             inplace=True,
         )
 
-        partidas_df = self.get_partidas(execution_date, next_execution_date)
+        partidas_df = self.get_partidas(next_execution_date)
         columns_to_get = ["partidaID", "rodada", "temporada"]
         mandantes = partidas_df[columns_to_get + ["clubeMandanteID"]].rename(
             columns={"clubeMandanteID": "clubeID"}
@@ -76,7 +76,7 @@ class Transformer2021(AbstractTransformer):
         logging.info(f"Shape: {scouts_df.shape}")
         return scouts_df
 
-    def get_partidas(self, execution_date, next_execution_date):
+    def get_partidas(self, next_execution_date):
         partidas_df = pd.DataFrame()
         str_search = f"{self.remote_path}/partidas/*.json"
         logging.info(f"Searching for files in {str_search}...")
@@ -125,41 +125,50 @@ class Transformer2021(AbstractTransformer):
         logging.info(f"Shape: {partidas_df.shape}")
         return partidas_df
 
-    def get_atletas(self, execution_date, next_execution_date):
-        scouts_df = self.get_scouts(execution_date, next_execution_date)
-        atletas_df = scouts_df[["atletaID", "apelido", "temporada"]]
-        atletas_df.drop_duplicates("atletaID", keep="first", inplace=True)
+    def get_atletas(self):
+        str_search = f"{self.remote_path}/atletas_mercado/1.json"
+        logging.info(f"Searching for files in {str_search}...")
+        with fsspec.open(str_search) as file:
+            tmp_json = json.loads(file.read())
+            atletas_df = pd.DataFrame.from_dict(tmp_json["atletas"], dtype=str)
+
+        str_search = f"{self.remote_path}/mercado_status/1.json"
+        logging.info(f"Searching for files in {str_search}...")
+        with fsspec.open(str_search) as file:
+            mercado_status = json.loads(file.read())
+
+        atletas_df["temporada"] = mercado_status["temporada"]
+        atletas_df.rename(columns={"atleta_id": "atletaID"}, inplace=True)
+
         logging.info(f"Resulting dataframe: \n{atletas_df.head()}")
         logging.info(f"Shape: {atletas_df.shape}")
         return atletas_df
 
     def get_clubes(self):
-        clubes_df = pd.DataFrame()
-        str_search = f"{self.remote_path}/partidas/*.json"
+        str_search = f"{self.remote_path}/clubes/1.json"
         logging.info(f"Searching for files in {str_search}...")
 
-        with fsspec.open_files(str_search) as file_list:
-            file = file_list[0]
+        with fsspec.open(str_search) as file:
             tmp_json = json.loads(file.read())
             clubes_df = pd.DataFrame.from_dict(
-                tmp_json["clubes"],
+                tmp_json,
                 dtype=str,
                 orient="index",
             )
 
         clubes_df.rename(columns={"id": "clubeID"}, inplace=True)
+        logging.info(f"Resulting dataframe: \n{clubes_df.head()}")
+        logging.info(f"Shape: {clubes_df.shape}")
         return clubes_df
 
     def get_posicoes(self):
-        posicoes_df = pd.DataFrame()
-        str_search = f"{self.remote_path}/atletas_pontuados/*.json"
+        str_search = f"{self.remote_path}/posicoes/1.json"
         logging.info(f"Searching for files in {str_search}...")
 
-        with fsspec.open_files(str_search) as file_list:
-            file = file_list[0]
+        with fsspec.open(str_search) as file:
             tmp_json = json.loads(file.read())
             posicoes_df = pd.DataFrame.from_dict(
-                tmp_json["posicoes"],
+                tmp_json,
                 dtype="object",
                 orient="index",
             )

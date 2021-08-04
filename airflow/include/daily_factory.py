@@ -18,7 +18,7 @@ class DailyFactory(AbstractTransformer):
 
     def get_scouts(self, execution_date, next_execution_date):
         transformer = self.get_transformer(execution_date)
-        scouts_df = transformer.get_scouts(execution_date, next_execution_date)
+        scouts_df = transformer.get_scouts(next_execution_date)
         self.write_parquet(
             df=scouts_df,
             schema="scouts",
@@ -27,7 +27,7 @@ class DailyFactory(AbstractTransformer):
 
     def get_partidas(self, execution_date, next_execution_date):
         transformer = self.get_transformer(execution_date)
-        partidas_df = transformer.get_partidas(execution_date, next_execution_date)
+        partidas_df = transformer.get_partidas(next_execution_date)
         self.write_parquet(
             df=partidas_df,
             schema="partidas",
@@ -36,7 +36,7 @@ class DailyFactory(AbstractTransformer):
 
     def get_atletas(self, execution_date, next_execution_date):
         transformer = self.get_transformer(execution_date)
-        atletas_df = transformer.get_atletas(execution_date, next_execution_date)
+        atletas_df = transformer.get_atletas()
         self.write_parquet(
             df=atletas_df,
             schema="atletas",
