@@ -12,6 +12,11 @@ class CartolaExtractor(AbstractExtractor):
         self.path = path
 
     def extract(self, execution_date):
+        self.extract_round_files(execution_date)
+        self.extract_static_files(execution_date)
+        logging.info("Finishing...")
+
+    def extract_round_files(self, execution_date):
         endpoint_list = ["partidas", "atletas/pontuados"]
         max_rounds = 38
 
@@ -30,9 +35,12 @@ class CartolaExtractor(AbstractExtractor):
                 logging.info(f"Latest round of the season: {round-1}...")
                 break
 
-        logging.info("Extracting season status...")
-        download_url = f"{self.base_url}/mercado/status"
-        folder = f"{self.path}/{execution_date.date()}/mercado_status"
-        self.save_file(download_url, folder, "1.json")
+    def extract_static_files(self, execution_date):
+        endpoint_list = ["posicoes", "clubes", "mercado/status", "atletas/mercado"]
+        for endpoint in endpoint_list:
+            download_url = f"{self.base_url}/{endpoint}"
+            logging.info(f"Extracting data from {download_url}...")
 
-        logging.info("Finishing...")
+            normalized_name = endpoint.replace("/", "_")
+            folder = f"{self.path}/{execution_date.date()}/{normalized_name}"
+            self.save_file(download_url, folder, "1.json")
