@@ -10,7 +10,7 @@ from transformers import (
 )
 
 
-class TransformFactory(AbstractTransformer):
+class YearlyFactory(AbstractTransformer):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.transformers = {
