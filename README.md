@@ -100,6 +100,10 @@ Also, DataHub is configured to gather metadata from Superset, Hive and Airflow. 
 <img alt="Data catalog" src="./docs/data-catalog.png"/>
 </p>
 
+<p align="center">
+<img alt="Data catalog" src="./docs/data-lineage.png"/>
+</p>
+
 ## Query examples
 
 Some sample queries are stored in `docs/sql`. As an example, the best lineup of players based on scouts in all data since 2014:
