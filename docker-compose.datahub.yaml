@@ -34,7 +34,7 @@ services:
             - DATAHUB_TRACKING_TOPIC=DataHubUsageEvent_v1
             - ELASTIC_CLIENT_HOST=elasticsearch
             - ELASTIC_CLIENT_PORT=9200
-        image: linkedin/datahub-frontend-react:v0.8.8
+        image: linkedin/datahub-frontend-react:v0.8.6
         mem_limit: 512m
         ports:
             - 9002:9002
@@ -58,7 +58,7 @@ services:
             - ENTITY_REGISTRY_CONFIG_PATH=/datahub/datahub-gms/resources/entity-registry.yml
             - MAE_CONSUMER_ENABLED=true
             - MCE_CONSUMER_ENABLED=true
-        image: linkedin/datahub-gms:v0.8.8
+        image: linkedin/datahub-gms:v0.8.6
         mem_limit: 512m
 
     elasticsearch:
@@ -82,7 +82,7 @@ services:
             - ELASTICSEARCH_HOST=elasticsearch
             - ELASTICSEARCH_PORT=9200
             - ELASTICSEARCH_PROTOCOL=http
-        image: linkedin/datahub-elasticsearch-setup:v0.8.8
+        image: linkedin/datahub-elasticsearch-setup:v0.8.6
 
     kafka-setup:
         depends_on:
@@ -91,7 +91,7 @@ services:
         environment:
             - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
             - KAFKA_BOOTSTRAP_SERVER=broker:29092
-        image: linkedin/datahub-kafka-setup:v0.8.8
+        image: linkedin/datahub-kafka-setup:v0.8.6
 
     mysql:
         command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
@@ -113,7 +113,7 @@ services:
             - MYSQL_USERNAME=datahub
             - MYSQL_PASSWORD=datahub
             - DATAHUB_DB_NAME=datahub
-        image: acryldata/datahub-mysql-setup:v0.8.8
+        image: acryldata/datahub-mysql-setup:v0.8.6
 
     schema-registry:
         depends_on:
