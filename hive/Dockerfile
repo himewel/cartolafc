@@ -28,7 +28,7 @@ RUN wget -q https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.2.2/hadoop-
     && rm -rf hadoop-3.2.2.tar.gz \
     && mv hadoop-3.2.2 ${HADOOP_HOME}
 
-RUN wget -q https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz \
+RUN wget -q https://ftp.cixug.es/apache/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz \
     && tar -xf apache-hive-3.1.2-bin.tar.gz \
     && rm -rf apache-hive-3.1.2-bin.tar.gz \
     && mv apache-hive-3.1.2-bin ${HIVE_HOME} \

@@ -33,7 +33,7 @@ RUN curl -O https://ftp.unicamp.br/pub/apache/hadoop/common/hadoop-3.2.2/hadoop-
     && rm -rf hadoop-3.2.2.tar.gz \
     && mv hadoop-3.2.2 ${HADOOP_HOME}
 
-RUN curl -O https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz \
+RUN curl -O https://ftp.cixug.es/apache/hive/hive-3.1.2/apache-hive-3.1.2-bin.tar.gz \
     && tar -xf apache-hive-3.1.2-bin.tar.gz \
     && rm -rf apache-hive-3.1.2-bin.tar.gz \
     && mv apache-hive-3.1.2-bin ${HIVE_HOME} \
@@ -43,7 +43,8 @@ RUN curl -O https://ftp.unicamp.br/pub/apache/hive/hive-3.1.2/apache-hive-3.1.2-
 COPY scripts ./scripts
 
 RUN usermod --uid ${USER_ID} airflow \
-    && groupmod --gid ${GROUP_ID} airflow \
+    && groupadd --gid ${GROUP_ID} airflow \
+    && usermod --gid ${GROUP_ID} airflow \
     && chown --recursive airflow ${AIRFLOW_HOME} \
     && chmod +x ./scripts/*.sh
 
