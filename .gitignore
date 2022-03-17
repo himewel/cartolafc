@@ -1,6 +1,7 @@
 # python
 !**/__init__.py
 **/.ipynb_checkpoints
+**/__pycache__
 venv/*
 
 # hadoop
